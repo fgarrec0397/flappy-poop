@@ -1,0 +1,15 @@
+{
+  "name": "flappy-poop",
+  "version": "1.0.0",
+  "description": "My cool new game!",
+  "scripts": {
+    "server": "cd server && npm start",
+    "client": "cd app && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
