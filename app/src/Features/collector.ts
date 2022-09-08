@@ -7,6 +7,7 @@ import terrain from "@features/Widgets/Terrain";
 import text from "@features/Widgets/Text";
 import { TextState } from "@features/Widgets/Text/state/textReducer";
 import { TextProps } from "@features/Widgets/Text/Text";
+import toilets from "@features/Widgets/Toilet";
 
 /**
  * Add your Widgets Props here as union types
@@ -28,4 +29,4 @@ export const preparedReducer = {
     textState: text.reducer,
 };
 
-export default [geometryForms, terrain, text, player, cameras];
+export default [geometryForms, terrain, text, player, cameras, toilets];
