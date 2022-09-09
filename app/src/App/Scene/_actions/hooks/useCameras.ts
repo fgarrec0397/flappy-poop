@@ -1,56 +1,80 @@
+import { uidGenerator } from "@app/Common/utilities";
 import { useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 
-import useCamerasContext from "../_data/hooks/useCamerasContext";
-import { SceneCamera } from "../sceneTypes";
-import { getCameraRef } from "../utilities";
-import useCamerasUtilities from "./useCamerasUtilities";
+import useCamerasService from "../_data/hooks/useCamerasService";
+import { SceneCamera, SceneCameraRef } from "../sceneTypes";
 
 export default () => {
     const setThree = useThree((state) => state.set);
-    const { getNextCamera } = useCamerasUtilities();
-    const { cameras, setCameras } = useCamerasContext();
+    const { add, cameras, selectCamera, currentCameraId } = useCamerasService();
 
-    const addCamera = useCallback(
-        (camera: SceneCamera) => {
-            setCameras((prevCameras) => [...prevCameras, camera]);
-        },
-        [setCameras]
-    );
+    const setCurrentCamera = useCallback(
+        (cameraId: string) => {
+            const currentCamera = cameras[cameraId];
+            selectCamera(cameraId);
 
-    const setCamera = useCallback(
-        (camera: SceneCamera) => {
-            const cameraRef = getCameraRef(camera);
+            if (currentCamera?.cameraRef.current) {
+                console.log("setthree");
 
-            if (cameraRef.current) {
-                setThree({ camera: cameraRef.current });
+                setThree({ camera: currentCamera.cameraRef.current });
             }
         },
-        [setThree]
+        [cameras, selectCamera, setThree]
+    );
+
+    const addCamera = useCallback(
+        (cameraRef: SceneCameraRef) => {
+            const id = uidGenerator();
+            const order = Object.keys(cameras).length;
+            const camera: SceneCamera = {
+                id,
+                cameraRef,
+                order,
+            };
+
+            add(camera);
+            setCurrentCamera(camera.id);
+        },
+        [add, cameras, setCurrentCamera]
+    );
+
+    const getCameraId = useCallback(
+        (index: number) => {
+            return Object.keys(cameras)[index];
+        },
+        [cameras]
     );
 
     const setNextCamera = useCallback(() => {
-        const nextCameras = getNextCamera();
+        // TODO -- Fix setNextCamera
+        const currentCameraIndex = cameras[currentCameraId!]?.order;
+        console.log(currentCameraIndex, "setNextCamera");
 
-        if (nextCameras.current) {
-            setThree({ camera: nextCameras.current });
+        if (currentCameraIndex && currentCameraIndex >= 0) {
+            const nextHistoryItemId = getCameraId(currentCameraIndex + 1);
+
+            setCurrentCamera(nextHistoryItemId);
         }
-    }, [getNextCamera, setThree]);
+    }, [cameras, currentCameraId, getCameraId, setCurrentCamera]);
 
     const setPrevCamera = useCallback(() => {
-        const prevCameras = getNextCamera(true);
+        // TODO -- Fix setPrevCamera
+        const currentCameraIndex = cameras[currentCameraId!]?.order;
+        console.log(currentCameraIndex, "setPrevCamera");
 
-        if (prevCameras.current) {
-            setThree({ camera: prevCameras.current });
+        if (currentCameraIndex && currentCameraIndex >= 0) {
+            const prevHistoryItemId = getCameraId(currentCameraIndex - 1);
+            setCurrentCamera(prevHistoryItemId);
         }
-    }, [getNextCamera, setThree]);
+    }, [cameras, currentCameraId, getCameraId, setCurrentCamera]);
 
     const deleteCamera = () => {};
 
     return {
         cameras,
         addCamera,
-        setCamera,
+        setCurrentCamera,
         setNextCamera,
         setPrevCamera,
         deleteCamera,

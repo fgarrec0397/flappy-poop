@@ -3,9 +3,9 @@ node_modules
 
 # app
 app/node_modules
+app/public/assets/*
 
 # server
 server/node_modules
 server/.env
 server/src/logs.log
-app/public/assets/Toilet.gltf

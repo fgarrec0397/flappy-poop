@@ -14,8 +14,10 @@ const Cameras: FC<OwnProps> = () => {
     const cameraRef = useRef(null!);
 
     useEffect(() => {
-        addCamera({ cameraRef });
-    }, [addCamera]);
+        // TODO -- addCamera trigger an infinite loop when is in deps arrays
+        addCamera(cameraRef);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useHelper(cameraRef, CameraHelper);
 

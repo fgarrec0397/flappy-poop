@@ -1,19 +1,19 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from "react";
 
-import { SceneCamera } from "../../sceneTypes";
+import { SceneCameraDictionary } from "../../sceneTypes";
 
 export interface CamerasContextModel {
-    cameras: SceneCamera[];
-    setCameras: (() => void) | Dispatch<SetStateAction<SceneCamera[]>>;
-    currentCameraIndex: number;
-    setCurrentCameraIndex: (() => void) | Dispatch<SetStateAction<number>>;
+    cameras: SceneCameraDictionary;
+    setCameras: (() => void) | Dispatch<SetStateAction<SceneCameraDictionary>>;
+    currentCameraId: string | null;
+    setCurrentCameraId: (() => void) | Dispatch<SetStateAction<string | null>>;
 }
 
 export const defaultContext: CamerasContextModel = {
-    cameras: [],
+    cameras: {},
     setCameras: () => {},
-    currentCameraIndex: 0,
-    setCurrentCameraIndex: () => {},
+    currentCameraId: null,
+    setCurrentCameraId: () => {},
 };
 
 export const CamerasContext = createContext<CamerasContextModel>(defaultContext);
@@ -23,14 +23,14 @@ type Props = {
 };
 
 const CamerasContextProvider: FC<Props> = ({ children }) => {
-    const [cameras, setCameras] = useState<SceneCamera[]>([]);
-    const [currentCameraIndex, setCurrentCameraIndex] = useState<number>(0);
+    const [cameras, setCameras] = useState<SceneCameraDictionary>({});
+    const [currentCameraId, setCurrentCameraId] = useState<string | null>(null);
 
     const providerValue: CamerasContextModel = {
         cameras,
         setCameras,
-        currentCameraIndex,
-        setCurrentCameraIndex,
+        currentCameraId,
+        setCurrentCameraId,
     };
 
     return <CamerasContext.Provider value={providerValue}>{children}</CamerasContext.Provider>;

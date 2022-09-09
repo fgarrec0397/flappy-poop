@@ -9,7 +9,7 @@ import { Vector3 } from "three";
 import TransformControls from "./TransformControls";
 
 const EditorCamera: FC = () => {
-    const { addCamera, setCamera } = useCameras();
+    const { addCamera } = useCameras();
     const [hasEditorOpened, setHasEditorOpened] = useState(false);
     const { isEditor } = useIsEditor();
     const { isEditing } = useIsEditing();
@@ -19,14 +19,12 @@ const EditorCamera: FC = () => {
     const cameraRef = useRef(camera);
 
     useEffect(() => {
-        addCamera({ cameraRef });
-    }, [addCamera, cameraRef]);
+        console.log("executed");
 
-    useEffect(() => {
-        if (cameraRef.current) {
-            setCamera({ cameraRef });
-        }
-    }, [cameraRef, setCamera]);
+        // TODO -- addCamera trigger an infinite loop when is in deps arrays
+        addCamera(cameraRef);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cameraRef]);
 
     useFrame(() => {
         if (isEditor && !hasEditorOpened && cameraRef.current) {

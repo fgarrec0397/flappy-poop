@@ -1,3 +1,4 @@
+import { Dictionary } from "@app/Common/commonTypes";
 import { WidgetObjects, WidgetsDictionary } from "@widgets/_actions/widgetsTypes";
 
 /**
@@ -22,9 +23,7 @@ export enum ModesAvailable {
 /**
  * The History dictionary containing all actions done by the user
  */
-export type HistoryDictionary = {
-    [id: string]: HistoryItem;
-};
+export type HistoryDictionary = Dictionary<HistoryItem>;
 
 /**
  * One history item

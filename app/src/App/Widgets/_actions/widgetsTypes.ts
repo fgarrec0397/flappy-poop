@@ -1,4 +1,4 @@
-import { UnionOfProperties } from "@common/commonTypes";
+import { Dictionary, UnionOfProperties } from "@common/commonTypes";
 import { FeaturesState, FeaturesWidgetsProps } from "@features/collector";
 import { FC, ReactNode } from "react";
 import { AnyAction, Reducer } from "redux";
@@ -88,16 +88,14 @@ export type WidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
 /**
  * A dictionary containing informations about all WidgetObjects
  */
-export type WidgetObjects<Props = FeaturesWidgetsProps> = {
-    [id: string]: WidgetSceneObject<Props>;
-};
+export type WidgetObjects<Props = FeaturesWidgetsProps> = Dictionary<WidgetSceneObject<Props>>;
 
 /**
  * A serialized dictionary containing informations about all WidgetObjects
  */
-export type SerializedWidgetObjects<Props = FeaturesWidgetsProps> = {
-    [id: string]: SerializedWidgetSceneObject<Props>;
-};
+export type SerializedWidgetObjects<Props = FeaturesWidgetsProps> = Dictionary<
+    SerializedWidgetSceneObject<Props>
+>;
 
 /**
  * A serialized version of WidgetSceneObject type
@@ -112,13 +110,15 @@ export type SerializedWidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
 /**
  * A dictionary containing editable informations about a WidgetSceneObject
  */
-export type WidgetsDictionary = {
-    [id: string]: { properties: WidgetProperties; options: WidgetOptionsValues };
-};
+export type WidgetsDictionary = Dictionary<{
+    properties: WidgetProperties;
+    options: WidgetOptionsValues;
+}>;
 
-export type WidgetOptionsValues = {
-    [name: string]: { fieldType: FieldType; value: WidgetOptionDefaultValue };
-};
+export type WidgetOptionsValues = Dictionary<{
+    fieldType: FieldType;
+    value: WidgetOptionDefaultValue;
+}>;
 
 export type WidgetsDictionaryItem = {
     id: string;
