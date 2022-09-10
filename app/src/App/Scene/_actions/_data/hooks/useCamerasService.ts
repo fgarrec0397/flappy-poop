@@ -34,9 +34,21 @@ export default () => {
         [setCurrentCameraId]
     );
 
+    const remove = useCallback(
+        (id: string) => {
+            setCameras((prevCameras) => {
+                delete prevCameras[id];
+
+                return prevCameras;
+            });
+        },
+        [setCameras]
+    );
+
     return {
         add,
         update,
+        remove,
         selectCamera,
         cameras,
         currentCameraId,

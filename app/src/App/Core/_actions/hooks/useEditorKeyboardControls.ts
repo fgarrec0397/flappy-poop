@@ -1,6 +1,7 @@
 import { KeyboardMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
 import usePlayGame from "@app/Game/_actions/hooks/usePlayGame";
+import { saveScene } from "@app/Scene/_actions/_data/services";
 import useCameras from "@scene/_actions/hooks/useCameras";
 import useWidgets from "@widgets/_actions/hooks/useWidgets";
 import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
@@ -10,15 +11,23 @@ import useKeyboardMappings from "./useKeyboardMappings";
 
 export default () => {
     const { setNextCamera, setPrevCamera } = useCameras();
-    const { selectedWidgets, firstCurrentWidget, widgets, removeselectedWidgets, copyWidget } =
-        useWidgets();
+    const {
+        selectedWidgets,
+        firstCurrentWidget,
+        widgets,
+        widgetsDictionary,
+        removeselectedWidgets,
+        copyWidget,
+    } = useWidgets();
     const { setPrevHistoryItem, setNextHistoryItem, shouldAddHistoryState } = useHistory();
     const [, setCopiedWidgets] = useState<WidgetSceneObject[]>([]);
     const { playGame } = usePlayGame();
 
     useKeyboardMappings(
-        (keyMapping: KeyboardMappings) => {
+        async (keyMapping: KeyboardMappings) => {
             if (keyMapping.editor.toggleEditor?.value) {
+                console.log("switch editor");
+
                 playGame();
             } else if (keyMapping.editor.copyWidget?.value) {
                 if (selectedWidgets.length > 0) {
@@ -42,6 +51,8 @@ export default () => {
                 setNextCamera();
             } else if (keyMapping.editor.prevCamera?.value) {
                 setPrevCamera();
+            } else if (keyMapping.editor.saveScene?.value) {
+                await saveScene({ widgets, widgetsDictionary });
             }
         },
         [

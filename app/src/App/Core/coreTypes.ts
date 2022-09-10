@@ -20,6 +20,7 @@ export type KeyboardKeysItem = {
     code: string;
     ctrlKey: boolean;
     shiftKey: boolean;
+    preventDefault: boolean;
 };
 
 export type KeyboardMappings = KeyboardApp<KeyMappings>;

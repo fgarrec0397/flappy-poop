@@ -10,12 +10,15 @@ export type CamerasProps = EditableWidget;
 type OwnProps = CamerasProps;
 
 const Cameras: FC<OwnProps> = () => {
-    const { addCamera } = useCameras();
+    const { addCamera, removeCamera } = useCameras();
     const cameraRef = useRef(null!);
 
     useEffect(() => {
-        // TODO -- addCamera trigger an infinite loop when is in deps arrays
-        addCamera(cameraRef);
+        const newCamera = addCamera(cameraRef);
+
+        return () => {
+            removeCamera(newCamera.id);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

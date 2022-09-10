@@ -50,5 +50,11 @@ export default {
             ctrlKey: true,
             shiftKey: false,
         },
+        {
+            name: "saveScene",
+            code: "KeyS",
+            ctrlKey: true,
+            shiftKey: true,
+        },
     ],
 } as KeyboardKeys;
