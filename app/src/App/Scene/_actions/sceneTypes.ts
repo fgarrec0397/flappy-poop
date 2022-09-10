@@ -4,7 +4,6 @@ import {
     WidgetsDictionary,
 } from "@app/Widgets/_actions/widgetsTypes";
 import { Camera } from "@react-three/fiber";
-import { Dictionary } from "@reduxjs/toolkit";
 import { MutableRefObject } from "react";
 
 export type SceneCameraRef = MutableRefObject<
@@ -20,7 +19,7 @@ export type SceneCamera = {
     cameraRef: SceneCameraRef;
 };
 
-export type SceneCameraDictionary = Dictionary<SceneCamera>;
+// export type SceneCameraDictionary = SceneCamera[]; // TODO - Switch this to an array
 
 /**
  * Scene Services Parameters

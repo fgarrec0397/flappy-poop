@@ -8,10 +8,7 @@ export default () => {
 
     const add = useCallback(
         (camera: SceneCamera) => {
-            setCameras((prevCameras) => ({
-                ...prevCameras,
-                [camera.id]: { ...camera },
-            }));
+            setCameras((prevCameras) => [...prevCameras, { ...camera }]);
         },
         [setCameras]
     );
@@ -19,7 +16,8 @@ export default () => {
     const update = useCallback(
         (camera: SceneCamera) => {
             setCameras((prevCameras) => {
-                prevCameras[camera.id] = camera;
+                const cameraIndex = prevCameras.findIndex((x) => x.id === camera.id);
+                prevCameras[cameraIndex] = camera;
 
                 return { ...prevCameras };
             });
@@ -37,9 +35,7 @@ export default () => {
     const remove = useCallback(
         (id: string) => {
             setCameras((prevCameras) => {
-                delete prevCameras[id];
-
-                return prevCameras;
+                return prevCameras.filter((x) => x.id !== id);
             });
         },
         [setCameras]

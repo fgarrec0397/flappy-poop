@@ -1,16 +1,16 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from "react";
 
-import { SceneCameraDictionary } from "../../sceneTypes";
+import { SceneCamera } from "../../sceneTypes";
 
 export interface CamerasContextModel {
-    cameras: SceneCameraDictionary;
-    setCameras: (() => void) | Dispatch<SetStateAction<SceneCameraDictionary>>;
+    cameras: SceneCamera[];
+    setCameras: (() => void) | Dispatch<SetStateAction<SceneCamera[]>>;
     currentCameraId: string | null;
     setCurrentCameraId: (() => void) | Dispatch<SetStateAction<string | null>>;
 }
 
 export const defaultContext: CamerasContextModel = {
-    cameras: {},
+    cameras: [],
     setCameras: () => {},
     currentCameraId: null,
     setCurrentCameraId: () => {},
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const CamerasContextProvider: FC<Props> = ({ children }) => {
-    const [cameras, setCameras] = useState<SceneCameraDictionary>({});
+    const [cameras, setCameras] = useState<SceneCamera[]>([]);
     const [currentCameraId, setCurrentCameraId] = useState<string | null>(null);
 
     const providerValue: CamerasContextModel = {
