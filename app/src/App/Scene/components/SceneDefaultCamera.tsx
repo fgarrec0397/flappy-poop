@@ -20,12 +20,13 @@ const EditorCamera: FC = () => {
 
     useEffect(() => {
         const newCamera = addCamera(cameraRef);
-        console.log("default camera added");
 
         setCurrentCamera(newCamera.id);
+        console.log("add and set default camera");
 
         return () => {
-            console.log("default camera deleted");
+            console.log("remove default camera");
+
             removeCamera(newCamera.id);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

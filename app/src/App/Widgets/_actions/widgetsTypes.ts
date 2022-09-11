@@ -11,6 +11,7 @@ export enum FieldType {
     Text = "Text",
     Number = "Number",
     Select = "Select",
+    Checkbox = "Checkbox",
 }
 
 /**
@@ -23,7 +24,7 @@ export interface SelectOptions {
 
 type WidgetAdditionnalOptions = WidgetSelectionOptions;
 
-export type WidgetOptionDefaultValue = string | number; // TODO - Readjust that in order to match the field type
+export type WidgetOptionDefaultValue = string | number | boolean; // TODO - Readjust that in order to match the field type
 
 export interface WidgetSelectionOptions {
     selectOptions?: SelectOptions[];

@@ -11,9 +11,6 @@ export default () => {
 
     const addCamera = useCallback(
         (cameraRef: SceneCameraRef) => {
-            console.log("adding a camera...");
-            console.log(Object.keys(cameras).length, "Object.keys(cameras).length");
-
             const id = uidGenerator();
             const order = Object.keys(cameras).length;
             const camera: SceneCamera = {
@@ -48,36 +45,28 @@ export default () => {
         [selectCamera, setThree, getCameraById]
     );
 
-    const getCameraIdByOrder = useCallback(
-        (index: number) => {
-            return cameras.find((x) => x?.order === index)?.id;
+    const getCameraIndexById = useCallback(
+        (id: string) => {
+            return cameras.findIndex((x) => x.id === id);
         },
         [cameras]
     );
 
     const setNextCamera = useCallback(() => {
-        const currentCameraIndex = getCameraById(currentCameraId!)?.order;
+        const currentCameraIndex = getCameraIndexById(currentCameraId!);
 
-        if (currentCameraIndex !== undefined && currentCameraIndex >= 0) {
-            const nextHistoryItemId = getCameraIdByOrder(currentCameraIndex + 1);
-
-            if (nextHistoryItemId) {
-                setCurrentCamera(nextHistoryItemId);
-            }
+        if (currentCameraId !== null && currentCameraIndex + 1 <= cameras.length - 1) {
+            setCurrentCamera(cameras[currentCameraIndex + 1].id);
         }
-    }, [currentCameraId, getCameraById, getCameraIdByOrder, setCurrentCamera]);
+    }, [cameras, currentCameraId, getCameraIndexById, setCurrentCamera]);
 
     const setPrevCamera = useCallback(() => {
-        const currentCameraIndex = getCameraById(currentCameraId!)?.order;
+        const currentCameraIndex = getCameraIndexById(currentCameraId!);
 
-        if (currentCameraIndex !== undefined && currentCameraIndex >= 0) {
-            const prevHistoryItemId = getCameraIdByOrder(currentCameraIndex - 1);
-
-            if (prevHistoryItemId) {
-                setCurrentCamera(prevHistoryItemId);
-            }
+        if (currentCameraId !== null && currentCameraIndex && currentCameraIndex >= 0) {
+            setCurrentCamera(cameras[currentCameraIndex - 1].id);
         }
-    }, [currentCameraId, getCameraById, getCameraIdByOrder, setCurrentCamera]);
+    }, [cameras, currentCameraId, getCameraIndexById, setCurrentCamera]);
 
     const removeCamera = useCallback(
         (id: string) => {
@@ -92,7 +81,7 @@ export default () => {
         setCurrentCamera,
         setNextCamera,
         setPrevCamera,
-        getCameraIdByOrder,
+        getCameraIndexById,
         removeCamera,
     };
 };

@@ -1,15 +1,15 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
-import { useHelper } from "@react-three/drei";
+import useEditorHelper from "@app/Editor/_actions/hooks/useEditorHelper";
 import useCameras from "@scene/_actions/hooks/useCameras";
 import { FieldType, WidgetModule } from "@widgets/_actions/widgetsTypes";
 import { FC, useEffect, useRef } from "react";
 import { CameraHelper } from "three";
 
-export type CamerasProps = EditableWidget;
+export type CamerasProps = EditableWidget & {
+    translateXOnPlay: boolean;
+};
 
-type OwnProps = CamerasProps;
-
-const Cameras: FC<OwnProps> = () => {
+const Cameras: FC<CamerasProps> = () => {
     const { addCamera, removeCamera } = useCameras();
     const cameraRef = useRef(null!);
 
@@ -22,7 +22,7 @@ const Cameras: FC<OwnProps> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useHelper(cameraRef, CameraHelper);
+    useEditorHelper(cameraRef, CameraHelper);
 
     return <perspectiveCamera ref={cameraRef} />;
 };
@@ -42,42 +42,10 @@ export const widget: WidgetModule<CamerasProps> = {
         name: "Cameras",
         options: [
             {
-                name: "cameraType",
-                displayName: "Type of Camera",
-                fieldType: FieldType.Select,
-                selectOptions: [
-                    {
-                        value: "perspective",
-                        name: "Perspective",
-                    },
-                    {
-                        value: "orthographic",
-                        name: "Orthographic",
-                    },
-                ],
-                defaultValue: "perspective",
-            },
-            {
-                name: "test",
-                displayName: "Test Multiple options",
-                fieldType: FieldType.Select,
-                selectOptions: [
-                    {
-                        value: "Test1",
-                        name: "Test1",
-                    },
-                    {
-                        value: "Test2",
-                        name: "Test2",
-                    },
-                ],
-                defaultValue: "perspective",
-            },
-            {
-                name: "fieldOfView",
-                displayName: "Field of View",
-                fieldType: FieldType.Number,
-                defaultValue: 50,
+                name: "translateXOnPlay",
+                displayName: "Translate X on play",
+                fieldType: FieldType.Checkbox,
+                defaultValue: true,
             },
         ],
     },

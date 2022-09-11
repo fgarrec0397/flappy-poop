@@ -18,7 +18,14 @@ export type MapPropertiesToNonNullable<Type> = {
 export type SetOptionalPropertyFrom<Type, Key extends keyof Type> = Omit<Type, Key> &
     Partial<Pick<Type, Key>>;
 
-/** Create a key pair object type */
+/**
+ * Create a key pair object type
+ */
 export type Dictionary<Type> = {
     [key: string]: Type;
 };
+
+/**
+ * Type representing falsy values in TypeScript: `false | "" | 0 | null | undefined`
+ */
+export type Falsy = false | "" | 0 | null | undefined;
