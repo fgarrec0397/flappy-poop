@@ -52,10 +52,7 @@ export default () => {
     );
 
     const setNextCamera = useCallback(() => {
-        console.log(currentCameraId, "currentCameraId");
-
         const currentCameraIndex = getCameraIndexById(currentCameraId!);
-        console.log(currentCameraIndex, "currentCameraIndex next");
 
         if (currentCameraId !== null && currentCameraIndex + 1 <= cameras.length - 1) {
             setCurrentCamera(cameras[currentCameraIndex + 1].id);
@@ -64,7 +61,6 @@ export default () => {
 
     const setPrevCamera = useCallback(() => {
         const currentCameraIndex = getCameraIndexById(currentCameraId!);
-        console.log(currentCameraIndex, "currentCameraIndex prev");
 
         if (currentCameraId !== null && currentCameraIndex && currentCameraIndex >= 0) {
             setCurrentCamera(cameras[currentCameraIndex - 1].id);
