@@ -3,24 +3,28 @@ import useEditorHelper from "@app/Editor/_actions/hooks/useEditorHelper";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import useCreateCamera from "@app/Scene/_actions/hooks/useCreateCamera";
 import { FieldType, WidgetModule } from "@widgets/_actions/widgetsTypes";
-import { FC } from "react";
-import { CameraHelper } from "three";
+import { forwardRef, MutableRefObject, Ref } from "react";
+import { CameraHelper, Object3D, PerspectiveCamera } from "three";
 
 export type CamerasProps = EditableWidget & {
     translateXOnPlay: boolean;
 };
 
-const Cameras: FC<CamerasProps> = () => {
-    const { camera, cameraRef } = useCreateCamera("widgetCamera");
+const Cameras = forwardRef<PerspectiveCamera, CamerasProps>(({ translateXOnPlay = true }, ref) => {
+    const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
 
-    useEditorHelper(cameraRef, CameraHelper); // TODO - try to hide this behind the scene
+    useEditorHelper(cameraRef as MutableRefObject<Object3D | null>, CameraHelper); // TODO - try to hide this behind the scene
 
     useGameUpdate(() => {
-        camera.position.x += 0.01;
+        if (translateXOnPlay) {
+            camera.position.x += 0.01;
+        }
     });
 
-    return <perspectiveCamera ref={cameraRef} />;
-};
+    return <perspectiveCamera ref={cameraRef as Ref<PerspectiveCamera>} />;
+});
+
+Cameras.displayName = "Cameras";
 
 export const widget: WidgetModule<CamerasProps> = {
     component: Cameras,

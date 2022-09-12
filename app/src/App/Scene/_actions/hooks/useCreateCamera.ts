@@ -1,16 +1,21 @@
+import useForwardedRef from "@app/Common/hooks/useForwardedRef";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { ForwardedRef, MutableRefObject, useEffect } from "react";
 import { PerspectiveCamera } from "three";
 
+import { SceneCameraRef } from "../sceneTypes";
 import useCameras from "./useCameras";
 
 /**
  * Create a new camera and add it to the CamerasContext.
  */
-export default (cameraName: string) => {
+export default (
+    cameraName: string,
+    ref?: MutableRefObject<PerspectiveCamera> | ForwardedRef<PerspectiveCamera>
+) => {
     const camera = useThree((state) => state.camera);
     const { addCamera, removeCamera, setCurrentCamera } = useCameras();
-    const cameraRef = useRef<PerspectiveCamera>(null!);
+    const cameraRef = useForwardedRef(ref) as SceneCameraRef;
 
     useEffect(() => {
         const newCamera = addCamera(cameraRef, cameraName);
