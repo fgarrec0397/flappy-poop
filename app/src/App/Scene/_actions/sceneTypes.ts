@@ -15,11 +15,9 @@ export type SceneCameraRef = MutableRefObject<
 
 export type SceneCamera = {
     id: string;
-    order: number;
+    name: string;
     cameraRef: SceneCameraRef;
 };
-
-// export type SceneCameraDictionary = SceneCamera[]; // TODO - Switch this to an array
 
 /**
  * Scene Services Parameters

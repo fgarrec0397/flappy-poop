@@ -1,32 +1,26 @@
 import useIsEditing from "@app/Editor/_actions/hooks/useIsEditing";
 import useIsEditor from "@app/Editor/_actions/hooks/useIsEditor";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import useCameras from "@scene/_actions/hooks/useCameras";
 import { FC, useEffect, useRef, useState } from "react";
-import { Vector3 } from "three";
+import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from "three";
 
 import TransformControls from "./TransformControls";
 
 const EditorCamera: FC = () => {
-    const { addCamera, setCurrentCamera, removeCamera } = useCameras();
+    const { addCamera, removeCamera, setCurrentCamera } = useCameras();
     const [hasEditorOpened, setHasEditorOpened] = useState(false);
     const { isEditor } = useIsEditor();
     const { isEditing } = useIsEditing();
-    const { camera } = useThree((state) => ({
-        camera: state.camera,
-    }));
-    const cameraRef = useRef(camera);
+    const cameraRef = useRef<PerspectiveCameraType>(null!);
 
     useEffect(() => {
-        const newCamera = addCamera(cameraRef);
+        const newCamera = addCamera(cameraRef, "editorCamera");
 
         setCurrentCamera(newCamera.id);
-        console.log("add and set default camera");
 
         return () => {
-            console.log("remove default camera");
-
             removeCamera(newCamera.id);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,21 +34,21 @@ const EditorCamera: FC = () => {
         }
     });
 
-    return (
-        <>
-            <PerspectiveCamera ref={cameraRef} />
-            {isEditor && (
-                <>
-                    <TransformControls />
-                    <OrbitControls
-                        enablePan={!isEditing}
-                        enableZoom={!isEditing}
-                        enableRotate={!isEditing}
-                    />
-                </>
-            )}
-        </>
-    );
+    if (isEditor) {
+        return (
+            <>
+                <PerspectiveCamera ref={cameraRef} />
+                <TransformControls />
+                <OrbitControls
+                    enablePan={!isEditing}
+                    enableZoom={!isEditing}
+                    enableRotate={!isEditing}
+                />
+            </>
+        );
+    }
+
+    return null;
 };
 
 export default EditorCamera;

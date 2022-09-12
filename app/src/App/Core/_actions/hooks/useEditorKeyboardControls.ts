@@ -26,8 +26,6 @@ export default () => {
     useKeyboardMappings(
         async (keyMapping: KeyboardMappings) => {
             if (keyMapping.editor.toggleEditor?.value) {
-                console.log("switch editor");
-
                 playGame();
             } else if (keyMapping.editor.copyWidget?.value) {
                 if (selectedWidgets.length > 0) {

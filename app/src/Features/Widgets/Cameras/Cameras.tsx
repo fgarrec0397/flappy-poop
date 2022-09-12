@@ -1,28 +1,42 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import useEditorHelper from "@app/Editor/_actions/hooks/useEditorHelper";
+import useGameInit from "@app/Game/_actions/hooks/useGameInit";
+import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
+import { useThree } from "@react-three/fiber";
 import useCameras from "@scene/_actions/hooks/useCameras";
 import { FieldType, WidgetModule } from "@widgets/_actions/widgetsTypes";
-import { FC, useEffect, useRef } from "react";
-import { CameraHelper } from "three";
+import { FC, useRef } from "react";
+import { CameraHelper, PerspectiveCamera } from "three";
 
 export type CamerasProps = EditableWidget & {
     translateXOnPlay: boolean;
 };
 
 const Cameras: FC<CamerasProps> = () => {
-    const { addCamera, removeCamera } = useCameras();
-    const cameraRef = useRef(null!);
+    const camera = useThree((state) => state.camera);
 
-    useEffect(() => {
-        const newCamera = addCamera(cameraRef);
+    const { addCamera, removeCamera, setCurrentCamera } = useCameras();
+    const cameraRef = useRef<PerspectiveCamera>(null!);
 
-        return () => {
-            removeCamera(newCamera.id);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    useGameInit(
+        () => {
+            const newCamera = addCamera(cameraRef, "widgetCamera");
+            setCurrentCamera(newCamera.id);
 
-    useEditorHelper(cameraRef, CameraHelper);
+            return newCamera;
+        },
+        (newCamera) => {
+            if (newCamera?.id) {
+                removeCamera(newCamera?.id);
+            }
+        }
+    );
+
+    useEditorHelper(cameraRef, CameraHelper); // TODO - try to hide this behind the scene
+
+    useGameUpdate(() => {
+        camera.position.x += 0.01;
+    });
 
     return <perspectiveCamera ref={cameraRef} />;
 };
