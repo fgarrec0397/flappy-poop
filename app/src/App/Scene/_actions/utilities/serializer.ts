@@ -14,7 +14,6 @@ export const serializeWidgets = (widgets: WidgetObjects) => {
     for (const key in widgets) {
         const widget: SetOptionalPropertyFrom<WidgetSceneObject, "component"> = { ...widgets[key] };
         let editorOptions: WidgetEditorOptions | undefined;
-        // serializedWidgets[key] = widget;
         if (widget.editorOptions) {
             editorOptions = serializeEditorOptions(widget.editorOptions);
         }
@@ -29,12 +28,13 @@ export const serializeWidgets = (widgets: WidgetObjects) => {
     return serializedWidgets;
 };
 
-export const serializeEditorOptions = ({ meshHolder }: WidgetEditorOptions) => {
+export const serializeEditorOptions = ({ meshHolder, helper }: WidgetEditorOptions) => {
     if (meshHolder) {
         const serializedMeshHolder = serialize(meshHolder as JSX.Element);
 
         return {
             meshHolder: serializedMeshHolder,
+            helper,
         };
     }
 };

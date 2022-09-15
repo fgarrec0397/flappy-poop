@@ -19,7 +19,7 @@ type Helper = Object3D & {
 
 export default <T extends Constructor>(
     object3D: MutableRefObject<Object3D | null>,
-    helperConstructor: T,
+    helperConstructor?: T,
     additionnalCondition = true
 ): MutableRefObject<Helper | undefined> => {
     const { isEditor } = useIsEditor();

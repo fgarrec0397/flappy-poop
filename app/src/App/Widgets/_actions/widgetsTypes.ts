@@ -4,6 +4,8 @@ import { FC, ReactNode } from "react";
 import { AnyAction, Reducer } from "redux";
 import { Object3D } from "three";
 
+import { HelpersTypes } from "./widgetsConstants";
+
 /**
  * Allowed Fieldtypes
  */
@@ -58,6 +60,7 @@ export interface WidgetDefinition {
  * Widget options to set in the editor
  */
 export type WidgetEditorOptions = {
+    helper?: HelpersTypes;
     meshHolder?: ReactNode | Object3D;
 };
 
