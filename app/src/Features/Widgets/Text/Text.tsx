@@ -3,7 +3,7 @@ import { Html } from "@react-three/drei";
 import { FC } from "react";
 
 import { EditableWidget } from "../../../App/Editor/_actions/editorTypes";
-import { FieldType, WidgetModule } from "../../../App/Widgets/_actions/widgetsTypes";
+import { FieldType } from "../../../App/Widgets/_actions/widgetsTypes";
 import textReducer from "./state/textReducer";
 
 export interface TextProps extends EditableWidget {
@@ -12,7 +12,7 @@ export interface TextProps extends EditableWidget {
 
 type OwnProps = TextProps;
 
-const Text = createWidget<OwnProps>(({ text }) => {
+const Text: FC<OwnProps> = ({ text }) => {
     return (
         <mesh>
             <Html>
@@ -22,9 +22,9 @@ const Text = createWidget<OwnProps>(({ text }) => {
             </Html>
         </mesh>
     );
-});
+};
 
-export const widget: WidgetModule<TextProps> = {
+export const widget = createWidget({
     component: Text,
     reducer: textReducer,
     widgetDefinition: {
@@ -38,4 +38,4 @@ export const widget: WidgetModule<TextProps> = {
             },
         ],
     },
-};
+});

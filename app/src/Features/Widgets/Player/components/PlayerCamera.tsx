@@ -72,7 +72,7 @@ const PlayerCamera: FC<PlayerCameraProps> = ({ initialPlayerPos, ...props }) => 
     // }));
 
     const { isEditor } = useIsEditor();
-    const { setCamera } = useCameras();
+    // const { setCamera } = useCameras();
     const { forward, backward, left, right, jump } = usePlayerControls();
     const { camera } = useThree();
 

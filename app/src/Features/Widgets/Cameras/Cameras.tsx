@@ -3,32 +3,31 @@ import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import useCreateCamera from "@app/Scene/_actions/hooks/useCreateCamera";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { HelpersTypes } from "@app/Widgets/_actions/widgetsConstants";
-import { FieldType, WidgetModule } from "@widgets/_actions/widgetsTypes";
-import { Ref } from "react";
+import { FieldType } from "@widgets/_actions/widgetsTypes";
+import { FC, Ref } from "react";
 import { PerspectiveCamera } from "three";
 
 export type CamerasProps = EditableWidget & {
     translateXOnPlay: boolean;
 };
 
-const Cameras = createWidget<CamerasProps, PerspectiveCamera>(
-    ({ translateXOnPlay = true }, ref) => {
-        const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
+const Cameras: FC<CamerasProps> = ({ translateXOnPlay = true }, ref) => {
+    const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
 
-        useGameUpdate(() => {
-            if (translateXOnPlay) {
-                camera.position.x += 0.01;
-            }
-        });
+    useGameUpdate(() => {
+        if (translateXOnPlay) {
+            camera.position.x += 0.01;
+        }
+    });
 
-        return <perspectiveCamera ref={cameraRef as Ref<PerspectiveCamera>} />;
-    }
-);
+    return <perspectiveCamera ref={cameraRef as Ref<PerspectiveCamera>} />;
+};
 
 Cameras.displayName = "Cameras";
 
-export const widget: WidgetModule<CamerasProps> = {
+export const widget = createWidget<CamerasProps, PerspectiveCamera>({
     component: Cameras,
+    hasRef: true,
     reducer: null,
     editorOptions: {
         helper: HelpersTypes.CameraHelper,
@@ -50,4 +49,4 @@ export const widget: WidgetModule<CamerasProps> = {
             },
         ],
     },
-};
+});

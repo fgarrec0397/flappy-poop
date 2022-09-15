@@ -18,7 +18,7 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
     const [hovered, setHover] = useState(false);
     const { widgetsDictionary, getWidgetDictionaryFromWidget } = useWidgets();
     const { isEditor } = useIsEditor();
-    const { component, id, editorOptions } = widget;
+    const { component, id, editorOptions, hasRef } = widget;
     const name = getWidgetName(widget);
     const Component = component;
 
@@ -48,6 +48,12 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
 
     const widgetProperties = getWidgetDictionaryFromWidget(id!)?.properties;
 
+    const ref = hasRef
+        ? {
+              ref: componentRef,
+          }
+        : {};
+
     return (
         <mesh
             name={name}
@@ -57,7 +63,7 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
         >
             {meshHolder}
 
-            <Component {...componentProps()} hovered={hovered} ref={componentRef} />
+            <Component {...componentProps()} hovered={hovered} {...ref} />
         </mesh>
     );
 };
