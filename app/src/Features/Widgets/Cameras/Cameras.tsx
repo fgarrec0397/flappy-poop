@@ -11,7 +11,7 @@ export type CamerasProps = EditableWidget & {
     translateXOnPlay: boolean;
 };
 
-const Cameras = createWidget<PerspectiveCamera, CamerasProps>(
+const Cameras = createWidget<CamerasProps, PerspectiveCamera>(
     ({ translateXOnPlay = true }, ref) => {
         const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
 

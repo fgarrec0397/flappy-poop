@@ -1,3 +1,4 @@
+import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { Html } from "@react-three/drei";
 import { FC } from "react";
 
@@ -11,7 +12,7 @@ export interface TextProps extends EditableWidget {
 
 type OwnProps = TextProps;
 
-const Text: FC<OwnProps> = ({ text }) => {
+const Text = createWidget<OwnProps>(({ text }) => {
     return (
         <mesh>
             <Html>
@@ -21,7 +22,7 @@ const Text: FC<OwnProps> = ({ text }) => {
             </Html>
         </mesh>
     );
-};
+});
 
 export const widget: WidgetModule<TextProps> = {
     component: Text,

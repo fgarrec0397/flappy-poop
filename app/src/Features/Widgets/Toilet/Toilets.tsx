@@ -1,4 +1,5 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
+import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { useGLTF } from "@react-three/drei";
 import { WidgetModule } from "@widgets/_actions/widgetsTypes";
 import { FC } from "react";
@@ -26,7 +27,7 @@ export interface ToiletsProps extends EditableWidget {
 
 type OwnProps = ToiletsProps;
 
-const Toilets: FC<OwnProps> = () => {
+const Toilets = createWidget<OwnProps>(() => {
     const { nodes, materials } = useGLTF("/assets/Toilet.gltf") as GLTFResult;
 
     return (
@@ -48,7 +49,7 @@ const Toilets: FC<OwnProps> = () => {
             />
         </group>
     );
-};
+});
 
 export const widget: WidgetModule<ToiletsProps> = {
     component: Toilets,

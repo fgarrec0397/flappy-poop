@@ -1,13 +1,13 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
+import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { RigidBody } from "@react-three/rapier";
 import { WidgetModule } from "@widgets/_actions/widgetsTypes";
-import { FC } from "react";
 
 export type TerrainProps = EditableWidget;
 
 type OwnProps = TerrainProps;
 
-const Terrain: FC<OwnProps> = () => {
+const Terrain = createWidget<OwnProps>(() => {
     return (
         <RigidBody>
             <mesh>
@@ -16,7 +16,7 @@ const Terrain: FC<OwnProps> = () => {
             </mesh>
         </RigidBody>
     );
-};
+});
 
 export const widget: WidgetModule<TerrainProps> = {
     component: Terrain,

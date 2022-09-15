@@ -1,5 +1,5 @@
-import { forwardRef } from "react";
+import { FC, forwardRef, ForwardRefRenderFunction } from "react";
 
-export default <RefType, PropsType>(render: React.ForwardRefRenderFunction<RefType, PropsType>) => {
-    return forwardRef(render);
+export default <PropsType, RefType = null>(component: FC<PropsType>) => {
+    return forwardRef(component as ForwardRefRenderFunction<RefType, PropsType>);
 };

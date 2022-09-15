@@ -1,5 +1,6 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import useIsEditor from "@app/Editor/_actions/hooks/useIsEditor";
+import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { useHelper } from "@react-three/drei";
 import { WidgetModule } from "@widgets/_actions/widgetsTypes";
 import { FC, useRef } from "react";
@@ -11,8 +12,7 @@ export type PlayerProps = EditableWidget;
 
 type OwnProps = PlayerProps;
 
-const Player: FC<OwnProps> = () => {
-    const ref = useRef(null);
+const Player = createWidget<OwnProps, null>((props, ref) => {
     const { isEditor } = useIsEditor();
 
     useHelper(isEditor && ref, BoxHelper, "red");
@@ -24,7 +24,7 @@ const Player: FC<OwnProps> = () => {
             {!isEditor && <PlayerCamera initialPlayerPos={[0, 0, 0]} />}
         </mesh>
     );
-};
+});
 
 export const widget: WidgetModule<PlayerProps> = {
     component: Player,
