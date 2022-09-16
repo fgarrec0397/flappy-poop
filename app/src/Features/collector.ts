@@ -1,18 +1,19 @@
-import cameras from "@features/Widgets/Cameras";
-import geometryForms from "@features/Widgets/GeometryForms";
-import { GeometryFormsProps } from "@features/Widgets/GeometryForms/GeometryForms";
-import player from "@features/Widgets/Player";
-import { PlayerProps } from "@features/Widgets/Player/Player";
-import terrain from "@features/Widgets/Terrain";
-import text from "@features/Widgets/Text";
-import { TextState } from "@features/Widgets/Text/state/textReducer";
-import { TextProps } from "@features/Widgets/Text/Text";
-import toilets from "@features/Widgets/Toilet";
+import cameras, { CamerasProps } from "@features/Widgets/Cameras";
+import geometryForms, { GeometryFormsProps } from "@features/Widgets/GeometryForms";
+import player, { PlayerProps } from "@features/Widgets/Player";
+import terrain, { TerrainProps } from "@features/Widgets/Terrain";
+import text, { TextProps, TextState } from "@features/Widgets/Text";
+import toilets, { ToiletsProps } from "@features/Widgets/Toilet";
 
 /**
  * Add your Widgets Props here as union types
  */
-export type FeaturesWidgetsProps = GeometryFormsProps & TextProps & PlayerProps;
+export type FeaturesWidgetsProps = GeometryFormsProps &
+    TextProps &
+    PlayerProps &
+    CamerasProps &
+    TerrainProps &
+    ToiletsProps;
 
 /**
  * Add your Widgets reducers state here
@@ -23,7 +24,7 @@ export interface FeaturesState {
 
 /**
  * Add your Widgets reducers here.
- * They will be exported and combined to the main reducer
+ * They will be imported and combined to the main reducer
  */
 export const preparedReducer = {
     textState: text.reducer,
