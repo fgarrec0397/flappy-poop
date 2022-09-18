@@ -3,7 +3,7 @@ import geometryForms, { GeometryFormsProps } from "@features/Widgets/GeometryFor
 import player, { PlayerProps } from "@features/Widgets/Player";
 import terrain, { TerrainProps } from "@features/Widgets/Terrain";
 import text, { TextProps, TextState } from "@features/Widgets/Text";
-import toilets, { ToiletsProps } from "@features/Widgets/Toilet";
+import toilets, { ToiletsProps } from "@features/Widgets/Toilets";
 
 /**
  * Add your Widgets Props here as union types

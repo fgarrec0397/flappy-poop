@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/named
+import { GLTF } from "three-stdlib";
+
 /**
  * Take an interface as parameter and return all children types as union types;
  */
@@ -29,3 +32,15 @@ export type Dictionary<Type> = {
  * Type representing falsy values in TypeScript: `false | "" | 0 | null | undefined`
  */
 export type Falsy = false | "" | 0 | null | undefined;
+
+// <-------------------- THREEJS -------------------->
+
+/**
+ * A common ThreeJS GLTF result where T is an extension of the result
+ */
+export type GLTFResult<T> = GLTF & T;
+
+/**
+ * An array representation of a Vector3 type
+ */
+export type Vector3Array = [number, number, number];

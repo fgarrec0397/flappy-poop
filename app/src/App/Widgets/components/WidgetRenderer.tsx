@@ -22,7 +22,7 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
     const name = getWidgetName(widget);
     const Component = component;
 
-    const helper = resolveHelper(widget.editorOptions?.helper);
+    const helper = resolveHelper(editorOptions?.helper);
 
     useEditorHelper(helper && (componentRef as MutableRefObject<Object3D | null>), helper);
 
@@ -48,11 +48,12 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
 
     const widgetProperties = getWidgetDictionaryFromWidget(id!)?.properties;
 
-    const ref = hasRef
-        ? {
-              ref: componentRef,
-          }
-        : {};
+    const ref =
+        hasRef || editorOptions?.helper
+            ? {
+                  ref: componentRef,
+              }
+            : {};
 
     return (
         <mesh
