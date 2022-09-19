@@ -1,5 +1,5 @@
-import { Dictionary, UnionOfProperties } from "@common/commonTypes";
-import { FeaturesState, FeaturesWidgetsProps } from "@features/collector";
+import { Dictionary } from "@common/commonTypes";
+import { FeaturesWidgetsProps } from "@features/collector";
 import { FC, ForwardRefExoticComponent, PropsWithoutRef, ReactNode, RefAttributes } from "react";
 import { AnyAction, Reducer } from "redux";
 import { Object3D } from "three";
@@ -64,11 +64,6 @@ export type WidgetEditorOptions = {
     meshHolder?: ReactNode | Object3D;
 };
 
-/**
- * All Features reducers destructured as union types
- */
-type FeaturesUnionsTypes = UnionOfProperties<FeaturesState>;
-
 export type WidgetComponent<Props, Ref> =
     | FC<Props>
     | ForwardRefExoticComponent<PropsWithoutRef<Props> & RefAttributes<Ref>>;
@@ -76,10 +71,10 @@ export type WidgetComponent<Props, Ref> =
 /**
  * Widget object that is exported from all widgets objects
  */
-export interface WidgetModule<Props = FeaturesWidgetsProps, Ref = null> {
+export interface WidgetModule<Props = FeaturesWidgetsProps, Ref = null, ReducerType = null> {
     component: WidgetComponent<Props, Ref>;
     hasRef?: true;
-    reducer: Reducer<FeaturesUnionsTypes, AnyAction> | null;
+    reducer: Reducer<ReducerType, AnyAction> | null;
     editorOptions?: WidgetEditorOptions;
     widgetDefinition: WidgetDefinition;
 }

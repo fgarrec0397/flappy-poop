@@ -4,7 +4,7 @@ import { useGLTF, useIntersect } from "@react-three/drei";
 import { FC } from "react";
 import { Mesh } from "three";
 
-import { ToiletModel, ToiletModelGLTFResult } from "../toiletsTypes";
+import { ToiletModel, ToiletModelGLTFResult } from "../_actions/toiletsTypes";
 
 export type ToiletColumnProps = {
     toilet: ToiletModel;

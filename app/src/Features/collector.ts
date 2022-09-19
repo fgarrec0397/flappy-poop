@@ -3,7 +3,7 @@ import geometryForms, { GeometryFormsProps } from "@features/Widgets/GeometryFor
 import player, { PlayerProps } from "@features/Widgets/Player";
 import terrain, { TerrainProps } from "@features/Widgets/Terrain";
 import text, { TextProps, TextState } from "@features/Widgets/Text";
-import toilets, { ToiletsProps } from "@features/Widgets/Toilets";
+import toilets, { ToiletsProps, ToiletsState } from "@features/Widgets/Toilets";
 
 /**
  * Add your Widgets Props here as union types
@@ -20,6 +20,7 @@ export type FeaturesWidgetsProps = GeometryFormsProps &
  */
 export interface FeaturesState {
     textState: TextState;
+    toiletsState: ToiletsState;
 }
 
 /**
@@ -28,6 +29,7 @@ export interface FeaturesState {
  */
 export const preparedReducer = {
     textState: text.reducer,
+    toiletsState: toilets.reducer,
 };
 
 export default [geometryForms, terrain, text, player, cameras, toilets];
