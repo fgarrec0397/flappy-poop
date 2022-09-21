@@ -3,11 +3,14 @@ import { useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 
 import useCamerasService from "../_data/hooks/useCamerasService";
+import { DefaultCameras } from "../sceneConstants";
 import { SceneCamera, SceneCameraRef } from "../sceneTypes";
 
 export default () => {
     const setThree = useThree(({ set }) => set);
     const { add, remove, cameras, selectCamera, currentCameraId } = useCamerasService();
+    const gameCameras = cameras.filter((x) => x.name !== DefaultCameras.EditorCamera);
+    const editorCameras = cameras.filter((x) => x.name === DefaultCameras.EditorCamera);
 
     const addCamera = useCallback(
         (cameraRef: SceneCameraRef, name: string) => {
@@ -76,6 +79,8 @@ export default () => {
 
     return {
         cameras,
+        gameCameras,
+        editorCameras,
         addCamera,
         setCurrentCamera,
         setNextCamera,

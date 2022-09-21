@@ -1,9 +1,10 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { useGLTF, useIntersect } from "@react-three/drei";
-import { FC } from "react";
-import { Mesh } from "three";
+import { FC, useEffect, useRef } from "react";
+import { Group, Mesh, Vector3 } from "three";
 
+import useToilets from "../_actions/hooks/useToilets";
 import { ToiletModel, ToiletModelGLTFResult } from "../_actions/toiletsTypes";
 
 export type ToiletColumnProps = {
@@ -15,11 +16,27 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet, index }) => {
     const { nodes, materials } = useGLTF("/assets/Toilet.gltf") as ToiletModelGLTFResult;
     const groupScale: Vector3Array = [0.05, 0.05, 0.05];
     const objectSize = useObjectSize(nodes.Box001, groupScale);
-    const ref = useIntersect<Mesh>((visible) => console.log("object is visible", visible));
+    const { setIsVisible } = useToilets();
+    const ref = useIntersect<Mesh>((visible) => {
+        setIsVisible(toilet.id, toilet.toiletsChunkId, visible);
+    });
+    const groupRef = useRef<Group>(null!);
+    // const groupSize = useObjectSize(groupRef.current, groupScale);
+    // console.log(groupSize, "groupSize");
+
+    useEffect(() => {
+        const scale = new Vector3();
+        groupRef.current.getWorldScale(scale);
+        console.log(scale, "scale");
+        console.log(objectSize, "objectSize");
+
+        // console.log(groupRef.current.getWorldScale(), "groupRef");
+        // console.log(nodes.Box001, "nodes.Box001");
+    }, [objectSize]);
 
     return (
         <group position={[objectSize.x + index * 16, toilet.positionY, 0]}>
-            <group scale={groupScale} dispose={null}>
+            <group ref={groupRef} scale={groupScale} dispose={null}>
                 <mesh
                     ref={ref}
                     geometry={nodes.Cylinder001.geometry}

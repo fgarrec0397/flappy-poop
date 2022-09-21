@@ -1,13 +1,10 @@
-import { useAppSelector } from "@app/Core/store";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
-import useGameInit from "@app/Game/_actions/hooks/useGameInit";
-import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import { FC, useState } from "react";
+import { FC, useEffect } from "react";
 
 import toiletsReducer from "./_actions/_data/state/toiletsReducer";
-import { ToiletModel } from "./_actions/toiletsTypes";
-import ToiletColumn from "./components/ToiletColumn";
+import useToilets from "./_actions/hooks/useToilets";
+import ToiletsChunk from "./components/ToiletsChunk";
 
 export interface ToiletsProps extends EditableWidget {
     shape: string;
@@ -18,32 +15,16 @@ export interface ToiletsProps extends EditableWidget {
 type OwnProps = ToiletsProps;
 
 const Toilets: FC<OwnProps> = () => {
-    const [toilets, setToilets] = useState<ToiletModel[]>([{ positionY: 0, isVisible: true }]);
-    const appState = useAppSelector((state) => state.features.toiletsState);
+    const { toiletsChunks } = useToilets();
 
-    useGameInit(() => {
-        setToilets([
-            {
-                positionY: 0,
-                isVisible: true,
-            },
-            {
-                positionY: 1,
-                isVisible: true,
-            },
-            {
-                positionY: 5,
-                isVisible: false,
-            },
-        ]);
-    });
-
-    useGameUpdate(() => {});
+    useEffect(() => {
+        console.log(toiletsChunks, "toiletsChunks");
+    }, [toiletsChunks]);
 
     return (
         <>
-            {toilets.map((x, index) => (
-                <ToiletColumn key={index} index={index} toilet={x} />
+            {toiletsChunks.map((x, index) => (
+                <ToiletsChunk key={index} toiletChunk={x} />
             ))}
         </>
     );

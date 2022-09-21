@@ -6,6 +6,7 @@ import useCameras from "@scene/_actions/hooks/useCameras";
 import { FC, useEffect, useRef, useState } from "react";
 import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from "three";
 
+import { DefaultCameras } from "../_actions/sceneConstants";
 import TransformControls from "./TransformControls";
 
 const EditorCamera: FC = () => {
@@ -16,7 +17,7 @@ const EditorCamera: FC = () => {
     const cameraRef = useRef<PerspectiveCameraType>(null!);
 
     useEffect(() => {
-        const newCamera = addCamera(cameraRef, "editorCamera");
+        const newCamera = addCamera(cameraRef, DefaultCameras.EditorCamera);
 
         setCurrentCamera(newCamera.id);
 

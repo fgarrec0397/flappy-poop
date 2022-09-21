@@ -13,13 +13,17 @@ export type ToiletModelGLTFResult = GLTFResult<{
     };
 }>;
 
+export type ToiletsChunkToilets = [ToiletModel, ToiletModel, ToiletModel];
+
 export type ToiletsChunkModel = {
     id: string;
     canBeDeleted: boolean;
-    toiletsChunk: [ToiletModel, ToiletModel, ToiletModel];
+    toilets: ToiletsChunkToilets;
 };
 
 export type ToiletModel = {
+    id: string;
+    toiletsChunkId: string;
     positionY: number;
     isVisible: boolean;
 };

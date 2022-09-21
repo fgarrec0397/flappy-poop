@@ -4,26 +4,34 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ToiletsChunkModel } from "../../toiletsTypes";
 
 export interface ToiletsState {
-    toilets: ToiletsChunkModel[];
+    toiletsChunks: ToiletsChunkModel[];
 }
 
+const defaultChunkId = uidGenerator();
+
 const initialState: ToiletsState = {
-    toilets: [
+    toiletsChunks: [
         {
-            id: uidGenerator(),
+            id: defaultChunkId,
             canBeDeleted: false,
-            toiletsChunk: [
+            toilets: [
                 {
+                    id: uidGenerator(),
+                    toiletsChunkId: defaultChunkId,
                     positionY: 0,
                     isVisible: true,
                 },
                 {
+                    id: uidGenerator(),
+                    toiletsChunkId: defaultChunkId,
                     positionY: 1,
                     isVisible: true,
                 },
                 {
+                    id: uidGenerator(),
+                    toiletsChunkId: defaultChunkId,
                     positionY: 5,
-                    isVisible: false,
+                    isVisible: true,
                 },
             ],
         },
@@ -35,14 +43,17 @@ export const toiletsSlice = createSlice({
     initialState,
     reducers: {
         addToiletsChunk: (state, action: PayloadAction<ToiletsChunkModel[]>) => {
-            state.toilets = action.payload;
+            state.toiletsChunks = action.payload;
         },
         removeToiletsChunk: (state, action: PayloadAction<ToiletsChunkModel[]>) => {
-            state.toilets = action.payload;
+            state.toiletsChunks = action.payload;
+        },
+        updateToiletsChunk: (state, action: PayloadAction<ToiletsChunkModel[]>) => {
+            state.toiletsChunks = action.payload;
         },
     },
 });
 
-export const { addToiletsChunk, removeToiletsChunk } = toiletsSlice.actions;
+export const { addToiletsChunk, removeToiletsChunk, updateToiletsChunk } = toiletsSlice.actions;
 
 export default toiletsSlice.reducer;
