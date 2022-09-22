@@ -1,7 +1,7 @@
 import clone from "lodash/clone";
 import { useCallback } from "react";
 
-import { ToiletModel, ToiletsChunkModel, ToiletsChunkToilets } from "../../toiletsTypes";
+import { ToiletModel, ToiletsChunkModel } from "../../toiletsTypes";
 import useToiletsDispatch from "./useToiletsDispatch";
 import useToiletsSelector from "./useToiletsSelector";
 
@@ -11,7 +11,7 @@ type ValuesType<T> = {
 
 export default () => {
     const { toiletsChunks } = useToiletsSelector();
-    const { dispatchUpdate, dispatchAdd } = useToiletsDispatch();
+    const { dispatchUpdate, dispatchAdd, dispatchRemove } = useToiletsDispatch();
 
     const getToiletChunkByID = useCallback(
         (id: string) => {
@@ -35,43 +35,38 @@ export default () => {
         [dispatchAdd, toiletsChunks]
     );
 
-    const remove = useCallback(() => {}, []);
+    const addBatch = useCallback(
+        (toiletsChunksArray: ToiletsChunkModel[]) => {
+            const newToiletsChunks = [...toiletsChunks, ...toiletsChunksArray];
+            dispatchAdd(newToiletsChunks);
+        },
+        [dispatchAdd, toiletsChunks]
+    );
+
+    const remove = useCallback(
+        (toiletChunkId: string) => {
+            dispatchRemove(toiletChunkId);
+        },
+        [dispatchRemove]
+    );
 
     const update = useCallback(
         <T>(toilet: ToiletModel, values: ValuesType<T>) => {
             const newToilet = clone(toilet);
-            const newToiletChunk = clone(getToiletChunkByID(newToilet.toiletsChunkId));
 
             Object.keys(values).forEach((x) => {
                 (newToilet as any)[x] = values[x as keyof ValuesType<T>];
             });
 
-            if (newToiletChunk) {
-                newToiletChunk.toilets = newToiletChunk?.toilets.map((x) => {
-                    if (x.id === newToilet.id) {
-                        return newToilet;
-                    }
-
-                    return x;
-                }) as ToiletsChunkToilets;
-
-                const newToiletsChunks = toiletsChunks.map((x) => {
-                    if (x.id === newToiletChunk.id) {
-                        return newToiletChunk;
-                    }
-
-                    return x;
-                });
-
-                dispatchUpdate(newToiletsChunks);
-            }
+            dispatchUpdate(newToilet);
         },
-        [dispatchUpdate, getToiletChunkByID, toiletsChunks]
+        [dispatchUpdate]
     );
 
     return {
         toiletsChunks,
         add,
+        addBatch,
         remove,
         update,
         getToiletChunkByID,

@@ -1,7 +1,7 @@
 import { useAppDispatch } from "@app/Core/store";
 
-import { ToiletsChunkModel } from "../../toiletsTypes";
-import { addToiletsChunk, updateToiletsChunk } from "../state/toiletsReducer";
+import { ToiletModel, ToiletsChunkModel } from "../../toiletsTypes";
+import { addToiletsChunk, removeToiletsChunk, updateToilet } from "../state/toiletsReducer";
 
 export default () => {
     const dispatch = useAppDispatch();
@@ -10,12 +10,17 @@ export default () => {
         dispatch(addToiletsChunk(toiletChunks));
     };
 
-    const dispatchUpdate = (toiletChunks: ToiletsChunkModel[]) => {
-        dispatch(updateToiletsChunk(toiletChunks));
+    const dispatchRemove = (toiletChunkId: string) => {
+        dispatch(removeToiletsChunk(toiletChunkId));
+    };
+
+    const dispatchUpdate = (toilet: ToiletModel) => {
+        dispatch(updateToilet(toilet));
     };
 
     return {
         dispatchAdd,
+        dispatchRemove,
         dispatchUpdate,
     };
 };

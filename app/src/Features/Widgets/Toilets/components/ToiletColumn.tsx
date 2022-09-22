@@ -1,6 +1,7 @@
 import { Vector3Array } from "@app/Common/commonTypes";
-import { useGLTF, useIntersect } from "@react-three/drei";
-import { FC, useMemo } from "react";
+import { useIntersect } from "@app/Common/hooks/useIntersect";
+import { useGLTF } from "@react-three/drei";
+import { FC, useEffect, useMemo } from "react";
 import { Mesh } from "three";
 
 import useToilets from "../_actions/hooks/useToilets";
@@ -14,10 +15,19 @@ export type ToiletColumnProps = {
 const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
     const { nodes, materials } = useGLTF("/assets/Toilet.gltf") as ToiletModelGLTFResult;
     const groupScale: Vector3Array = useMemo(() => [0.05, 0.05, 0.05], []);
-    const { setIsVisible } = useToilets();
-    const ref = useIntersect<Mesh>((visible) => {
+    const { setIsVisible, toiletsChunks } = useToilets();
+    const ref = useIntersect((visible) => {
+        if (toilet.toiletsChunkId === toiletsChunks[toiletsChunks.length - 1].id) {
+            console.log(toiletsChunks[toiletsChunks.length - 1].id, "last in useIntersect");
+        }
+
         setIsVisible(toilet.id, toilet.toiletsChunkId, visible);
     });
+
+    // useEffect(() => {
+    //     console.log({ id: toilet.id, isVisible: toilet.isVisible, position: toilet.position });
+    // }, [toilet.id, toilet.isVisible, toilet.position]);
+
     return (
         <group position={toilet.position}>
             <group scale={groupScale} dispose={null}>

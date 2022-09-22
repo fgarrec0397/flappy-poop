@@ -26,7 +26,7 @@ const Toilets: FC<OwnProps> = () => {
 
     useFrame(() => {
         if (!isEditor && toiletsRef.current) {
-            toiletsRef.current.position.x -= 0.05;
+            toiletsRef.current.position.x -= 0.1; // Put it to 0.05 when tests are done
         }
     });
 

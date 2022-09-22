@@ -14,11 +14,11 @@ export type CamerasProps = EditableWidget & {
 const Cameras: FC<CamerasProps> = ({ translateXOnPlay = false }, ref) => {
     const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
 
-    useGameUpdate(() => {
-        if (translateXOnPlay) {
-            camera.position.x += 0.01;
-        }
-    });
+    // useGameUpdate(() => {
+    //     if (translateXOnPlay) {
+    //         camera.position.x += 0.01;
+    //     }
+    // });
 
     return <perspectiveCamera ref={cameraRef as Ref<PerspectiveCamera>} />;
 };

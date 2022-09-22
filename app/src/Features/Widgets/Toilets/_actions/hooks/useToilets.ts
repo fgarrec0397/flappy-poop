@@ -3,37 +3,90 @@ import { useCallback } from "react";
 import { Vector3 } from "three";
 
 import useToiletsService from "../_data/hooks/useToiletsService";
-import { ToiletModel, ToiletsChunkToilets } from "../toiletsTypes";
+import { ToiletModel, ToiletsChunkModel, ToiletsChunkToilets } from "../toiletsTypes";
 import createToiletsChunk from "../utilities/createToiletsChunk";
 
+enum AddToiletsChunkMode {
+    Add = "Add",
+    Get = "Get",
+}
+
+type AddToiletsChunkParameter = {
+    mode: AddToiletsChunkMode;
+    toiletsChunks?: ToiletsChunkModel[];
+};
+
 export default () => {
-    const { toiletsChunks, update, getToiletById, add } = useToiletsService();
+    const { toiletsChunks, update, getToiletById, add, addBatch, remove } = useToiletsService();
 
-    const addToiletChunk = useCallback(() => {
-        const toiletWidth = 4.5;
-        const spacingWidth = 16;
-        const newToiletChunk = createToiletsChunk();
-        const lastToiletChunk = toiletsChunks[toiletsChunks.length - 1];
-        const lastToiletPosition = lastToiletChunk
-            ? lastToiletChunk.toilets[lastToiletChunk.toilets.length - 1].position
-            : [0, 0, 0];
+    const addToiletChunk = useCallback(
+        (parameter?: AddToiletsChunkParameter) => {
+            const toiletWidth = 4.5;
+            const spacingWidth = 16;
+            const newToiletChunk = createToiletsChunk();
+            const currentToiletsChunks = parameter?.toiletsChunks || toiletsChunks;
+            const lastToiletChunk = currentToiletsChunks[currentToiletsChunks.length - 1];
+            const lastToiletPosition = lastToiletChunk
+                ? lastToiletChunk.toilets[lastToiletChunk.toilets.length - 1].position
+                : [0, 0, 0];
 
-        newToiletChunk.toilets = newToiletChunk.toilets.map((x, index) => {
-            return {
-                ...x,
-                position: [
-                    toiletWidth +
-                        lastToiletPosition[0] +
-                        (spacingWidth - toiletWidth) +
-                        index * spacingWidth,
-                    0,
-                    0,
-                ],
-            };
-        }) as ToiletsChunkToilets;
+            newToiletChunk.toilets = newToiletChunk.toilets.map((x, index) => {
+                return {
+                    ...x,
+                    position: [
+                        toiletWidth +
+                            lastToiletPosition[0] +
+                            (spacingWidth - toiletWidth) +
+                            index * spacingWidth,
+                        0,
+                        0,
+                    ],
+                };
+            }) as ToiletsChunkToilets;
 
-        add(newToiletChunk);
-    }, [add, toiletsChunks]);
+            // console.log(
+            //     newToiletChunk.toilets.map((x) => x.position),
+            //     "add"
+            // );
+            switch (parameter?.mode) {
+                case AddToiletsChunkMode.Add:
+                    add(newToiletChunk);
+                    break;
+                case AddToiletsChunkMode.Get:
+                    return newToiletChunk;
+
+                default:
+                    add(newToiletChunk);
+                    break;
+            }
+        },
+        [add, toiletsChunks]
+    );
+
+    const addBatchToiletsChunk = useCallback(() => {
+        const newToiletsChunks: ToiletsChunkModel[] = [];
+
+        for (let index = 0; index < 3; index++) {
+            if (toiletsChunks.length <= 3) {
+                newToiletsChunks.push(
+                    addToiletChunk({
+                        mode: AddToiletsChunkMode.Get,
+                        toiletsChunks: newToiletsChunks,
+                    }) as ToiletsChunkModel
+                );
+            }
+        }
+
+        addBatch(newToiletsChunks);
+    }, [addBatch, addToiletChunk, toiletsChunks]);
+
+    const removeToiletChunk = useCallback(
+        (toiletChunkId: string) => {
+            console.log("remove");
+            remove(toiletChunkId);
+        },
+        [remove]
+    );
 
     const setIsVisible = useCallback(
         (toiletId: string, toiletsChunkId: string, isVisible: boolean) => {
@@ -57,5 +110,12 @@ export default () => {
         [update]
     );
 
-    return { toiletsChunks, setIsVisible, setToiletPosition, addToiletChunk };
+    return {
+        toiletsChunks,
+        setIsVisible,
+        setToiletPosition,
+        addToiletChunk,
+        addBatchToiletsChunk,
+        removeToiletChunk,
+    };
 };

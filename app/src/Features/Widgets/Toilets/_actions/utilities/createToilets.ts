@@ -11,7 +11,7 @@ export default (toiletsChunkId: string, toiletsPositions?: ToiletsArray<Vector3A
             id: uidGenerator(),
             toiletsChunkId,
             position: toiletsPositions ? toiletsPositions[i] : [0, 0, 0],
-            isVisible: true,
+            isVisible: false,
         };
 
         toilets.push(toilet);
