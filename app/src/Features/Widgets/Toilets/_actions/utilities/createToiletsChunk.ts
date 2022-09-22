@@ -1,14 +1,15 @@
+import { Vector3Array } from "@app/Common/commonTypes";
 import { uidGenerator } from "@app/Common/utilities";
 
-import { ToiletsChunkModel } from "../toiletsTypes";
+import { ToiletsArray, ToiletsChunkModel } from "../toiletsTypes";
 import createToilets from "./createToilets";
 
-export default (): ToiletsChunkModel => {
+export default (toiletsPositions?: ToiletsArray<Vector3Array>): ToiletsChunkModel => {
     const id = uidGenerator();
 
     return {
         id,
         canBeDeleted: false,
-        toilets: createToilets(id),
+        toilets: createToilets(id, toiletsPositions),
     };
 };

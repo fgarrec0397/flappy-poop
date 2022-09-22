@@ -11,7 +11,7 @@ type ValuesType<T> = {
 
 export default () => {
     const { toiletsChunks } = useToiletsSelector();
-    const { dispatchUpdate } = useToiletsDispatch();
+    const { dispatchUpdate, dispatchAdd } = useToiletsDispatch();
 
     const getToiletChunkByID = useCallback(
         (id: string) => {
@@ -27,7 +27,13 @@ export default () => {
         [getToiletChunkByID]
     );
 
-    const add = useCallback((toiletsChunk: ToiletsChunkModel) => {}, []);
+    const add = useCallback(
+        (toiletsChunk: ToiletsChunkModel) => {
+            const newToiletsChunks = [...toiletsChunks, toiletsChunk];
+            dispatchAdd(newToiletsChunks);
+        },
+        [dispatchAdd, toiletsChunks]
+    );
 
     const remove = useCallback(() => {}, []);
 

@@ -1,4 +1,4 @@
-import { GLTFResult } from "@app/Common/commonTypes";
+import { GLTFResult, Vector3Array } from "@app/Common/commonTypes";
 
 export type ToiletModelGLTFResult = GLTFResult<{
     nodes: {
@@ -13,7 +13,9 @@ export type ToiletModelGLTFResult = GLTFResult<{
     };
 }>;
 
-export type ToiletsChunkToilets = [ToiletModel, ToiletModel, ToiletModel];
+export type ToiletsArray<T> = [T, T, T];
+
+export type ToiletsChunkToilets = ToiletsArray<ToiletModel>;
 
 export type ToiletsChunkModel = {
     id: string;
@@ -24,6 +26,6 @@ export type ToiletsChunkModel = {
 export type ToiletModel = {
     id: string;
     toiletsChunkId: string;
-    positionY: number;
+    position: Vector3Array;
     isVisible: boolean;
 };

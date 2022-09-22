@@ -5,13 +5,13 @@ import WidgetsModulesContextProvider from "@widgets/_actions/_data/providers/Wid
 import { FC } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
-import HistoryDictionaryContextProvider from "./Editor/_actions/_data/providers/HistoryContextProvider";
+import HistoryDictionaryContextProvider from "../../../../Editor/_actions/_data/providers/HistoryContextProvider";
 
 type Props = {
     children: React.ReactNode;
 };
 
-const AppProviders: FC<Props> = ({ children }) => {
+const AppProvider: FC<Props> = ({ children }) => {
     return (
         <ReduxProvider store={store}>
             <CamerasContextProvider>
@@ -27,4 +27,4 @@ const AppProviders: FC<Props> = ({ children }) => {
     );
 };
 
-export default AppProviders;
+export default AppProvider;

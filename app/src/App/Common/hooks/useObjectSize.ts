@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { Mesh, Vector3 } from "three";
 
 import { Vector3Array } from "../commonTypes";
 
-export default (object: Mesh, scale: Vector3 | Vector3Array) => {
-    const [size, setSize] = useState(new Vector3());
-
+export default () => {
     const computeSizeWithScale = useCallback(
-        (sizeToCompute: Vector3) => {
+        (sizeToCompute: Vector3, scale: Vector3 | Vector3Array) => {
             if (scale.length) {
                 return new Vector3(
                     sizeToCompute.x * (scale as Vector3Array)[0],
@@ -22,17 +20,25 @@ export default (object: Mesh, scale: Vector3 | Vector3Array) => {
                 sizeToCompute.z * (scale as Vector3).z
             );
         },
-        [scale]
+        []
     );
 
-    useEffect(() => {
-        if (object.geometry.boundingBox) {
-            const measure = new Vector3();
-            const newSize = computeSizeWithScale(object.geometry.boundingBox?.getSize(measure));
+    const getSize = useCallback(
+        (object: Mesh, scale: Vector3 | Vector3Array) => {
+            if (object.geometry.boundingBox) {
+                const measure = new Vector3();
+                const newSize = computeSizeWithScale(
+                    object.geometry.boundingBox?.getSize(measure),
+                    scale
+                );
 
-            setSize(newSize);
-        }
-    }, [computeSizeWithScale, object.geometry.boundingBox]);
+                return newSize;
+            }
+        },
+        [computeSizeWithScale]
+    );
 
-    return size;
+    return {
+        getSize,
+    };
 };

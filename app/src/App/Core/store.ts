@@ -1,7 +1,7 @@
 import editorReducer, { EditorState } from "@app/Editor/_actions/_data/state/editorReducer";
 import gameReducer from "@app/Game/_actions/_data/state/gameReducer";
-import { FeaturesState } from "@features/collector";
-import featuresReducer from "@features/featuresReducer";
+import { FeaturesState } from "@features/Core/collector";
+import featuresReducer from "@features/Core/featuresReducer";
 import { configureStore } from "@reduxjs/toolkit";
 import widgetsReducer, { WidgetsState } from "@widgets/_actions/_data/state/widgetsReducer";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";

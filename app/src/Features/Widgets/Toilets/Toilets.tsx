@@ -1,9 +1,14 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
+import { useIsEditor } from "@app/Editor/_actions/hooks";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import { FC, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
+import { FC, useRef } from "react";
+import { Mesh } from "three";
 
 import toiletsReducer from "./_actions/_data/state/toiletsReducer";
 import useToilets from "./_actions/hooks/useToilets";
+import useToiletsInit from "./_actions/hooks/useToiletsInit";
+import useToiletsUpdate from "./_actions/hooks/useToiletsUpdate";
 import ToiletsChunk from "./components/ToiletsChunk";
 
 export interface ToiletsProps extends EditableWidget {
@@ -15,18 +20,25 @@ export interface ToiletsProps extends EditableWidget {
 type OwnProps = ToiletsProps;
 
 const Toilets: FC<OwnProps> = () => {
+    const { isEditor } = useIsEditor();
+    const toiletsRef = useRef<Mesh>(null);
     const { toiletsChunks } = useToilets();
 
-    useEffect(() => {
-        console.log(toiletsChunks, "toiletsChunks");
-    }, [toiletsChunks]);
+    useFrame(() => {
+        if (!isEditor && toiletsRef.current) {
+            toiletsRef.current.position.x -= 0.05;
+        }
+    });
+
+    useToiletsInit();
+    useToiletsUpdate();
 
     return (
-        <>
+        <mesh ref={toiletsRef}>
             {toiletsChunks.map((x, index) => (
                 <ToiletsChunk key={index} toiletChunk={x} />
             ))}
-        </>
+        </mesh>
     );
 };
 

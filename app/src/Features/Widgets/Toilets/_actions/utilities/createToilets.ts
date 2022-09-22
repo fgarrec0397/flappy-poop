@@ -1,22 +1,21 @@
 import { uidGenerator } from "@app/Common/utilities";
+import { Vector3Array } from "@react-three/rapier";
 
-import { ToiletModel, ToiletsChunkToilets } from "../toiletsTypes";
+import { ToiletModel, ToiletsArray, ToiletsChunkToilets } from "../toiletsTypes";
 
-export default (toiletsChunkId: string) => {
+export default (toiletsChunkId: string, toiletsPositions?: ToiletsArray<Vector3Array>) => {
     const toilets: ToiletModel[] = [];
 
     for (let i = 0; i < 3; i++) {
         const toilet: ToiletModel = {
             id: uidGenerator(),
             toiletsChunkId,
-            positionY: 0,
+            position: toiletsPositions ? toiletsPositions[i] : [0, 0, 0],
             isVisible: true,
         };
 
         toilets.push(toilet);
     }
-
-    console.log(toilets, "toilets in createToilets");
 
     return toilets as ToiletsChunkToilets;
 };
