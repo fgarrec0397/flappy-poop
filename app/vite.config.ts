@@ -1,3 +1,4 @@
+import eslintPlugin from "@nabla/vite-plugin-eslint";
 import reactRefresh from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
@@ -8,6 +9,7 @@ export default defineConfig({
         outDir: "build",
     },
     plugins: [
+        eslintPlugin(),
         reactRefresh(),
         svgrPlugin({
             svgrOptions: {

@@ -1,6 +1,8 @@
 import { addAfterEffect, addEffect } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { Mesh, Object3D } from "three";
+import { Mesh } from "three";
+
+// TODO - Remove this hook when https://github.com/pmndrs/drei/issues/1057 is merged and closed
 
 function useIntersect(onChange: (visible: boolean) => void) {
     const ref = useRef<Mesh>(null);

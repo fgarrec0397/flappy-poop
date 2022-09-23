@@ -1,4 +1,5 @@
 import { Vector3Array } from "@app/Common/commonTypes";
+import getRandomNumber from "@app/Common/utilities/getRandomNumber";
 import { useCallback } from "react";
 import { Vector3 } from "three";
 
@@ -38,16 +39,12 @@ export default () => {
                             lastToiletPosition[0] +
                             (spacingWidth - toiletWidth) +
                             index * spacingWidth,
-                        0,
+                        getRandomNumber(-3, 7),
                         0,
                     ],
                 };
             }) as ToiletsChunkToilets;
 
-            // console.log(
-            //     newToiletChunk.toilets.map((x) => x.position),
-            //     "add"
-            // );
             switch (parameter?.mode) {
                 case AddToiletsChunkMode.Add:
                     add(newToiletChunk);
@@ -82,7 +79,6 @@ export default () => {
 
     const removeToiletChunk = useCallback(
         (toiletChunkId: string) => {
-            console.log("remove");
             remove(toiletChunkId);
         },
         [remove]
