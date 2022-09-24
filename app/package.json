@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",
+  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "eslint --ext .ts,.tsx src --fix"
+    "lint": "eslint --ext .ts,.tsx src --fix",
+    "createWidget": "node scripts/createWidget"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
@@ -53,7 +55,7 @@
   "devDependencies": {
     "@types/jest": "^29.0.0",
     "@types/lodash": "^4.14.184",
-    "@types/node": "^18.7.15",
+    "@types/node": "^18.7.19",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
