@@ -16,20 +16,3 @@ export type PoopModelGLTFResult = GLTFResult<{
         Default: THREE.MeshStandardMaterial;
     };
 }>;
-
-export type ToiletsArray<T> = [T, T, T];
-
-export type ToiletsChunkToilets = ToiletsArray<ToiletModel>;
-
-export type ToiletsChunkModel = {
-    id: string;
-    canBeDeleted: boolean;
-    toilets: ToiletsChunkToilets;
-};
-
-export type ToiletModel = {
-    id: string;
-    toiletsChunkId: string;
-    position: Vector3Array;
-    isVisible: boolean;
-};

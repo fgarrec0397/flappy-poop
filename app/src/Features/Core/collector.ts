@@ -1,6 +1,7 @@
 import cameras, { CamerasProps } from "@features/Widgets/Cameras";
 import geometryForms, { GeometryFormsProps } from "@features/Widgets/GeometryForms";
 import player, { PlayerProps } from "@features/Widgets/Player";
+import poop, { PoopProps } from "@features/Widgets/Poop";
 import terrain, { TerrainProps } from "@features/Widgets/Terrain";
 import text, { TextProps, TextState } from "@features/Widgets/Text";
 import toilets, { ToiletsProps, ToiletsState } from "@features/Widgets/Toilets";
@@ -13,6 +14,7 @@ export type FeaturesWidgetsProps = GeometryFormsProps &
     PlayerProps &
     CamerasProps &
     TerrainProps &
+    PoopProps &
     ToiletsProps;
 
 /**
@@ -32,4 +34,4 @@ export const preparedReducer = {
     toiletsState: toilets.reducer,
 };
 
-export default [geometryForms, terrain, text, player, cameras, toilets];
+export default [geometryForms, terrain, text, player, cameras, poop, toilets];

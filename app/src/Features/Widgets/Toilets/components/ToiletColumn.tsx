@@ -1,6 +1,7 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import { useIntersect } from "@app/Common/hooks/useIntersect";
 import { useGLTF } from "@react-three/drei";
+import { RigidBody } from "@react-three/rapier";
 import { FC, useMemo } from "react";
 
 import useToilets from "../_actions/hooks/useToilets";
@@ -19,26 +20,34 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
         setIsVisible(toilet.id, toilet.toiletsChunkId, visible);
     });
 
+    const rigibodyProps = {
+        gravityScale: 1,
+        // colliders: "cuboid",
+    };
+
     return (
         <group position={toilet.position}>
-            <group scale={groupScale} dispose={null}>
-                <mesh
-                    ref={ref}
-                    geometry={nodes.Cylinder001.geometry}
-                    material={materials["Material #25"]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                />
-                <mesh
-                    geometry={nodes.Box001.geometry}
-                    material={materials["Material #25"]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                />
-                <mesh
-                    geometry={nodes.Box002.geometry}
-                    material={materials["Material #25"]}
-                    rotation={[-Math.PI / 2, 0, 0]}
-                />
-            </group>
+            <RigidBody colliders={false} {...rigibodyProps}>
+                <group scale={groupScale} dispose={null}>
+                    <mesh
+                        ref={ref}
+                        geometry={nodes.Cylinder001.geometry}
+                        material={materials["Material #25"]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                    />
+                    <mesh
+                        geometry={nodes.Box001.geometry}
+                        material={materials["Material #25"]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                    />
+                    <mesh
+                        geometry={nodes.Box002.geometry}
+                        material={materials["Material #25"]}
+                        rotation={[-Math.PI / 2, 0, 0]}
+                    />
+                </group>
+            </RigidBody>
+            {/* <RigidBody {...rigibodyProps}> */}
             <group scale={[0.05, 0.05, 0.05]} position={[0, 20, 0]} dispose={null}>
                 <mesh
                     geometry={nodes.Cylinder001.geometry}
@@ -56,6 +65,7 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
                     rotation={[-Math.PI / 2, -Math.PI, 0]}
                 />
             </group>
+            {/* </RigidBody> */}
         </group>
     );
 };
