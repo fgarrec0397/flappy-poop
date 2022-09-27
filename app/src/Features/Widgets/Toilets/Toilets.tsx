@@ -24,11 +24,11 @@ const Toilets: FC<OwnProps> = () => {
     const toiletsRef = useRef<Mesh>(null);
     const { toiletsChunks } = useToilets();
 
-    useFrame(() => {
-        if (!isEditor && toiletsRef.current) {
-            toiletsRef.current.position.x -= 0.1; // Put it to 0.05 when tests are done
-        }
-    });
+    // useFrame(() => {
+    //     if (!isEditor && toiletsRef.current) {
+    //         toiletsRef.current.position.x -= 0.1; // Put it to 0.05 when tests are done
+    //     }
+    // });
 
     useToiletsInit();
     useToiletsUpdate();

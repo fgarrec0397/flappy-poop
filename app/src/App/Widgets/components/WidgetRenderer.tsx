@@ -64,7 +64,7 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
         >
             {meshHolder}
 
-            <Component {...componentProps()} hovered={hovered} {...ref} />
+            <Component {...componentProps()} {...widgetProperties} hovered={hovered} {...ref} />
         </mesh>
     );
 };

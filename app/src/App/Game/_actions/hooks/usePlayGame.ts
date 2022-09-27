@@ -12,9 +12,9 @@ export default () => {
         const firstGameCamera = gameCameras[0];
         setIsEditor();
 
-        if (firstGameCamera?.id && firstGameCamera.cameraRef.current) {
-            setThree({ camera: firstGameCamera.cameraRef.current });
-        }
+        // if (firstGameCamera?.id && firstGameCamera.cameraRef.current) {
+        //     setThree({ camera: firstGameCamera.cameraRef.current });
+        // }
     };
 
     return { playGame };

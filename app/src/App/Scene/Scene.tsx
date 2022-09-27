@@ -14,7 +14,8 @@ const Scene: FC = () => {
     useHandleGetScene();
 
     return (
-        <Physics paused={isEditor}>
+        // <Physics paused={isEditor}>
+        <Physics>
             <Debug />
             <Lights />
             {isEditor ? <Editor.Editor /> : <Game.Game />}
