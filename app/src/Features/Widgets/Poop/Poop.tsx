@@ -40,13 +40,16 @@ const Poop: FC<PoopProps> = ({ position, scale }) => {
                 setGroupPosition(newGroupPosition);
             }
         }
-    }, [meshRef, getSize]);
-
-    useEffect(() => {
         if (colliderRef.current) {
+            console.log(colliderRef.current, "colliderRef.current");
+
             colliderRef.current.setTranslation(unSerializeVector3(position));
+            // colliderRef.current.setTranslation(unSerializeVector3(position));
         }
-    }, [position]);
+    }, [meshRef, getSize, position]);
+    console.log(position, "position");
+
+    // useEffect(() => {}, [position]);
 
     return (
         <RigidBody
@@ -55,10 +58,9 @@ const Poop: FC<PoopProps> = ({ position, scale }) => {
             onCollisionEnter={(test) => {
                 console.log(test, "collision enter");
             }}
-            position={position}
         >
-            <CuboidCollider args={[0.15, 0.15, 0.15]} />
-            <group dispose={null} position={groupPosition}>
+            <CuboidCollider position={position} args={[0.15, 0.15, 0.15]} />
+            <group position={groupPosition}>
                 <group rotation={[-Math.PI / 2, 0, 0]}>
                     <group scale={[0.008, 0.008, 0.008]} ref={ref}>
                         <mesh geometry={nodes.Object_3.geometry} material={materials.Blanco_Ojos} />
