@@ -1,6 +1,6 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import { RigidBody } from "@react-three/rapier";
+import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { FC } from "react";
 
 export type TerrainProps = EditableWidget;
@@ -9,12 +9,12 @@ type OwnProps = TerrainProps;
 
 const Terrain: FC<OwnProps> = () => {
     return (
-        <RigidBody>
+        <GameRigidbody>
             <mesh>
                 <planeBufferGeometry />
                 <meshStandardMaterial color="white" />
             </mesh>
-        </RigidBody>
+        </GameRigidbody>
     );
 };
 

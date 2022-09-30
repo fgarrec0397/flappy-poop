@@ -1,18 +1,12 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
-import unSerializeVector3 from "@app/Common/utilities/unSerializeVector3";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
+import { useIsEditor } from "@app/Editor/_actions/hooks";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
+import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
-import {
-    CuboidCollider,
-    Debug,
-    InstancedRigidBodyApi,
-    RigidBody,
-    RigidBodyApi,
-    useRapier,
-} from "@react-three/rapier";
+import { CuboidCollider, RigidBodyApi } from "@react-three/rapier";
 import { FC, useEffect, useRef, useState } from "react";
 import { Group, Mesh, Vector3 } from "three";
 
@@ -20,13 +14,14 @@ import { PoopModelGLTFResult } from "./_actions/poopTypes";
 
 export type PoopProps = EditableWidget;
 
-const Poop: FC<PoopProps> = ({ position, scale }) => {
+const Poop: FC<PoopProps> = ({ position }) => {
     const { nodes, materials } = useGLTF("/assets/Poop.gltf") as PoopModelGLTFResult;
     const ref = useRef<Group>(null);
     const meshRef = useRef<Mesh>(null);
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
     const colliderRef = useRef<RigidBodyApi>(null);
     const { getSize } = useObjectSize();
+    const { isEditor } = useIsEditor();
 
     useEffect(() => {
         if (meshRef.current) {
@@ -40,26 +35,17 @@ const Poop: FC<PoopProps> = ({ position, scale }) => {
                 setGroupPosition(newGroupPosition);
             }
         }
-        if (colliderRef.current) {
-            console.log(colliderRef.current, "colliderRef.current");
-
-            colliderRef.current.setTranslation(unSerializeVector3(position));
-            // colliderRef.current.setTranslation(unSerializeVector3(position));
-        }
     }, [meshRef, getSize, position]);
-    console.log(position, "position");
-
-    // useEffect(() => {}, [position]);
 
     return (
-        <RigidBody
+        <GameRigidbody
             ref={colliderRef}
             colliders={false}
             onCollisionEnter={(test) => {
                 console.log(test, "collision enter");
             }}
         >
-            <CuboidCollider position={position} args={[0.15, 0.15, 0.15]} />
+            {!isEditor && <CuboidCollider args={[0.15, 0.15, 0.15]} />}
             <group position={groupPosition}>
                 <group rotation={[-Math.PI / 2, 0, 0]}>
                     <group scale={[0.008, 0.008, 0.008]} ref={ref}>
@@ -76,7 +62,7 @@ const Poop: FC<PoopProps> = ({ position, scale }) => {
                     </group>
                 </group>
             </group>
-        </RigidBody>
+        </GameRigidbody>
     );
 };
 

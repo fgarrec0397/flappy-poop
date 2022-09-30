@@ -2,8 +2,7 @@ import { useHandleEditor, useIsEditor } from "@app/Editor/_actions/hooks";
 import Editor from "@app/Editor/Editor";
 import Game from "@app/Game/Game";
 import { useHandleGetScene } from "@app/Scene/_actions/hooks";
-import { Debug, Physics } from "@react-three/rapier";
-import { FC } from "react";
+import { FC, Suspense } from "react";
 
 import { Lights } from "./components";
 
@@ -14,12 +13,14 @@ const Scene: FC = () => {
     useHandleGetScene();
 
     return (
-        <Physics paused={isEditor}>
+        // <Physics paused={isEditor}>
+        <Suspense>
             {/* <Physics> */}
-            <Debug />
+            {/* <Debug /> */}
             <Lights />
             {isEditor ? <Editor.Editor /> : <Game.Game />}
-        </Physics>
+        </Suspense>
+        // </Physics>
     );
 };
 

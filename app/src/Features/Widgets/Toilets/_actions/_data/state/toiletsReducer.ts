@@ -1,4 +1,3 @@
-import { uidGenerator } from "@app/Common/utilities";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { ToiletModel, ToiletsArray, ToiletsChunkModel } from "../../toiletsTypes";
@@ -7,35 +6,8 @@ export interface ToiletsState {
     toiletsChunks: ToiletsChunkModel[];
 }
 
-const chunkId = uidGenerator();
-
 const initialState: ToiletsState = {
-    toiletsChunks: [
-        // {
-        //     id: chunkId,
-        //     canBeDeleted: false,
-        //     toilets: [
-        //         {
-        //             id: uidGenerator(),
-        //             toiletsChunkId: chunkId,
-        //             position: [0, 0, 0],
-        //             isVisible: true,
-        //         },
-        //         {
-        //             id: uidGenerator(),
-        //             toiletsChunkId: chunkId,
-        //             position: [10, 0, 0],
-        //             isVisible: true,
-        //         },
-        //         {
-        //             id: uidGenerator(),
-        //             toiletsChunkId: chunkId,
-        //             position: [20, 0, 0],
-        //             isVisible: true,
-        //         },
-        //     ],
-        // },
-    ],
+    toiletsChunks: [],
 };
 
 export const toiletsSlice = createSlice({

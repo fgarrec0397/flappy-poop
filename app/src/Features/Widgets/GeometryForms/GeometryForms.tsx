@@ -1,7 +1,8 @@
 import unSerializeVector3 from "@app/Common/utilities/unSerializeVector3";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import { RigidBody, RigidBodyApi } from "@react-three/rapier";
+import GameRigidbody from "@features/Physics/components/GameRigidbody";
+import { RigidBodyApi } from "@react-three/rapier";
 import { FieldType } from "@widgets/_actions/widgetsTypes";
 import { FC, useEffect, useRef } from "react";
 
@@ -24,12 +25,12 @@ const GeometryForms: FC<OwnProps> = ({ shape, color, gravityScale, position }) =
     }, [position]);
 
     return (
-        <RigidBody ref={colliderRef} gravityScale={gravityScale}>
+        <GameRigidbody ref={colliderRef} gravityScale={gravityScale}>
             <mesh position={[0, 0, 0]}>
                 <GeometryComponent />
                 <meshStandardMaterial color={color} />
             </mesh>
-        </RigidBody>
+        </GameRigidbody>
     );
 };
 
