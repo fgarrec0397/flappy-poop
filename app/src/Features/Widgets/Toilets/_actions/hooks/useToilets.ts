@@ -63,8 +63,8 @@ export default () => {
     const addBatchToiletsChunk = useCallback(() => {
         const newToiletsChunks: ToiletsChunkModel[] = [];
 
-        for (let index = 0; index < 3; index++) {
-            if (toiletsChunks.length <= 3) {
+        for (let index = 0; index < 1; index++) {
+            if (toiletsChunks.length <= 1) {
                 newToiletsChunks.push(
                     addToiletChunk({
                         mode: AddToiletsChunkMode.Get,

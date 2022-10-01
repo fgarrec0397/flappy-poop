@@ -5,7 +5,6 @@ import { serializeVector3 } from "@app/Common/utilities";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import { CuboidCollider } from "@react-three/rapier";
 import { RigidBodyApi } from "@react-three/rapier/dist/declarations/src/types";
 import { FC, useEffect, useMemo, useRef, useState } from "react";
@@ -54,27 +53,6 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
             }
         }
     }, [ref, getSize, groupScale]);
-
-    useFrame(() => {
-        if (!isEditor && rbRef.current) {
-            rbRef.current.setTranslation(
-                new Vector3(
-                    rbRef.current.translation().x - 0.01,
-                    rbRef.current.translation().y,
-                    rbRef.current.translation().z
-                )
-            );
-        }
-        if (!isEditor && rbRef2.current) {
-            rbRef2.current.setTranslation(
-                new Vector3(
-                    rbRef2.current.translation().x - 0.01,
-                    rbRef2.current.translation().y,
-                    rbRef2.current.translation().z
-                )
-            );
-        }
-    });
 
     return (
         <>
