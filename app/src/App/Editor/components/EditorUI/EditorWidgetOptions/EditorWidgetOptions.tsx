@@ -4,12 +4,18 @@ import { FieldType } from "@widgets/_actions/widgetsTypes";
 import { Card } from "antd";
 import { FC } from "react";
 
+import EditorOptionsCheckboxField from "./EditorOptionsCheckboxField";
 import EditorOptionsNumberField from "./EditorOptionsNumberField";
 import EditorOptionsSelectField from "./EditorOptionsSelectField";
 import EditorOptionsTextField from "./EditorOptionsTextField";
 
 const EditorWidgetOptions: FC = () => {
     const { selectedWidgets } = useWidgets();
+
+    console.log(
+        selectedWidgets[0].widgetDefinition.options,
+        "selectedWidgets[0].widgetDefinition.options"
+    );
 
     return (
         <Card size="small" bordered={false} bodyStyle={{ padding: "0" }}>
@@ -27,6 +33,12 @@ const EditorWidgetOptions: FC = () => {
                     if (option.fieldType === FieldType.Number) {
                         return (
                             <EditorOptionsNumberField key={option.displayName} option={option} />
+                        );
+                    }
+
+                    if (option.fieldType === FieldType.Checkbox) {
+                        return (
+                            <EditorOptionsCheckboxField key={option.displayName} option={option} />
                         );
                     }
 
