@@ -1,4 +1,4 @@
-import { KeyboardMappings } from "@app/Core/coreTypes";
+import { ClientKeyMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
 import usePlayGame from "@app/Game/_actions/hooks/usePlayGame";
 import { saveScene } from "@app/Scene/_actions/_data/services";
@@ -24,32 +24,32 @@ export default () => {
     const { playGame } = usePlayGame();
 
     useKeyboardMappings(
-        async (keyMapping: KeyboardMappings) => {
-            if (keyMapping.editor.toggleEditor?.value) {
+        async (keyMapping: ClientKeyMappings) => {
+            if (keyMapping.toggleEditor) {
                 playGame();
-            } else if (keyMapping.editor.copyWidget?.value) {
+            } else if (keyMapping.copyWidget) {
                 if (selectedWidgets.length > 0) {
                     setCopiedWidgets(selectedWidgets);
                 }
-            } else if (keyMapping.editor.pasteWidget?.value) {
+            } else if (keyMapping.pasteWidget) {
                 if (selectedWidgets.length > 0) {
                     selectedWidgets.forEach((x) => {
                         copyWidget(x);
                     });
                 }
-            } else if (keyMapping.editor.undo?.value) {
+            } else if (keyMapping.undo) {
                 setPrevHistoryItem();
-            } else if (keyMapping.editor.cancelUndo?.value) {
+            } else if (keyMapping.cancelUndo) {
                 setNextHistoryItem();
-            } else if (keyMapping.editor.deleteWidget?.value) {
+            } else if (keyMapping.deleteWidget) {
                 if (selectedWidgets.length > 0) {
                     removeselectedWidgets();
                 }
-            } else if (keyMapping.editor.nextCamera?.value) {
+            } else if (keyMapping.nextCamera) {
                 setNextCamera();
-            } else if (keyMapping.editor.prevCamera?.value) {
+            } else if (keyMapping.prevCamera) {
                 setPrevCamera();
-            } else if (keyMapping.editor.saveScene?.value) {
+            } else if (keyMapping.saveScene) {
                 await saveScene({ widgets, widgetsDictionary });
             }
         },
@@ -60,6 +60,7 @@ export default () => {
             copyWidget,
             removeselectedWidgets,
             shouldAddHistoryState,
-        ]
+        ],
+        "editor"
     );
 };

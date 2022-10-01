@@ -1,28 +1,45 @@
 import keyboardMappings from "@app/Core/configs/keyboardMappings";
 import { defaultKeyMappingObj } from "@app/Core/coreConstants";
-import { KeyboardMappingHandler, KeyboardMappings } from "@app/Core/coreTypes";
+import {
+    ClientKeyMappings,
+    KeyboardMappingHandler,
+    KeyboardMappings,
+    KeyboardType,
+} from "@app/Core/coreTypes";
 import { DependencyList, useCallback, useEffect, useMemo } from "react";
 
-const callAllKeyMappedReferences = (keyMapped: KeyboardMappings, event: KeyboardEvent) => {
-    for (const key in keyMapped.editor) {
-        keyMapped.editor[key] = {
-            ...keyMapped.editor[key],
-            value: keyMapped.editor[key].reference(event),
+const triggerAllMappedKey = (
+    keyMapped: KeyboardMappings,
+    event: KeyboardEvent,
+    keyboardType: KeyboardType
+) => {
+    const clientKeyMapped: ClientKeyMappings = {};
+
+    for (const key in keyMapped[keyboardType]) {
+        keyMapped[keyboardType][key] = {
+            ...keyMapped[keyboardType][key],
+            value: keyMapped[keyboardType][key].trigger(event),
         };
+
+        clientKeyMapped[key] = keyMapped[keyboardType][key].value;
     }
 
-    return keyMapped;
+    return clientKeyMapped;
 };
 
-export default (handler: KeyboardMappingHandler, dependencies: DependencyList) => {
+export default (
+    handler: KeyboardMappingHandler,
+    dependencies: DependencyList,
+    keyboardType: KeyboardType
+) => {
     const handlerCallback = useCallback(handler, [handler, ...dependencies]);
 
     const keysMapping = useMemo((): KeyboardMappings => {
         const newMapping = defaultKeyMappingObj;
 
-        keyboardMappings.editor.forEach((x) => {
-            newMapping.editor[x.name] = {
-                reference: (event: KeyboardEvent) => {
+        keyboardMappings[keyboardType].forEach((x) => {
+            newMapping[keyboardType][x.name] = {
+                trigger: (event: KeyboardEvent) => {
                     const hasCtrlKey = x.ctrlKey ? event.ctrlKey : !event.ctrlKey;
                     const hasShifKey = x.shiftKey ? event.shiftKey : !event.shiftKey;
 
@@ -33,11 +50,11 @@ export default (handler: KeyboardMappingHandler, dependencies: DependencyList) =
         });
 
         return newMapping;
-    }, []);
+    }, [keyboardType]);
 
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
-            handlerCallback(callAllKeyMappedReferences(keysMapping, event));
+            handlerCallback(triggerAllMappedKey(keysMapping, event, keyboardType));
         };
 
         window.addEventListener("keyup", onKeyUpHandler);
@@ -45,5 +62,5 @@ export default (handler: KeyboardMappingHandler, dependencies: DependencyList) =
         return () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
-    }, [handlerCallback, keysMapping]);
+    }, [handlerCallback, keysMapping, keyboardType]);
 };
