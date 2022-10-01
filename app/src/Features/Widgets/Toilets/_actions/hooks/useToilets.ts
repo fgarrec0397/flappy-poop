@@ -18,7 +18,8 @@ type AddToiletsChunkParameter = {
 };
 
 export default () => {
-    const { toiletsChunks, update, getToiletById, add, addBatch, remove } = useToiletsService();
+    const { toiletsChunks, update, getToiletById, add, addBatch, remove, removeAll } =
+        useToiletsService();
 
     const addToiletChunk = useCallback(
         (parameter?: AddToiletsChunkParameter) => {
@@ -77,6 +78,10 @@ export default () => {
         addBatch(newToiletsChunks);
     }, [addBatch, addToiletChunk, toiletsChunks]);
 
+    const removeAllToiletsChunks = useCallback(() => {
+        removeAll();
+    }, [removeAll]);
+
     const removeToiletChunk = useCallback(
         (toiletChunkId: string) => {
             remove(toiletChunkId);
@@ -113,5 +118,6 @@ export default () => {
         addToiletChunk,
         addBatchToiletsChunk,
         removeToiletChunk,
+        removeAllToiletsChunks,
     };
 };

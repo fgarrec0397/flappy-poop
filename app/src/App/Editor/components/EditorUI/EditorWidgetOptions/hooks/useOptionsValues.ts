@@ -12,7 +12,7 @@ export default () => {
         setOptionsValues(options);
     }, [selectedWidgets, getWidgetDictionaryFromWidget]);
 
-    const updateOptionsValues = <T>(value: T, option: WidgetBaseOptions) => {
+    const updateOptionsValues = (value: string | number | boolean, option: WidgetBaseOptions) => {
         setOptionsValues({
             ...optionsValues,
             [option.name]: {

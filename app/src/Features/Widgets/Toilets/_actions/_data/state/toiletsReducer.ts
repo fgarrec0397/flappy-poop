@@ -17,6 +17,9 @@ export const toiletsSlice = createSlice({
         addToiletsChunk: (state, action: PayloadAction<ToiletsChunkModel[]>) => {
             state.toiletsChunks = action.payload;
         },
+        removeAllToilets: (state) => {
+            state.toiletsChunks = [];
+        },
         removeToiletsChunk: (state, action: PayloadAction<string>) => {
             const id = action.payload;
             state.toiletsChunks = state.toiletsChunks.filter((x) => x.id !== id);
@@ -46,6 +49,7 @@ export const toiletsSlice = createSlice({
     },
 });
 
-export const { addToiletsChunk, removeToiletsChunk, updateToilet } = toiletsSlice.actions;
+export const { addToiletsChunk, removeToiletsChunk, removeAllToilets, updateToilet } =
+    toiletsSlice.actions;
 
 export default toiletsSlice.reducer;

@@ -12,11 +12,6 @@ import EditorOptionsTextField from "./EditorOptionsTextField";
 const EditorWidgetOptions: FC = () => {
     const { selectedWidgets } = useWidgets();
 
-    console.log(
-        selectedWidgets[0].widgetDefinition.options,
-        "selectedWidgets[0].widgetDefinition.options"
-    );
-
     return (
         <Card size="small" bordered={false} bodyStyle={{ padding: "0" }}>
             {selectedWidgets.length > 1 ? (

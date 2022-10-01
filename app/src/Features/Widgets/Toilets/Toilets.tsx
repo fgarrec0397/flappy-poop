@@ -1,7 +1,5 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
-import { useIsEditor } from "@app/Editor/_actions/hooks";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import { useFrame } from "@react-three/fiber";
 import { FC, useRef } from "react";
 import { Mesh } from "three";
 
@@ -20,15 +18,8 @@ export interface ToiletsProps extends EditableWidget {
 type OwnProps = ToiletsProps;
 
 const Toilets: FC<OwnProps> = () => {
-    const { isEditor } = useIsEditor();
     const toiletsRef = useRef<Mesh>(null);
     const { toiletsChunks } = useToilets();
-
-    // useFrame(() => {
-    //     if (!isEditor && toiletsRef.current) {
-    //         toiletsRef.current.position.x -= 0.1; // Put it to 0.05 when tests are done
-    //     }
-    // });
 
     useToiletsInit();
     useToiletsUpdate();

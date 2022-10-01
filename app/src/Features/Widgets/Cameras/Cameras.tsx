@@ -13,7 +13,6 @@ export type CamerasProps = EditableWidget & {
 
 const Cameras: FC<CamerasProps> = ({ translateXOnPlay }, ref) => {
     const { camera, cameraRef } = useCreateCamera("widgetCamera", ref!);
-    console.log(translateXOnPlay, "translateXOnPlay");
 
     useGameUpdate(() => {
         if (translateXOnPlay) {
