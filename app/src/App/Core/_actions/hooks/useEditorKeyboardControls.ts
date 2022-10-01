@@ -7,7 +7,7 @@ import useWidgets from "@widgets/_actions/hooks/useWidgets";
 import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
 import { useState } from "react";
 
-import useKeyboardMappings from "./useKeyboardMappings";
+import useKeyboardMappings from "./useKeyboardMapping";
 
 export default () => {
     const { setNextCamera, setPrevCamera } = useCameras();

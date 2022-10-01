@@ -8,6 +8,8 @@ import {
 } from "@app/Core/coreTypes";
 import { DependencyList, useCallback, useEffect, useMemo } from "react";
 
+import useKeyboardService from "../_data/hooks/useKeyboardService";
+
 const triggerAllMappedKey = (
     keyMapped: KeyboardMappings,
     event: KeyboardEvent,
@@ -33,6 +35,11 @@ export default (
     keyboardType: KeyboardType
 ) => {
     const handlerCallback = useCallback(handler, [handler, ...dependencies]);
+    const { keyMapping, triggerKey } = useKeyboardService();
+
+    useEffect(() => {
+        console.log(keyMapping, "keyMapping");
+    }, [keyMapping]);
 
     const keysMapping = useMemo((): KeyboardMappings => {
         const newMapping = defaultKeyMappingObj;
@@ -55,6 +62,7 @@ export default (
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
             handlerCallback(triggerAllMappedKey(keysMapping, event, keyboardType));
+            triggerKey(triggerAllMappedKey(keysMapping, event, keyboardType));
         };
 
         window.addEventListener("keyup", onKeyUpHandler);
@@ -62,5 +70,5 @@ export default (
         return () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
-    }, [handlerCallback, keysMapping, keyboardType]);
+    }, [handlerCallback, keysMapping, keyboardType, triggerKey]);
 };

@@ -8,6 +8,7 @@ import { WidgetsModulesContext } from "@widgets/_actions/_data/providers/Widgets
 import { FC } from "react";
 import { ReactReduxContext } from "react-redux";
 
+import { KeyboardContext } from "./Core/_actions/_data/providers/KeyboardProvider";
 import { HistoryDictionaryContext } from "./Editor/_actions/_data/providers/HistoryContextProvider";
 import UI from "./UI/UI";
 import { useWidgets } from "./Widgets/_actions/hooks";
@@ -16,6 +17,7 @@ const App: FC = () => {
     const { removeWidgetSelection } = useWidgets();
     const ContextBridge = useContextBridge(
         CamerasContext,
+        KeyboardContext,
         WidgetsContext,
         WidgetsModulesContext,
         ReactReduxContext,
