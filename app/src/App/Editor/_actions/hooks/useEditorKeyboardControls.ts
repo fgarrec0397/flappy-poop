@@ -7,7 +7,7 @@ import useWidgets from "@widgets/_actions/hooks/useWidgets";
 import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
 import { useState } from "react";
 
-import useKeyboardMappings from "./useKeyboardMapping";
+import useEditorKeyboard from "../../../Core/_actions/hooks/useEditorKeyboard";
 
 export default () => {
     const { setNextCamera, setPrevCamera } = useCameras();
@@ -23,7 +23,7 @@ export default () => {
     const [, setCopiedWidgets] = useState<WidgetSceneObject[]>([]);
     const { playGame } = usePlayGame();
 
-    useKeyboardMappings(
+    useEditorKeyboard(
         async (keyMapping: ClientKeyMappings) => {
             if (keyMapping.toggleEditor) {
                 playGame();
@@ -60,7 +60,6 @@ export default () => {
             copyWidget,
             removeselectedWidgets,
             shouldAddHistoryState,
-        ],
-        "editor"
+        ]
     );
 };

@@ -1,1 +1,1 @@
-export { default as useEditorKeyboardControls } from "./useEditorKeyboardControls";
+export { default as useEditorKeyboardControls } from "../../../Editor/_actions/hooks/useEditorKeyboardControls";

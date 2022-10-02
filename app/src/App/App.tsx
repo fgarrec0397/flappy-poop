@@ -9,6 +9,7 @@ import { FC } from "react";
 import { ReactReduxContext } from "react-redux";
 
 import { KeyboardContext } from "./Core/_actions/_data/providers/KeyboardProvider";
+import useKeyboardMapping from "./Core/_actions/hooks/useHandleKeyboardMapping";
 import { HistoryDictionaryContext } from "./Editor/_actions/_data/providers/HistoryContextProvider";
 import UI from "./UI/UI";
 import { useWidgets } from "./Widgets/_actions/hooks";
@@ -26,6 +27,8 @@ const App: FC = () => {
 
     // Store all kind of widgets in Widgets Context API
     useWidgetsInitModules();
+
+    useKeyboardMapping();
 
     const onPointerMissed = (event: MouseEvent) => {
         event.stopPropagation();

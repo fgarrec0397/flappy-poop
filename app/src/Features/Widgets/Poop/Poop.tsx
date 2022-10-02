@@ -1,6 +1,8 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
+import useGameKeyboard from "@app/Core/_actions/hooks/useGameKeyboard";
+import { ClientKeyMappings } from "@app/Core/coreTypes";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
@@ -22,6 +24,14 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const colliderRef = useRef<RigidBodyApi>(null);
     const { getSize } = useObjectSize();
     const { isEditor } = useIsEditor();
+
+    useGameKeyboard((keyMapping: ClientKeyMappings) => {
+        console.log(keyMapping, "game keyMapping");
+
+        if (keyMapping.test) {
+            console.log("it works");
+        }
+    }, []);
 
     useEffect(() => {
         if (meshRef.current) {

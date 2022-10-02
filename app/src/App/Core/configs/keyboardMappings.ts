@@ -57,4 +57,12 @@ export default {
             shiftKey: true,
         },
     ],
+    game: [
+        {
+            name: "test",
+            code: "KeyS",
+            ctrlKey: true,
+            shiftKey: true,
+        },
+    ],
 } as KeyboardKeys;

@@ -1,12 +1,8 @@
 import keyboardMappings from "@app/Core/configs/keyboardMappings";
 import { defaultKeyMappingObj } from "@app/Core/coreConstants";
-import {
-    ClientKeyMappings,
-    KeyboardMappingHandler,
-    KeyboardMappings,
-    KeyboardType,
-} from "@app/Core/coreTypes";
-import { DependencyList, useCallback, useEffect, useMemo } from "react";
+import { ClientKeyMappings, KeyboardMappings, KeyboardType } from "@app/Core/coreTypes";
+import { useIsEditor } from "@app/Editor/_actions/hooks";
+import { useEffect, useMemo, useState } from "react";
 
 import useKeyboardService from "../_data/hooks/useKeyboardService";
 
@@ -29,17 +25,18 @@ const triggerAllMappedKey = (
     return clientKeyMapped;
 };
 
-export default (
-    handler: KeyboardMappingHandler,
-    dependencies: DependencyList,
-    keyboardType: KeyboardType
-) => {
-    const handlerCallback = useCallback(handler, [handler, ...dependencies]);
-    const { keyMapping, triggerKey } = useKeyboardService();
+export default () => {
+    const [keyboardType, setKeyboardType] = useState<KeyboardType>("editor");
+    const { triggerKey } = useKeyboardService();
+    const { isEditor } = useIsEditor();
 
     useEffect(() => {
-        console.log(keyMapping, "keyMapping");
-    }, [keyMapping]);
+        if (isEditor) {
+            setKeyboardType("editor");
+        } else {
+            setKeyboardType("game");
+        }
+    }, [isEditor]);
 
     const keysMapping = useMemo((): KeyboardMappings => {
         const newMapping = defaultKeyMappingObj;
@@ -61,7 +58,6 @@ export default (
 
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
-            handlerCallback(triggerAllMappedKey(keysMapping, event, keyboardType));
             triggerKey(triggerAllMappedKey(keysMapping, event, keyboardType));
         };
 
@@ -70,5 +66,5 @@ export default (
         return () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
-    }, [handlerCallback, keysMapping, keyboardType, triggerKey]);
+    });
 };
