@@ -29,7 +29,7 @@ const Terrain: FC<OwnProps> = ({ translateXOnPlay }) => {
     });
 
     return (
-        <GameRigidbody ref={ref}>
+        <GameRigidbody ref={ref} lockRotations>
             <mesh>
                 <planeBufferGeometry />
                 <meshStandardMaterial color="white" />

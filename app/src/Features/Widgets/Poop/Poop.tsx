@@ -5,11 +5,12 @@ import useGameKeyboard from "@app/Core/_actions/hooks/useGameKeyboard";
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
 import { CuboidCollider, RigidBodyApi } from "@react-three/rapier";
-import { FC, useEffect, useRef, useState } from "react";
+import { createRef, FC, useEffect, useRef, useState } from "react";
 import { Group, Mesh, Vector3 } from "three";
 
 import { PoopModelGLTFResult } from "./_actions/poopTypes";
@@ -21,15 +22,13 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const ref = useRef<Group>(null);
     const meshRef = useRef<Mesh>(null);
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
-    const colliderRef = useRef<RigidBodyApi>(null);
+    const colliderRef = createRef<RigidBodyApi>();
     const { getSize } = useObjectSize();
     const { isEditor } = useIsEditor();
 
     useGameKeyboard((keyMapping: ClientKeyMappings) => {
-        console.log(keyMapping, "game keyMapping");
-
-        if (keyMapping.test) {
-            console.log("it works");
+        if (keyMapping.jump && colliderRef.current) {
+            colliderRef.current.applyImpulse(new Vector3(0, 0.3, 0));
         }
     }, []);
 
@@ -47,15 +46,35 @@ const Poop: FC<PoopProps> = ({ position }) => {
         }
     }, [meshRef, getSize, position]);
 
+    useGameUpdate(() => {
+        if (colliderRef.current) {
+            colliderRef.current.setTranslation(
+                new Vector3(
+                    colliderRef.current.translation().x + 0.01,
+                    colliderRef.current.translation().y,
+                    colliderRef.current.translation().z
+                )
+            );
+        }
+    });
+
     return (
         <GameRigidbody
             ref={colliderRef}
             colliders={false}
-            onCollisionEnter={(test) => {
-                console.log(test, "collision enter");
-            }}
+            enabledRotations={[true, true, false]}
+            gravityScale={2.5}
+            angularDamping={2.5}
+            linearDamping={10}
         >
-            {!isEditor && <CuboidCollider args={[0.15, 0.15, 0.15]} />}
+            {!isEditor && (
+                <CuboidCollider
+                    args={[0.15, 0.15, 0.15]}
+                    onCollisionEnter={(test) => {
+                        console.log(test, "collision enter");
+                    }}
+                />
+            )}
             <group position={groupPosition}>
                 <group rotation={[-Math.PI / 2, 0, 0]}>
                     <group scale={[0.008, 0.008, 0.008]} ref={ref}>

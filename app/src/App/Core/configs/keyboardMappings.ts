@@ -59,10 +59,10 @@ export default {
     ],
     game: [
         {
-            name: "test",
-            code: "KeyS",
-            ctrlKey: true,
-            shiftKey: true,
+            name: "jump",
+            code: "Space",
+            ctrlKey: false,
+            shiftKey: false,
         },
     ],
 } as KeyboardKeys;

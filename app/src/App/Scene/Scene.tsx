@@ -13,14 +13,10 @@ const Scene: FC = () => {
     useHandleGetScene();
 
     return (
-        // <Physics paused={isEditor}>
         <Suspense>
-            {/* <Physics> */}
-            {/* <Debug /> */}
             <Lights />
             {isEditor ? <Editor.Editor /> : <Game.Game />}
         </Suspense>
-        // </Physics>
     );
 };
 

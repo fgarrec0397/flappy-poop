@@ -1,15 +1,13 @@
-// import { useGameKeyboardControls } from "@app/Core/_actions/hooks";
-import { Debug, Physics } from "@react-three/rapier";
+import { Physics } from "@react-three/rapier";
 import Widgets from "@widgets/Widgets";
 import { FC } from "react";
 
 const Game: FC = () => {
-    // useGameKeyboardControls();
-
+    // TODO Implement a setting to activate the Debug through the editor
     return (
         <>
             <Physics>
-                <Debug />
+                {/* <Debug /> */}
                 <Widgets />
             </Physics>
         </>
