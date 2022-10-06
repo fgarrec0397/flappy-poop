@@ -111,6 +111,22 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
                     />
                 </group>
             </GameRigidbody>
+            <GameRigidbody
+                scale={[10, 100, 20]}
+                position={toilet.position}
+                rotation={[0, -Math.PI / 2, 0]}
+                sensor
+                onIntersectionEnter={(payload) => {
+                    if (payload.colliderObject?.userData.name === "poop") {
+                        console.log(payload, "ADD SCORE");
+                    }
+                }}
+            >
+                <mesh>
+                    <planeBufferGeometry />
+                    <meshStandardMaterial color="red" />
+                </mesh>
+            </GameRigidbody>
         </>
     );
 };

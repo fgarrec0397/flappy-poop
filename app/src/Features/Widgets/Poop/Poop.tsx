@@ -3,16 +3,20 @@ import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
 import useGameKeyboard from "@app/Core/_actions/hooks/useGameKeyboard";
 import { ClientKeyMappings } from "@app/Core/coreTypes";
+import { useAppSelector } from "@app/Core/store";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
+import useFeaturesSelector from "@features/Core/_actions/_data/hooks/useFeaturesSelector";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
 import { CuboidCollider, RigidBodyApi } from "@react-three/rapier";
 import { createRef, FC, useEffect, useRef, useState } from "react";
 import { Group, Mesh, Vector3 } from "three";
 
+import poopReducer from "./_actions/_data/state/poopReducer";
+import usePoop from "./_actions/hooks/usePoop";
 import { PoopModelGLTFResult } from "./_actions/poopTypes";
 
 export type PoopProps = EditableWidget;
@@ -25,6 +29,13 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const colliderRef = createRef<RigidBodyApi>();
     const { getSize } = useObjectSize();
     const { isEditor } = useIsEditor();
+    const { traversedToilet } = usePoop();
+
+    const featureSelector = useFeaturesSelector();
+
+    useEffect(() => {
+        console.log(featureSelector, "featureSelector");
+    }, [featureSelector]);
 
     useGameKeyboard((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
@@ -66,12 +77,18 @@ const Poop: FC<PoopProps> = ({ position }) => {
             gravityScale={2.5}
             angularDamping={2.5}
             linearDamping={10}
+            userData={{
+                name: "poop",
+            }}
+            onIntersectionEnter={(payload) => {
+                traversedToilet();
+            }}
         >
             {!isEditor && (
                 <CuboidCollider
                     args={[0.15, 0.15, 0.15]}
                     onCollisionEnter={(test) => {
-                        console.log(test, "collision enter");
+                        console.log(test, "COLLISION WITH TOILET");
                     }}
                 />
             )}
@@ -99,7 +116,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
 
 export const widget = createWidget({
     component: Poop,
-    reducer: null,
+    reducer: poopReducer,
     widgetDefinition: {
         name: "Poop",
     },

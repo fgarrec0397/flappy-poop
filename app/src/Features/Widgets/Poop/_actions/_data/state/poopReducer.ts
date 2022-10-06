@@ -1,23 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface PoopState {
-    test: string;
+    score: number;
 }
 
 const initialState: PoopState = {
-    test: "",
+    score: 0,
 };
 
-export const toiletsSlice = createSlice({
-    name: "toilets",
+export const poopSlice = createSlice({
+    name: "poop",
     initialState,
     reducers: {
-        addPoop: (state) => {
-            state.test = "";
+        addPoint: (state) => {
+            state.score++;
         },
     },
 });
 
-export const { addPoop } = toiletsSlice.actions;
+export const { addPoint } = poopSlice.actions;
 
-export default toiletsSlice.reducer;
+export default poopSlice.reducer;

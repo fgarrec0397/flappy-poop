@@ -1,5 +1,11 @@
-export default () => {
-    const test = () => {};
+import usePoopService from "../_data/hooks/usePoopService";
 
-    return { test };
+export default () => {
+    const { addPoint } = usePoopService();
+
+    const traversedToilet = () => {
+        addPoint();
+    };
+
+    return { traversedToilet };
 };
