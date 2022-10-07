@@ -27,19 +27,12 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const colliderRef = createRef<RigidBodyApi>();
     const { getSize } = useObjectSize();
     const { isEditor } = useIsEditor();
-    const { passToilet, isAlive, score } = usePoop();
-
-    // useEffect(() => {
-    //     console.log(isAlive, "isAlive");
-    // }, [isAlive]);
-
-    // useEffect(() => {
-    //     console.log(score, "score");
-    // }, [score]);
+    const poopSpeed = 0.01;
+    const { passToilet, die } = usePoop();
 
     useGameKeyboard((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
-            colliderRef.current.applyImpulse(new Vector3(0, 0.3, 0));
+            colliderRef.current.applyImpulse(new Vector3(poopSpeed, 0.3, 0));
         }
     }, []);
 
@@ -61,7 +54,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
         if (colliderRef.current) {
             colliderRef.current.setTranslation(
                 new Vector3(
-                    colliderRef.current.translation().x + 0.01,
+                    colliderRef.current.translation().x + poopSpeed,
                     colliderRef.current.translation().y,
                     colliderRef.current.translation().z
                 )
@@ -81,14 +74,14 @@ const Poop: FC<PoopProps> = ({ position }) => {
                 name: "poop",
             }}
             onIntersectionEnter={() => {
-                // passToilet();
+                passToilet();
             }}
         >
             {!isEditor && (
                 <CuboidCollider
                     args={[0.15, 0.15, 0.15]}
-                    onCollisionEnter={(test) => {
-                        // console.log(test, "COLLISION WITH TOILET");
+                    onCollisionEnter={() => {
+                        die();
                     }}
                 />
             )}

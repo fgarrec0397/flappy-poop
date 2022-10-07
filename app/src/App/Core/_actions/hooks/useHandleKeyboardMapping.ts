@@ -1,7 +1,9 @@
+import { usePrevious } from "@app/Common/hooks";
 import keyboardMappings from "@app/Core/configs/keyboardMappings";
 import { defaultKeyMappingObj } from "@app/Core/coreConstants";
 import { ClientKeyMappings, KeyboardMappings, KeyboardType } from "@app/Core/coreTypes";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
+import isEqual from "lodash/isEqual";
 import { useEffect, useMemo, useState } from "react";
 
 import useKeyboardService from "../_data/hooks/useKeyboardService";
@@ -28,6 +30,7 @@ const triggerAllMappedKey = (
 export default () => {
     const [keyboardType, setKeyboardType] = useState<KeyboardType>("editor");
     const { update, keyMapping } = useKeyboardService();
+    const previousKeyMapping = usePrevious(keyMapping);
     const { isEditor } = useIsEditor();
 
     useEffect(() => {
@@ -56,6 +59,9 @@ export default () => {
         return newMapping;
     }, [keyboardType]);
 
+    /**
+     * Listen on the Key Up event and update the keyMapping with the good value
+     */
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
             update(triggerAllMappedKey(keysMapping, keyboardType, event));
@@ -67,4 +73,13 @@ export default () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
     }, [keyboardType, keysMapping, update]); // TODO -- Validate if this helps
+
+    /**
+     * When the keyMapping change, reset it all false by avoiding to send an event object to triggerAllMappedKey
+     */
+    useEffect(() => {
+        if (!isEqual(keyMapping, previousKeyMapping)) {
+            update(triggerAllMappedKey(keysMapping, keyboardType));
+        }
+    }, [keyMapping, keyboardType, keysMapping, previousKeyMapping, update]);
 };

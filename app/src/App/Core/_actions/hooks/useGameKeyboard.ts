@@ -11,8 +11,6 @@ export default (handler: KeyboardMappingHandler, dependencies: DependencyList) =
 
     useEffect(() => {
         if (!isEditor) {
-            // console.log(keyMapping, "keyMapping from useGameKeyboard");
-
             handlerCallback(keyMapping);
         }
     }, [handlerCallback, isEditor, keyMapping]);

@@ -116,11 +116,6 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
                 position={toilet.position}
                 rotation={[0, -Math.PI / 2, 0]}
                 sensor
-                onIntersectionEnter={(payload) => {
-                    if (payload.colliderObject?.userData.name === "poop") {
-                        console.log(payload, "ADD SCORE");
-                    }
-                }}
             >
                 <mesh>
                     <planeBufferGeometry />
