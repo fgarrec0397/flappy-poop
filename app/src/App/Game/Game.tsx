@@ -1,3 +1,4 @@
+import ClientGameUI from "@features/GameUI/GameUI";
 import { Physics } from "@react-three/rapier";
 import Widgets from "@widgets/Widgets";
 import { FC } from "react";
@@ -15,7 +16,7 @@ const Game: FC = () => {
 };
 
 const GameUI: FC = () => {
-    return null;
+    return <ClientGameUI />;
 };
 
 export default { Game, GameUI };

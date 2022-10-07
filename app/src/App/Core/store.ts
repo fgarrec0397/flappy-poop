@@ -1,5 +1,5 @@
 import editorReducer, { EditorState } from "@app/Editor/_actions/_data/state/editorReducer";
-import gameReducer from "@app/Game/_actions/_data/state/gameReducer";
+import gameReducer, { GameState } from "@app/Game/_actions/_data/state/gameReducer";
 import { FeaturesState } from "@features/Core/collector";
 import featuresReducer from "@features/Core/featuresReducer";
 import { configureStore } from "@reduxjs/toolkit";
@@ -10,7 +10,7 @@ import { AnyAction, combineReducers, Reducer, ReducersMapObject, Store } from "r
 interface State {
     editor: EditorState;
     widgets: WidgetsState;
-    game: WidgetsState;
+    game: GameState;
     features: FeaturesState;
 }
 

@@ -9,7 +9,6 @@ import useGameControllerUpdate from "./_actions/hooks/useGameControllerUpdate";
 export type GameControllerProps = EditableWidget;
 
 const GameController: FC<GameControllerProps> = () => {
-    console.log("Component");
     useGameControllerInit();
     useGameControllerUpdate();
 

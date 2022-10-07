@@ -1,6 +1,6 @@
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
-import usePlayGame from "@app/Game/_actions/hooks/usePlayGame";
+import useGame from "@app/Game/_actions/hooks/useGame";
 import { saveScene } from "@app/Scene/_actions/_data/services";
 import useCameras from "@scene/_actions/hooks/useCameras";
 import useWidgets from "@widgets/_actions/hooks/useWidgets";
@@ -21,12 +21,12 @@ export default () => {
     } = useWidgets();
     const { setPrevHistoryItem, setNextHistoryItem, shouldAddHistoryState } = useHistory();
     const [, setCopiedWidgets] = useState<WidgetSceneObject[]>([]);
-    const { playGame } = usePlayGame();
+    const { startGame } = useGame();
 
     useEditorKeyboard(
         async (keyMapping: ClientKeyMappings) => {
             if (keyMapping.toggleEditor) {
-                playGame();
+                startGame();
             } else if (keyMapping.copyWidget) {
                 if (selectedWidgets.length > 0) {
                     setCopiedWidgets(selectedWidgets);
