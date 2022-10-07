@@ -1,4 +1,4 @@
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import { RigidBody, RigidBodyApi, RigidBodyProps } from "@react-three/rapier";
 import { forwardRef, ReactNode } from "react";
 
@@ -8,7 +8,7 @@ type Props = RigidBodyProps & {
 };
 
 const GameRigidbody = forwardRef<RigidBodyApi, Props>(({ children, ...rigidbodyProps }, ref) => {
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     if (!isEditor) {
         return (

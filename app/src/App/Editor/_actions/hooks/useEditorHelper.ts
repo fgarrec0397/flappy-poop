@@ -2,7 +2,7 @@ import { useHelper } from "@react-three/drei";
 import { MutableRefObject } from "react";
 import { Object3D } from "three";
 
-import useIsEditor from "./useIsEditor";
+import useEditor from "./useEditor";
 
 type Constructor = new (...args: any[]) => any;
 type Helper = Object3D & {
@@ -22,7 +22,7 @@ export default <T extends Constructor>(
     helperConstructor?: T,
     additionnalCondition = true
 ): MutableRefObject<Helper | undefined> => {
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     return useHelper(isEditor && additionnalCondition && object3D, helperConstructor as any); // TODO -- fix any type here
 };

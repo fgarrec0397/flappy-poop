@@ -1,4 +1,4 @@
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import { useEffect } from "react";
 
 /**
@@ -12,7 +12,7 @@ import { useEffect } from "react";
  * @param onUnMountCallback Callback that is executed when the component unmount.
  */
 export default <T>(onMountCallback: () => T, onUnMountCallback?: (data: T) => void) => {
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     useEffect(() => {
         let returnedValue: T;

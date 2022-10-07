@@ -1,5 +1,5 @@
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useEditorHelper from "@app/Editor/_actions/hooks/useEditorHelper";
-import useIsEditor from "@app/Editor/_actions/hooks/useIsEditor";
 import { ThreeEvent } from "@react-three/fiber";
 import { getWidgetName, populateWidgetProperties } from "@widgets/_actions/utilities";
 import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
@@ -17,7 +17,7 @@ const WidgetRenderer: FC<Props> = ({ widget }) => {
     const componentRef = useRef(null!);
     const [hovered, setHover] = useState(false);
     const { widgetsDictionary, getWidgetDictionaryFromWidget } = useWidgets();
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
     const { component, id, editorOptions, hasRef } = widget;
     const name = getWidgetName(widget);
     const Component = component;

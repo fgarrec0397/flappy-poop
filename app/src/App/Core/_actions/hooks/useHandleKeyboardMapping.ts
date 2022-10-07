@@ -2,7 +2,7 @@ import { usePrevious } from "@app/Common/hooks";
 import keyboardMappings from "@app/Core/configs/keyboardMappings";
 import { defaultKeyMappingObj } from "@app/Core/coreConstants";
 import { ClientKeyMappings, KeyboardMappings, KeyboardType } from "@app/Core/coreTypes";
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import isEqual from "lodash/isEqual";
 import { useEffect, useMemo, useState } from "react";
 
@@ -31,7 +31,7 @@ export default () => {
     const [keyboardType, setKeyboardType] = useState<KeyboardType>("editor");
     const { update, keyMapping } = useKeyboardService();
     const previousKeyMapping = usePrevious(keyMapping);
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     useEffect(() => {
         if (isEditor) {

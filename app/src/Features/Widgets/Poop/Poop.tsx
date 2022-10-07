@@ -4,7 +4,7 @@ import { serializeVector3 } from "@app/Common/utilities";
 import useGameKeyboard from "@app/Core/_actions/hooks/useGameKeyboard";
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
@@ -26,7 +26,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
     const colliderRef = createRef<RigidBodyApi>();
     const { getSize } = useObjectSize();
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
     const poopSpeed = 0.01;
     const { passToilet, die } = usePoop();
 

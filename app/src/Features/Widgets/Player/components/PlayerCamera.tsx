@@ -1,4 +1,4 @@
-import useIsEditor from "@app/Editor/_actions/hooks/useIsEditor";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 // import { Triplet, useSphere } from "@react-three/cannon";
 import { PointerLockControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -71,7 +71,7 @@ const PlayerCamera: FC<PlayerCameraProps> = ({ initialPlayerPos, ...props }) => 
     //     ...props,
     // }));
 
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
     // const { setCamera } = useCameras();
     const { forward, backward, left, right, jump } = usePlayerControls();
     const { camera } = useThree();

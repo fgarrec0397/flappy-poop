@@ -1,5 +1,5 @@
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
-import useIsEditor from "@app/Editor/_actions/hooks/useIsEditor";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { useHelper } from "@react-three/drei";
 import { FC, useRef } from "react";
@@ -13,7 +13,7 @@ type OwnProps = PlayerProps;
 
 const Player: FC<OwnProps> = () => {
     const ref = useRef(null);
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     useHelper(isEditor && ref, BoxHelper, "red");
 

@@ -1,4 +1,4 @@
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import { RenderCallback, useFrame } from "@react-three/fiber";
 
 /**
@@ -9,7 +9,7 @@ import { RenderCallback, useFrame } from "@react-three/fiber";
  * @param callback The callback you want to be executed each frame.
  */
 export default (callback: RenderCallback) => {
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
 
     useFrame((state, delta, frame) => {
         if (!isEditor) {

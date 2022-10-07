@@ -2,7 +2,7 @@ import { Vector3Array } from "@app/Common/commonTypes";
 import { useIntersect } from "@app/Common/hooks/useIntersect";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
-import { useIsEditor } from "@app/Editor/_actions/hooks";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
 import { CuboidCollider } from "@react-three/rapier";
@@ -25,7 +25,7 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
     const { getSize } = useObjectSize();
     const rbRef = useRef<RigidBodyApi>(null);
     const rbRef2 = useRef<RigidBodyApi>(null);
-    const { isEditor } = useIsEditor();
+    const { isEditor } = useEditor();
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
     const [groupPosition2, setGroupPosition2] = useState<Vector3Array>([0, 0, 0]);
     const ref = useIntersect((visible) => {
