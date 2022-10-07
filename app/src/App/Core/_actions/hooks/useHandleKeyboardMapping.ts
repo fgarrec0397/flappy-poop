@@ -8,15 +8,15 @@ import useKeyboardService from "../_data/hooks/useKeyboardService";
 
 const triggerAllMappedKey = (
     keyMapped: KeyboardMappings,
-    event: KeyboardEvent,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType,
+    event?: KeyboardEvent
 ) => {
     const clientKeyMapped: ClientKeyMappings = {};
 
     for (const key in keyMapped[keyboardType]) {
         keyMapped[keyboardType][key] = {
             ...keyMapped[keyboardType][key],
-            value: keyMapped[keyboardType][key].trigger(event),
+            value: event ? keyMapped[keyboardType][key].trigger(event) : false,
         };
 
         clientKeyMapped[key] = keyMapped[keyboardType][key].value;
@@ -27,7 +27,7 @@ const triggerAllMappedKey = (
 
 export default () => {
     const [keyboardType, setKeyboardType] = useState<KeyboardType>("editor");
-    const { triggerKey } = useKeyboardService();
+    const { update, keyMapping } = useKeyboardService();
     const { isEditor } = useIsEditor();
 
     useEffect(() => {
@@ -58,7 +58,7 @@ export default () => {
 
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
-            triggerKey(triggerAllMappedKey(keysMapping, event, keyboardType));
+            update(triggerAllMappedKey(keysMapping, keyboardType, event));
         };
 
         window.addEventListener("keyup", onKeyUpHandler);
@@ -66,5 +66,5 @@ export default () => {
         return () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
-    });
+    }, [keyboardType, keysMapping, update]); // TODO -- Validate if this helps
 };

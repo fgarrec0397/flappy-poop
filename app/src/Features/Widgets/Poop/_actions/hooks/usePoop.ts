@@ -1,11 +1,15 @@
 import usePoopService from "../_data/hooks/usePoopService";
 
 export default () => {
-    const { addPoint } = usePoopService();
+    const { isAlive, score, addPoint, killPoop } = usePoopService();
 
-    const traversedToilet = () => {
+    const passToilet = () => {
         addPoint();
     };
 
-    return { traversedToilet };
+    const die = () => {
+        killPoop();
+    };
+
+    return { isAlive, score, passToilet, die };
 };

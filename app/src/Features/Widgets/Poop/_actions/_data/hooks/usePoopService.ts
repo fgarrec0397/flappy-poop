@@ -1,13 +1,17 @@
 import usePoopDispatch from "./usePoopDispatch";
+import usePoopSelector from "./usePoopSelector";
 
 export default () => {
-    const { dispatchAddPoint } = usePoopDispatch();
+    const { dispatchAddPoint, dispatchKillPoop } = usePoopDispatch();
+    const { isAlive, score } = usePoopSelector();
 
     const addPoint = () => {
         dispatchAddPoint();
     };
 
-    return {
-        addPoint,
+    const killPoop = () => {
+        dispatchKillPoop();
     };
+
+    return { isAlive, score, addPoint, killPoop };
 };

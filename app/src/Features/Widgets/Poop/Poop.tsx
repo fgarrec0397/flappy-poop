@@ -3,12 +3,10 @@ import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
 import useGameKeyboard from "@app/Core/_actions/hooks/useGameKeyboard";
 import { ClientKeyMappings } from "@app/Core/coreTypes";
-import { useAppSelector } from "@app/Core/store";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import { useIsEditor } from "@app/Editor/_actions/hooks";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
-import useFeaturesSelector from "@features/Core/_actions/_data/hooks/useFeaturesSelector";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
 import { CuboidCollider, RigidBodyApi } from "@react-three/rapier";
@@ -29,13 +27,15 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const colliderRef = createRef<RigidBodyApi>();
     const { getSize } = useObjectSize();
     const { isEditor } = useIsEditor();
-    const { traversedToilet } = usePoop();
+    const { passToilet, isAlive, score } = usePoop();
 
-    const featureSelector = useFeaturesSelector();
+    // useEffect(() => {
+    //     console.log(isAlive, "isAlive");
+    // }, [isAlive]);
 
-    useEffect(() => {
-        console.log(featureSelector, "featureSelector");
-    }, [featureSelector]);
+    // useEffect(() => {
+    //     console.log(score, "score");
+    // }, [score]);
 
     useGameKeyboard((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
@@ -80,15 +80,15 @@ const Poop: FC<PoopProps> = ({ position }) => {
             userData={{
                 name: "poop",
             }}
-            onIntersectionEnter={(payload) => {
-                traversedToilet();
+            onIntersectionEnter={() => {
+                // passToilet();
             }}
         >
             {!isEditor && (
                 <CuboidCollider
                     args={[0.15, 0.15, 0.15]}
                     onCollisionEnter={(test) => {
-                        console.log(test, "COLLISION WITH TOILET");
+                        // console.log(test, "COLLISION WITH TOILET");
                     }}
                 />
             )}
