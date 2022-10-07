@@ -2,7 +2,7 @@ import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { FC } from "react";
 
-import poopReducer from "./_actions/_data/state/widgetStarterReducer";
+import widgetStarterReducer from "./_actions/_data/state/widgetStarterReducer";
 
 export type WidgetStarterProps = EditableWidget;
 
@@ -12,7 +12,7 @@ const WidgetStarter: FC<WidgetStarterProps> = () => {
 
 export const widget = createWidget({
     component: WidgetStarter,
-    reducer: poopReducer,
+    reducer: widgetStarterReducer,
     widgetDefinition: {
         name: "Poop",
     },
