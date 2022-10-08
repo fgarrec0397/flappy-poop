@@ -1,6 +1,6 @@
 import Typography from "@app/Common/components/Html/Typography";
-import useWidgets from "@widgets/_actions/hooks/useWidgets";
-import { FieldType } from "@widgets/_actions/widgetsTypes";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import { FieldType } from "@app/Widgets/_actions/widgetsTypes";
 import { Card } from "antd";
 import { FC } from "react";
 

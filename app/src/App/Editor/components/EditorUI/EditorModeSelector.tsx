@@ -1,6 +1,6 @@
 import { ModesAvailable } from "@app/Editor/_actions/editorTypes";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
-import StyledWrapper, { StyledWrapperProps } from "@common/components/Html/StyledWrapper";
+import StyledWrapper, { StyledWrapperProps } from "@app/Common/components/Html/StyledWrapper";
 import { Card, Select } from "antd";
 import { FC } from "react";
 import { css } from "styled-components";

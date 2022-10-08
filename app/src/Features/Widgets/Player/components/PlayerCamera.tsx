@@ -1,8 +1,8 @@
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
+import useCameras from "@app/Scenes/_actions/hooks/useCameras";
 // import { Triplet, useSphere } from "@react-three/cannon";
 import { PointerLockControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import useCameras from "@scene/_actions/hooks/useCameras";
 import { FC, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 

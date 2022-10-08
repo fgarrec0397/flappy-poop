@@ -1,4 +1,4 @@
-import StyledWrapper, { StyledWrapperProps } from "@common/components/Html/StyledWrapper";
+import StyledWrapper, { StyledWrapperProps } from "@app/Common/components/Html/StyledWrapper";
 import { FC } from "react";
 import { css } from "styled-components";
 

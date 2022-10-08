@@ -3,7 +3,7 @@ import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { RigidBodyApi } from "@react-three/rapier";
-import { FieldType } from "@widgets/_actions/widgetsTypes";
+import { FieldType } from "@app/Widgets/_actions/widgetsTypes";
 import { FC, useEffect, useRef } from "react";
 
 export interface GeometryFormsProps extends EditableWidget {

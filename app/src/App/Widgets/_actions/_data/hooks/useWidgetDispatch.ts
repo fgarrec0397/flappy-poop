@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@core/store";
+import { useAppDispatch } from "@app/Core/store";
 import { useCallback } from "react";
 
 import { WidgetProperties, WidgetsDictionary, WidgetsDictionaryItem } from "../../widgetsTypes";

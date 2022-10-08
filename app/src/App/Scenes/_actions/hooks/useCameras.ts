@@ -3,8 +3,8 @@ import { useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 
 import useCamerasService from "../_data/hooks/useCamerasService";
-import { DefaultCameras } from "../sceneConstants";
-import { SceneCamera, SceneCameraRef } from "../sceneTypes";
+import { DefaultCameras } from "../scenesConstants";
+import { SceneCamera, SceneCameraRef } from "../scenesTypes";
 
 export default () => {
     const setThree = useThree(({ set }) => set);

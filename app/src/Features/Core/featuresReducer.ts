@@ -1,4 +1,4 @@
-import { MapPropertiesToNonNullable } from "@common/commonTypes";
+import { MapPropertiesToNonNullable } from "@app/Common/commonTypes";
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { preparedReducer } from "./collector";

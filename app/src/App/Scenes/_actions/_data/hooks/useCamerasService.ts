@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { SceneCamera } from "../../sceneTypes";
+import { SceneCamera } from "../../scenesTypes";
 import useCamerasContext from "./useCamerasContext";
 
 export default () => {

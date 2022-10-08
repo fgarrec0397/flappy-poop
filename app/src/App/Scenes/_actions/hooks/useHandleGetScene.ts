@@ -5,7 +5,7 @@ import { WidgetObjects } from "@app/Widgets/_actions/widgetsTypes";
 import { useEffect } from "react";
 
 import { fetchScene } from "../_data/services";
-import { SceneApiResponseResult } from "../sceneTypes";
+import { SceneApiResponseResult } from "../scenesTypes";
 
 export default () => {
     const { widgetsModules, getSceneWidgetComponentFromModules, getWidgetModuleFromWidgetScene } =

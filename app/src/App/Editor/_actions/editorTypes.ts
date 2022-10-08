@@ -1,5 +1,5 @@
 import { Dictionary } from "@app/Common/commonTypes";
-import { WidgetObjects, WidgetsDictionary } from "@widgets/_actions/widgetsTypes";
+import { WidgetObjects, WidgetsDictionary } from "@app/Widgets/_actions/widgetsTypes";
 
 /**
  * Additional props that applies for widgets in the editor

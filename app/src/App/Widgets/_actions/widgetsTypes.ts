@@ -1,4 +1,4 @@
-import { Dictionary } from "@common/commonTypes";
+import { Dictionary } from "@app/Common/commonTypes";
 import { FeaturesWidgetsProps } from "@features/Core/collector";
 import { FC, ForwardRefExoticComponent, PropsWithoutRef, ReactNode, RefAttributes } from "react";
 import { AnyAction, Reducer } from "redux";

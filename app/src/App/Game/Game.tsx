@@ -1,6 +1,6 @@
 import ClientGameUI from "@features/GameUI/GameUI";
 import { Physics } from "@react-three/rapier";
-import Widgets from "@widgets/Widgets";
+import Widgets from "@app/Widgets/Widgets";
 import { FC } from "react";
 
 const Game: FC = () => {

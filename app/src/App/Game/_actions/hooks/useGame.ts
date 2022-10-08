@@ -1,5 +1,5 @@
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
-import { useCameras } from "@app/Scene/_actions/hooks";
+import { useCameras } from "@app/Scenes/_actions/hooks";
 import { useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 

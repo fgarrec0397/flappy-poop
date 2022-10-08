@@ -2,7 +2,7 @@ import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useHandleEditor from "@app/Editor/_actions/hooks/useHandleEditor";
 import Editor from "@app/Editor/Editor";
 import Game from "@app/Game/Game";
-import { useHandleGetScene } from "@app/Scene/_actions/hooks";
+import { useHandleGetScene } from "@app/Scenes/_actions/hooks";
 import { FC, Suspense } from "react";
 
 import { Lights } from "./components";

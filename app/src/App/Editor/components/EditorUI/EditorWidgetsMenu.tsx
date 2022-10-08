@@ -1,8 +1,8 @@
 import { useWidgets } from "@app/Widgets/_actions/hooks";
-import StyledWrapper, { StyledWrapperProps } from "@common/components/Html/StyledWrapper";
-import useWidgetsModuleContext from "@widgets/_actions/_data/hooks/useWidgetsModuleContext";
-import { mapWidgetModuleToWidgetSceneObject } from "@widgets/_actions/utilities";
-import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
+import StyledWrapper, { StyledWrapperProps } from "@app/Common/components/Html/StyledWrapper";
+import useWidgetsModuleContext from "@app/Widgets/_actions/_data/hooks/useWidgetsModuleContext";
+import { mapWidgetModuleToWidgetSceneObject } from "@app/Widgets/_actions/utilities";
+import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
 import { Button, Col, Modal, Row } from "antd";
 import { FC, StrictMode, useState } from "react";
 import { css } from "styled-components";

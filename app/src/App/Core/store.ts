@@ -3,7 +3,7 @@ import gameReducer, { GameState } from "@app/Game/_actions/_data/state/gameReduc
 import { FeaturesState } from "@features/Core/collector";
 import featuresReducer from "@features/Core/featuresReducer";
 import { configureStore } from "@reduxjs/toolkit";
-import widgetsReducer, { WidgetsState } from "@widgets/_actions/_data/state/widgetsReducer";
+import widgetsReducer, { WidgetsState } from "@app/Widgets/_actions/_data/state/widgetsReducer";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { AnyAction, combineReducers, Reducer, ReducersMapObject, Store } from "redux";
 

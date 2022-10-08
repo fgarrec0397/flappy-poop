@@ -3,7 +3,7 @@ import { useThree } from "@react-three/fiber";
 import { ForwardedRef, MutableRefObject, useEffect } from "react";
 import { PerspectiveCamera } from "three";
 
-import { SceneCameraRef } from "../sceneTypes";
+import { SceneCameraRef } from "../scenesTypes";
 import useCameras from "./useCameras";
 
 /**

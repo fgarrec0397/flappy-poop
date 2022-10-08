@@ -1,10 +1,10 @@
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
+import useCameras from "@app/Scenes/_actions/hooks/useCameras";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import useCameras from "@scene/_actions/hooks/useCameras";
 import { FC, useEffect, useRef } from "react";
 import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from "three";
 
-import { DefaultCameras } from "../_actions/sceneConstants";
+import { DefaultCameras } from "../_actions/scenesConstants";
 import TransformControls from "./TransformControls";
 
 const EditorCamera: FC = () => {

@@ -1,10 +1,10 @@
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
 import useGame from "@app/Game/_actions/hooks/useGame";
-import { saveScene } from "@app/Scene/_actions/_data/services";
-import useCameras from "@scene/_actions/hooks/useCameras";
-import useWidgets from "@widgets/_actions/hooks/useWidgets";
-import { WidgetSceneObject } from "@widgets/_actions/widgetsTypes";
+import { saveScene } from "@app/Scenes/_actions/_data/services";
+import useCameras from "@app/Scenes/_actions/hooks/useCameras";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
 import { useState } from "react";
 
 import useEditorKeyboard from "../../../Core/_actions/hooks/useEditorKeyboard";

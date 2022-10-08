@@ -44,3 +44,9 @@ export type GLTFResult<T> = GLTF & T;
  * An array representation of a Vector3 type
  */
 export type Vector3Array = [number, number, number];
+
+/**
+ * Optional generic type.
+ * Equivalent of `{}`
+ */
+export type OptionalType = Record<string, never>;
