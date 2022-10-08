@@ -1,9 +1,7 @@
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
-import useIsEditing from "@app/Editor/_actions/hooks/useIsEditing";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
 import useCameras from "@scene/_actions/hooks/useCameras";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import { PerspectiveCamera as PerspectiveCameraType, Vector3 } from "three";
 
 import { DefaultCameras } from "../_actions/sceneConstants";
@@ -11,9 +9,7 @@ import TransformControls from "./TransformControls";
 
 const EditorCamera: FC = () => {
     const { addCamera, removeCamera, setCurrentCamera } = useCameras();
-    const [hasEditorOpened, setHasEditorOpened] = useState(false);
-    const { isEditor } = useEditor();
-    const { isEditing } = useIsEditing();
+    const { isEditor, isEditing, hasEditorOpened, setHasEditorOpened } = useEditor();
     const cameraRef = useRef<PerspectiveCameraType>(null!);
 
     useEffect(() => {
@@ -27,13 +23,13 @@ const EditorCamera: FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cameraRef]);
 
-    useFrame(() => {
+    useEffect(() => {
+        // TODO -- Rework this part because it doesn't work
         if (isEditor && !hasEditorOpened && cameraRef.current) {
-            setHasEditorOpened(true);
             cameraRef.current.translateOnAxis(new Vector3(10, 10, 10), 1);
             cameraRef.current.lookAt(10, 10, 10);
         }
-    });
+    }, [hasEditorOpened, isEditor, setHasEditorOpened]);
 
     if (isEditor) {
         return (

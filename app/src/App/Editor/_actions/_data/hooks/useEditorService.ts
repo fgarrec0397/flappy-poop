@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { ModesAvailable } from "../../editorTypes";
 import useEditorDispatch from "./useEditorDispatch";
 import useEditorSelector from "./useEditorSelector";
@@ -7,10 +9,11 @@ export default () => {
         dispatchSetIsEditor,
         dispatchSetIsEditing,
         dispatchSetHasEditorOpened,
+        dispatchSetHasEdited,
         dispatchSetIsMultipleSelect,
         dispatchSetCurrentMode,
     } = useEditorDispatch();
-    const { isEditor } = useEditorSelector();
+    const { isEditor, hasEdited, hasEditorOpened, isEditing, currentMode } = useEditorSelector();
 
     const updateIsEditor = (value: boolean) => {
         dispatchSetIsEditor(value);
@@ -24,6 +27,13 @@ export default () => {
         dispatchSetHasEditorOpened();
     };
 
+    const updateHasEdited = useCallback(
+        (value: boolean) => {
+            dispatchSetHasEdited(value);
+        },
+        [dispatchSetHasEdited]
+    );
+
     const updateIsMultipleSelect = (value: boolean) => {
         dispatchSetIsMultipleSelect(value);
     };
@@ -34,9 +44,14 @@ export default () => {
 
     return {
         isEditor,
+        hasEdited,
+        hasEditorOpened,
+        isEditing,
+        currentMode,
         updateIsEditor,
         updateIsEditing,
         updateHasEditorOpened,
+        updateHasEdited,
         updateIsMultipleSelect,
         updateCurrentMode,
     };

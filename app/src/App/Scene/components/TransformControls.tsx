@@ -1,5 +1,4 @@
-import useCurrentMode from "@app/Editor/_actions/hooks/useCurrentMode";
-import useIsEditing from "@app/Editor/_actions/hooks/useIsEditing";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGetWidgets from "@app/Widgets/_actions/hooks/useGetMeshByWidget";
 import usePrevious from "@common/hooks/usePrevious";
 import { useThree } from "@react-three/fiber";
@@ -17,8 +16,7 @@ const TransformControlsComponent: FC<Props> = ({ children }) => {
     const { camera, scene, gl } = useThree();
     const { selectedWidgets, firstCurrentWidget, updateCurrentWidgetWithMesh } = useWidgets();
     const getMeshByWidget = useGetWidgets();
-    const { currentMode } = useCurrentMode();
-    const { setIsEditing } = useIsEditing();
+    const { setIsEditing, currentMode } = useEditor();
     const [meshToAttach, setMeshToAttach] = useState<Object3D>();
 
     const previousCurrentMode = usePrevious(currentMode);

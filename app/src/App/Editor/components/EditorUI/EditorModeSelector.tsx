@@ -1,5 +1,5 @@
 import { ModesAvailable } from "@app/Editor/_actions/editorTypes";
-import useCurrentMode from "@app/Editor/_actions/hooks/useCurrentMode";
+import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import StyledWrapper, { StyledWrapperProps } from "@common/components/Html/StyledWrapper";
 import { Card, Select } from "antd";
 import { FC } from "react";
@@ -22,10 +22,10 @@ const styles: EditorFeedbackStyles = {
 };
 
 const EditorModeSelector: FC = () => {
-    const { setCurrentMode } = useCurrentMode();
+    const { selectMode } = useEditor();
 
     const handleChange = (value: ModesAvailable): void => {
-        setCurrentMode(value);
+        selectMode(value);
     };
 
     return (

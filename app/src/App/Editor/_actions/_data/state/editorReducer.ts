@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface EditorState {
     isEditor: boolean;
     hasEditorOpened: boolean;
+    hasEdited: boolean;
     isEditing: boolean;
     isMultipleSelect: boolean;
     currentMode: ModesAvailable;
@@ -12,6 +13,7 @@ export interface EditorState {
 const initialState: EditorState = {
     isEditor: true,
     hasEditorOpened: false,
+    hasEdited: false,
     isEditing: false,
     isMultipleSelect: false,
     currentMode: ModesAvailable.Translate,
@@ -30,6 +32,9 @@ export const sceneSlice = createSlice({
         setHasEditorOpened: (state: EditorState) => {
             state.isEditing = !state.isEditor;
         },
+        setHasEdited: (state: EditorState, actions: PayloadAction<boolean>) => {
+            state.hasEdited = actions.payload;
+        },
         setIsMultipleSelect: (state: EditorState, action: PayloadAction<boolean>) => {
             state.isMultipleSelect = action.payload;
         },
@@ -43,6 +48,7 @@ export const {
     setIsEditor,
     setIsEditing,
     setHasEditorOpened,
+    setHasEdited,
     setIsMultipleSelect,
     setCurrentMode,
 } = sceneSlice.actions;

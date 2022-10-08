@@ -3,6 +3,7 @@ import { useAppDispatch } from "@app/Core/store";
 import { ModesAvailable } from "../../editorTypes";
 import {
     setCurrentMode,
+    setHasEdited,
     setHasEditorOpened,
     setIsEditing,
     setIsEditor,
@@ -18,6 +19,8 @@ export default () => {
 
     const dispatchSetHasEditorOpened = () => dispatch(setHasEditorOpened());
 
+    const dispatchSetHasEdited = (value: boolean) => dispatch(setHasEdited(value));
+
     const dispatchSetIsMultipleSelect = (value: boolean) => dispatch(setIsMultipleSelect(value));
 
     const dispatchSetCurrentMode = (mode: ModesAvailable) => dispatch(setCurrentMode(mode));
@@ -26,6 +29,7 @@ export default () => {
         dispatchSetIsEditor,
         dispatchSetIsEditing,
         dispatchSetHasEditorOpened,
+        dispatchSetHasEdited,
         dispatchSetIsMultipleSelect,
         dispatchSetCurrentMode,
     };

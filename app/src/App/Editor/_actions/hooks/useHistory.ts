@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import useHistoryContext from "../_data/hooks/useHistoryContext";
 import useHistoryService from "../_data/hooks/useHistoryService";
 import { HistoryState } from "../editorTypes";
-import useHasEdited from "./useHasEdited";
+import useEditor from "./useEditor";
 
 export default () => {
     const { widgets, widgetsDictionary } = useWidgets();
@@ -18,7 +18,7 @@ export default () => {
         setShouldAddHistoryState,
     } = useHistoryContext();
     const { add, setCurrent } = useHistoryService();
-    const hasEdited = useHasEdited();
+    const { hasEdited } = useEditor();
     const previousCurrentHistoryItem = usePrevious(currentHistoryItem);
     const previousWidgetsDictionary = usePrevious(widgetsDictionary);
     const previousWidgets = usePrevious(widgets);
