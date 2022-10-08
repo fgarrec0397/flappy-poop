@@ -6,6 +6,7 @@ export interface EditorState {
     hasEditorOpened: boolean;
     hasEdited: boolean;
     isEditing: boolean;
+    isGameUIPreview: boolean;
     isMultipleSelect: boolean;
     currentMode: ModesAvailable;
 }
@@ -15,6 +16,7 @@ const initialState: EditorState = {
     hasEditorOpened: false,
     hasEdited: false,
     isEditing: false,
+    isGameUIPreview: false,
     isMultipleSelect: false,
     currentMode: ModesAvailable.Translate,
 };
@@ -28,6 +30,9 @@ export const sceneSlice = createSlice({
         },
         setIsEditing: (state: EditorState, action: PayloadAction<boolean>) => {
             state.isEditing = action.payload;
+        },
+        setIsGameUIPreview: (state: EditorState, action: PayloadAction<boolean>) => {
+            state.isGameUIPreview = action.payload;
         },
         setHasEditorOpened: (state: EditorState) => {
             state.isEditing = !state.isEditor;
@@ -47,6 +52,7 @@ export const sceneSlice = createSlice({
 export const {
     setIsEditor,
     setIsEditing,
+    setIsGameUIPreview,
     setHasEditorOpened,
     setHasEdited,
     setIsMultipleSelect,

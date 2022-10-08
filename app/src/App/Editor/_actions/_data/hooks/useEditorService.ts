@@ -9,11 +9,13 @@ export default () => {
         dispatchSetIsEditor,
         dispatchSetIsEditing,
         dispatchSetHasEditorOpened,
+        dispatchSetIsGameUIPreview,
         dispatchSetHasEdited,
         dispatchSetIsMultipleSelect,
         dispatchSetCurrentMode,
     } = useEditorDispatch();
-    const { isEditor, hasEdited, hasEditorOpened, isEditing, currentMode } = useEditorSelector();
+    const { isEditor, hasEdited, hasEditorOpened, isGameUIPreview, isEditing, currentMode } =
+        useEditorSelector();
 
     const updateIsEditor = (value: boolean) => {
         dispatchSetIsEditor(value);
@@ -25,6 +27,10 @@ export default () => {
 
     const updateHasEditorOpened = () => {
         dispatchSetHasEditorOpened();
+    };
+
+    const updatedIsGameUIPreview = (value: boolean) => {
+        dispatchSetIsGameUIPreview(value);
     };
 
     const updateHasEdited = useCallback(
@@ -47,9 +53,11 @@ export default () => {
         hasEdited,
         hasEditorOpened,
         isEditing,
+        isGameUIPreview,
         currentMode,
         updateIsEditor,
         updateIsEditing,
+        updatedIsGameUIPreview,
         updateHasEditorOpened,
         updateHasEdited,
         updateIsMultipleSelect,

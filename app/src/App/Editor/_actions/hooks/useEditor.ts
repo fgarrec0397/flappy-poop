@@ -9,10 +9,12 @@ export default () => {
         hasEdited,
         hasEditorOpened,
         isEditing,
+        isGameUIPreview,
         currentMode,
         updateIsEditor,
         updateHasEdited,
         updateIsEditing,
+        updatedIsGameUIPreview,
         updateHasEditorOpened,
         updateCurrentMode,
     } = useEditorService();
@@ -38,6 +40,14 @@ export default () => {
         [updateIsEditing]
     );
 
+    const openEditorUIPreview = useCallback(() => {
+        updatedIsGameUIPreview(true);
+    }, [updatedIsGameUIPreview]);
+
+    const closeEditorUIPreview = useCallback(() => {
+        updatedIsGameUIPreview(false);
+    }, [updatedIsGameUIPreview]);
+
     const setHasEditorOpened = useCallback(() => {
         updateHasEditorOpened();
     }, [updateHasEditorOpened]);
@@ -55,8 +65,11 @@ export default () => {
         hasEdited,
         hasEditorOpened,
         currentMode,
+        isGameUIPreview,
         openEditor,
         closeEditor,
+        openEditorUIPreview,
+        closeEditorUIPreview,
         setIsEditing,
         setHasEditorOpened,
         selectMode,

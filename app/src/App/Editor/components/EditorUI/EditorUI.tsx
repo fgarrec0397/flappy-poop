@@ -2,6 +2,7 @@ import StyledWrapper, { StyledWrapperProps } from "@common/components/Html/Style
 import { FC } from "react";
 import { css } from "styled-components";
 
+import EditorGameUIPreviewButton from "./EditorGameUIPreviewButton";
 import {
     EditorItemsList,
     EditorLeftPanel,
@@ -62,6 +63,7 @@ const EditorUI: FC = () => {
             </StyledWrapper>
             <StyledWrapper {...styles.bottomWrapper}>
                 <EditorWidgetsMenu />
+                <EditorGameUIPreviewButton />
                 <EditorSaveButton />
             </StyledWrapper>
         </>

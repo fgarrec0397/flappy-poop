@@ -1,12 +1,21 @@
-import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import Editor from "@app/Editor/Editor";
 import Game from "@app/Game/Game";
 import { FC } from "react";
 
-const UI: FC = () => {
-    const { isEditor } = useEditor();
+import useUI from "./_actions/hooks/useUI";
 
-    return <>{isEditor ? <Editor.EditorUI /> : <Game.GameUI />}</>;
+const UI: FC = () => {
+    const { showEditorUI, showGameUI } = useUI();
+
+    if (showEditorUI) {
+        return <Editor.EditorUI />;
+    }
+
+    if (showGameUI) {
+        return <Game.GameUI />;
+    }
+
+    return null;
 };
 
 export default UI;
