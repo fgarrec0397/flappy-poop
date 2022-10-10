@@ -36,6 +36,7 @@ export type ScenesDictionary = Dictionary<ScenesDictionaryItem>;
  */
 export type ScenesDictionaryItem<SceneDataType = OptionalType> = {
     id: string;
+    name: string;
     data: SceneDataType;
 };
 

@@ -1,5 +1,5 @@
-import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
 import { Button, Card, List } from "antd";
 import { FC } from "react";
 

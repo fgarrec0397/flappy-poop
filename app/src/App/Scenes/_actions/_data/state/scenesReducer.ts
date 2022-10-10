@@ -1,3 +1,4 @@
+import { uidGenerator } from "@app/Common/utilities";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { ScenesDictionary } from "../../scenesTypes";
@@ -7,9 +8,17 @@ export interface ScenesState {
     currentSceneId: string;
 }
 
+const defaultSceneId = uidGenerator();
+
 const initialState: ScenesState = {
-    scenes: {},
-    currentSceneId: "",
+    scenes: {
+        [defaultSceneId]: {
+            id: defaultSceneId,
+            name: "default scene",
+            data: {},
+        },
+    },
+    currentSceneId: defaultSceneId,
 };
 
 export const scenesSlice = createSlice({
