@@ -2,7 +2,7 @@ import { uidGenerator } from "@app/Common/utilities";
 import { useCallback } from "react";
 import { Object3D } from "three";
 
-import { useWidgetsContext, useWidgetsSelector, useWidgetsServices } from "../_data/hooks";
+import { useWidgetsServices } from "../_data/hooks";
 import {
     buildWidgetDictionaryItem,
     buildWidgetDictionaryProperties,
@@ -20,12 +20,14 @@ import {
 const { widgetObjectsPrefix } = widgetsConstants;
 
 export default () => {
-    const { currentWidgetProperties, widgetsDictionary } = useWidgetsSelector();
-    const { widgets, selectedWidgets } = useWidgetsContext();
     const {
         add,
         addBatch,
         select,
+        widgets,
+        currentWidgetProperties,
+        widgetsDictionary,
+        selectedWidgets,
         removeSelection,
         update,
         remove,

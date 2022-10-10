@@ -10,9 +10,11 @@ import {
 } from "../../widgetsTypes";
 import useWidgetDispatch from "./useWidgetDispatch";
 import useWidgetsContext from "./useWidgetsContext";
+import useWidgetsSelector from "./useWidgetsSelector";
 
 export default () => {
-    const { widgets, setWidgets, setSelectedWidgets } = useWidgetsContext();
+    const { currentWidgetProperties, widgetsDictionary } = useWidgetsSelector();
+    const { widgets, setWidgets, setSelectedWidgets, selectedWidgets } = useWidgetsContext();
     const {
         dispatchAddDictionary,
         dispatchAddBatchDictionary,
@@ -116,6 +118,10 @@ export default () => {
         addBatch,
         update,
         select,
+        widgets,
+        currentWidgetProperties,
+        widgetsDictionary,
+        selectedWidgets,
         removeSelection,
         remove,
         removeBatch,

@@ -5,9 +5,9 @@ import Game from "@app/Game/Game";
 import useHandleGetScene from "@app/Scenes/_actions/hooks/useHandleGetScene";
 import { FC, Suspense } from "react";
 
-import Lights from "./components/Lights";
+import Lights from "./Lights";
 
-const Scenes: FC = () => {
+const Scene: FC = () => {
     const { isEditor } = useEditor();
 
     useHandleEditor();
@@ -21,4 +21,4 @@ const Scenes: FC = () => {
     );
 };
 
-export default Scenes;
+export default Scene;
