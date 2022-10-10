@@ -1,12 +1,13 @@
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useEditorHelper from "@app/Editor/_actions/hooks/useEditorHelper";
-import { ThreeEvent } from "@react-three/fiber";
-import { getWidgetName, populateWidgetProperties } from "@app/Widgets/_actions/utilities";
+import getWidgetName from "@app/Widgets/_actions/utilities/getWidgetName";
 import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
+import { ThreeEvent } from "@react-three/fiber";
 import { FC, MutableRefObject, useCallback, useRef, useState } from "react";
 import { Object3D } from "three";
 
-import { useWidgets } from "../_actions/hooks";
+import useWidgets from "../_actions/hooks/useWidgets";
+import populateWidgetProperties from "../_actions/utilities/populateWidgetProperties";
 import resolveHelper from "../_actions/utilities/resolveHelper";
 
 type Props = {

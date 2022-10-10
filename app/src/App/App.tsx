@@ -11,7 +11,7 @@ import Scenes from "./Scenes/Scenes";
 import UI from "./UI/UI";
 import { WidgetsModulesContext } from "./Widgets/_actions/_data/providers/WidgetsModulesProvider";
 import { WidgetsContext } from "./Widgets/_actions/_data/providers/WidgetsProvider";
-import { useWidgets } from "./Widgets/_actions/hooks";
+import useWidgets from "./Widgets/_actions/hooks/useWidgets";
 import useWidgetsInitModules from "./Widgets/_actions/hooks/useWidgetsInitModules";
 
 const App: FC = () => {
