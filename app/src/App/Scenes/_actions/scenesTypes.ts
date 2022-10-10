@@ -1,4 +1,4 @@
-import { Dictionary, OptionalType } from "@app/Common/commonTypes";
+import { Dictionary } from "@app/Common/commonTypes";
 import {
     SerializedWidgetObjects,
     WidgetObjects,
@@ -7,9 +7,7 @@ import {
 import { Camera } from "@react-three/fiber";
 import { MutableRefObject } from "react";
 
-/**
- * Cameras
- */
+// --------------- Cameras types --------------- //
 
 export type SceneCameraRef = MutableRefObject<
     | (Camera & {
@@ -27,27 +25,31 @@ export type SceneCamera = {
 // --------------- Scenes types --------------- //
 
 /**
- * A dictionary containing about scenes informations
+ * A dictionary containing informations about scenes
  */
 export type ScenesDictionary = Dictionary<ScenesDictionaryItem>;
 
 /**
  * A single scene information
  */
-export type ScenesDictionaryItem<SceneDataType = OptionalType> = {
+export type ScenesDictionaryItem = {
     id: string;
     name: string;
-    data: SceneDataType;
+    data: SceneData;
+};
+
+/**
+ * All data of a scene object
+ */
+export type SceneData = {
+    widgets: WidgetObjects;
+    widgetsDictionary: WidgetsDictionary;
 };
 
 /**
  * Scene Services Parameters
  */
-
-export type SaveSceneServiceParameter = {
-    widgets: WidgetObjects;
-    widgetsDictionary: WidgetsDictionary;
-};
+export type SaveSceneServiceParameter = SceneData;
 
 export type SceneApiResponseResult = {
     serializedWidgets: SerializedWidgetObjects;

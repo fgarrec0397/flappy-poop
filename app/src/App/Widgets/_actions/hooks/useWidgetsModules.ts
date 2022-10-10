@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { useWidgetsModuleContext } from "../_data/hooks";
+import useWidgetsModuleContext from "../_data/hooks/useWidgetsModuleContext";
 import { SerializedWidgetSceneObject, WidgetSceneObject } from "../widgetsTypes";
 
 export default () => {

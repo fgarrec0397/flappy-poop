@@ -2,7 +2,7 @@ import { uidGenerator } from "@app/Common/utilities";
 import { useCallback } from "react";
 import { Object3D } from "three";
 
-import { useWidgetsServices } from "../_data/hooks";
+import useWidgetsService from "../_data/hooks/useWidgetsService";
 import {
     buildWidgetDictionaryItem,
     buildWidgetDictionaryProperties,
@@ -33,7 +33,7 @@ export default () => {
         remove,
         updateCurrentProperties,
         reset,
-    } = useWidgetsServices();
+    } = useWidgetsService();
 
     const getWidgetDictionaryFromWidget = (widgetId: string | undefined) => {
         if (widgetId) {

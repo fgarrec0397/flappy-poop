@@ -15,7 +15,10 @@ const initialState: ScenesState = {
         [defaultSceneId]: {
             id: defaultSceneId,
             name: "default scene",
-            data: {},
+            data: {
+                widgets: {},
+                widgetsDictionary: {},
+            },
         },
     },
     currentSceneId: defaultSceneId,
