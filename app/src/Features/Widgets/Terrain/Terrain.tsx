@@ -9,11 +9,12 @@ import { Vector3 } from "three";
 
 export type TerrainProps = EditableWidget & {
     translateXOnPlay: boolean;
+    color: string;
 };
 
 type OwnProps = TerrainProps;
 
-const Terrain: FC<OwnProps> = ({ translateXOnPlay }) => {
+const Terrain: FC<OwnProps> = ({ translateXOnPlay, color }) => {
     const ref = useRef<RigidBodyApi>(null);
 
     useGameUpdate(() => {
@@ -32,7 +33,7 @@ const Terrain: FC<OwnProps> = ({ translateXOnPlay }) => {
         <GameRigidbody ref={ref} lockRotations>
             <mesh>
                 <planeBufferGeometry />
-                <meshStandardMaterial color="white" />
+                <meshStandardMaterial color={color} />
             </mesh>
         </GameRigidbody>
     );
@@ -49,6 +50,12 @@ export const widget = createWidget({
                 displayName: "Translate X on play",
                 fieldType: FieldType.Checkbox,
                 defaultValue: false,
+            },
+            {
+                name: "color",
+                displayName: "Color",
+                fieldType: FieldType.Text,
+                defaultValue: "white",
             },
         ],
     },
