@@ -1,6 +1,6 @@
 import { useThree } from "@react-three/fiber";
 
-import { getWidgetName } from "../utilities";
+import getWidgetName from "../utilities/getWidgetName";
 import { WidgetSceneObject } from "../widgetsTypes";
 
 export default () => {

@@ -1,5 +1,5 @@
 import { saveScene } from "@app/Scenes/_actions/_data/services";
-import { useWidgets } from "@app/Widgets/_actions/hooks";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
 import { Button } from "antd";
 import { FC } from "react";
 

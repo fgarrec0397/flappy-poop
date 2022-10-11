@@ -1,4 +1,4 @@
-import { useWidgets } from "@app/Widgets/_actions/hooks";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
 import { WidgetBaseOptions, WidgetOptionsValues } from "@app/Widgets/_actions/widgetsTypes";
 import { useEffect, useState } from "react";
 

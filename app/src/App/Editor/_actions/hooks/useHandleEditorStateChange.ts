@@ -1,5 +1,5 @@
 import { usePrevious } from "@app/Common/hooks";
-import { useWidgets } from "@app/Widgets/_actions/hooks";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
 import { useEffect } from "react";
 
 import useHistory from "./useHistory";

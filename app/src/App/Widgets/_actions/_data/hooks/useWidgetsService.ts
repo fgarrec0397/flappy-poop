@@ -14,7 +14,7 @@ import useWidgetsSelector from "./useWidgetsSelector";
 
 export default () => {
     const { currentWidgetProperties, widgetsDictionary } = useWidgetsSelector();
-    const { widgets, setWidgets, setSelectedWidgets, selectedWidgets } = useWidgetsContext();
+    const { widgets, selectedWidgets, setWidgets, setSelectedWidgets } = useWidgetsContext();
     const {
         dispatchAddDictionary,
         dispatchAddBatchDictionary,

@@ -1,5 +1,6 @@
 import { deserialize } from "@app/Core/_actions/utilities/componentSerializer";
-import { useWidgets, useWidgetsModules } from "@app/Widgets/_actions/hooks";
+import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import useWidgetsModules from "@app/Widgets/_actions/hooks/useWidgetsModules";
 import { buildWidgetsDictionary } from "@app/Widgets/_actions/utilities/buildWidgetDictionaryItem";
 import { WidgetObjects } from "@app/Widgets/_actions/widgetsTypes";
 import { useEffect } from "react";

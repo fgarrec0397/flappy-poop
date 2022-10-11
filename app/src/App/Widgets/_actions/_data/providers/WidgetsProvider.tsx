@@ -3,15 +3,15 @@ import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from
 
 export interface WidgetsContextModel {
     widgets: WidgetObjects;
-    setWidgets: Dispatch<SetStateAction<WidgetObjects>>;
     selectedWidgets: WidgetSceneObject[];
+    setWidgets: Dispatch<SetStateAction<WidgetObjects>>;
     setSelectedWidgets: Dispatch<SetStateAction<WidgetSceneObject[]>>;
 }
 
 export const widgetsDefaultContext: WidgetsContextModel = {
     widgets: {},
-    setWidgets: () => {},
     selectedWidgets: [],
+    setWidgets: () => {},
     setSelectedWidgets: () => {},
 };
 
@@ -25,10 +25,10 @@ const WidgetsContextProvider: FC<Props> = ({ children }) => {
     const [widgets, setWidgets] = useState<WidgetObjects>({});
     const [selectedWidgets, setSelectedWidgets] = useState<WidgetSceneObject[]>([]);
 
-    const providerValue = {
+    const providerValue: WidgetsContextModel = {
         widgets,
-        setWidgets,
         selectedWidgets,
+        setWidgets,
         setSelectedWidgets,
     };
 
