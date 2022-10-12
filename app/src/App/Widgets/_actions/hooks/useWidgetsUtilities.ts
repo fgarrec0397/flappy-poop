@@ -33,7 +33,7 @@ export default () => {
         [loadWidgetModule]
     );
 
-    const mergeWidgetDictionary = useCallback(
+    const mergeWidgetsDictionary = useCallback(
         (widgetsDictionary1: WidgetsDictionary, widgetsDictionary2: WidgetsDictionary) => {
             Object.keys(widgetsDictionary1).forEach((dictionaryItemKey) => {
                 const dictionaryItem = widgetsDictionary1[dictionaryItemKey];
@@ -59,5 +59,5 @@ export default () => {
         []
     );
 
-    return { unserializeWidgets, mergeWidgetDictionary };
+    return { unserializeWidgets, mergeWidgetsDictionary };
 };

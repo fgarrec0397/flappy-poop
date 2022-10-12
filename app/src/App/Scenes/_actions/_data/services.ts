@@ -1,17 +1,32 @@
 import { SetOptionalPropertyFrom } from "@app/Common/commonTypes";
 import { WidgetObjects } from "@app/Widgets/_actions/widgetsTypes";
 
-import { SaveSceneServiceParameter, SceneApiResponseResult } from "../scenesTypes";
+import {
+    SaveSceneServiceParameter,
+    SceneApiResponseResult,
+    ScenesDictionaryItem,
+} from "../scenesTypes";
 import { serializer } from "../utilities";
 
-export const saveScene = async ({ widgets, widgetsDictionary }: SaveSceneServiceParameter) => {
+export const saveScene = async ({
+    id,
+    name,
+    data: { widgets, widgetsDictionary },
+}: SaveSceneServiceParameter) => {
     const clonedWidgets: SetOptionalPropertyFrom<WidgetObjects, "component"> = {
         ...widgets,
     };
 
     const serializedWidgets = serializer.serializeWidgets(clonedWidgets);
 
-    const widgetsDefinition = { serializedWidgets, widgetsDictionary };
+    const sceneDefinition = {
+        id,
+        name,
+        data: {
+            widgets: serializedWidgets,
+            widgetsDictionary,
+        },
+    };
 
     const rawResponse = await fetch("api/scene", {
         method: "POST",
@@ -19,7 +34,7 @@ export const saveScene = async ({ widgets, widgetsDictionary }: SaveSceneService
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(widgetsDefinition),
+        body: JSON.stringify(sceneDefinition),
     });
 
     try {

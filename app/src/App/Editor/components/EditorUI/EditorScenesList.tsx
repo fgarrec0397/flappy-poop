@@ -1,31 +1,58 @@
 import useScenes from "@app/Scenes/_actions/hooks/useScenes";
-import { Button, Card, List } from "antd";
-import { FC } from "react";
+import { Button, Card, Input, List, Modal, Typography } from "antd";
+import { FC, useState } from "react";
 
 const EditorScenesList: FC = () => {
-    const { scenes, selectScene } = useScenes();
+    const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false);
+    const [sceneName, setSceneName] = useState("");
+    const { scenes, currentSceneId, addScene, selectScene } = useScenes();
 
     const handleSelect = (sceneId: string) => {
         selectScene(sceneId);
     };
 
+    const handleOk = () => {
+        console.log(sceneName, "ok");
+        addScene(sceneName);
+        setIsAddSceneModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        console.log("cancel");
+        setIsAddSceneModalOpen(false);
+    };
+
     return (
-        <Card size="small" title="Elements on scene">
+        <Card size="small" title="Scenes">
             <List
                 size="small"
                 bordered
                 dataSource={Object.keys(scenes)}
+                footer={<Button onClick={() => setIsAddSceneModalOpen(true)}>Add scene</Button>}
                 renderItem={(sceneId) => (
                     <List.Item>
                         <Button
                             onClick={() => handleSelect(sceneId)}
-                            // TODO - disable selected scene
+                            disabled={currentSceneId === sceneId}
                         >
                             {scenes[sceneId].name}
                         </Button>
                     </List.Item>
                 )}
             />
+
+            <Modal
+                title="Create A Scene"
+                open={isAddSceneModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <Typography>Scene Name</Typography>
+                <Input
+                    placeholder="Enter your scene name here..."
+                    onChange={(event) => setSceneName(event.target.value)}
+                />
+            </Modal>
         </Card>
     );
 };

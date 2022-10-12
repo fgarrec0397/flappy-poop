@@ -9,16 +9,19 @@ import { SceneApiResponseResult } from "../scenesTypes";
 
 export default () => {
     const { loadWidgetModule } = useWidgetsModules();
-    const { unserializeWidgets, mergeWidgetDictionary } = useWidgetsUtilities();
+    const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
     const { addWidgetsBatch } = useWidgets();
 
     useEffect(() => {
         const handleFetchScene = async () => {
             await fetchScene((data: SceneApiResponseResult) => {
+                console.log(data, "data");
+
+                // TODO -- follow this process when the scene changes
                 const deserializedWidgets = unserializeWidgets(data.serializedWidgets);
 
                 const widgetsDictionary = buildWidgetsDictionary(deserializedWidgets);
-                const mergedWidgetDictionary = mergeWidgetDictionary(
+                const mergedWidgetDictionary = mergeWidgetsDictionary(
                     widgetsDictionary,
                     data.widgetsDictionary
                 );
@@ -28,5 +31,5 @@ export default () => {
         };
 
         handleFetchScene();
-    }, [addWidgetsBatch, loadWidgetModule, unserializeWidgets, mergeWidgetDictionary]);
+    }, [addWidgetsBatch, loadWidgetModule, unserializeWidgets, mergeWidgetsDictionary]);
 };

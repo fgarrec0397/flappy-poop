@@ -35,11 +35,14 @@ export default () => {
         reset,
     } = useWidgetsService();
 
-    const getWidgetDictionaryFromWidget = (widgetId: string | undefined) => {
-        if (widgetId) {
-            return widgetsDictionary[widgetId];
-        }
-    };
+    const getWidgetDictionaryFromWidget = useCallback(
+        (widgetId: string | undefined) => {
+            if (widgetId) {
+                return widgetsDictionary[widgetId];
+            }
+        },
+        [widgetsDictionary]
+    );
 
     const getWidgetById = useCallback(
         (id: string | undefined) => {
@@ -96,42 +99,45 @@ export default () => {
         [selectedWidgets, updateWidget]
     );
 
-    const addWidget = (
-        widget: WidgetSceneObject,
-        properties?: WidgetProperties,
-        options?: WidgetOptionsValues
-    ) => {
-        const newWidget: WidgetSceneObject = { ...widget };
-        let widgetProperties = properties;
-        let widgetOptions = options;
+    const addWidget = useCallback(
+        (
+            widget: WidgetSceneObject,
+            properties?: WidgetProperties,
+            options?: WidgetOptionsValues
+        ) => {
+            const newWidget: WidgetSceneObject = { ...widget };
+            let widgetProperties = properties;
+            let widgetOptions = options;
 
-        newWidget.id = uidGenerator(); // assign id on initialisation
+            newWidget.id = uidGenerator(); // assign id on initialisation
 
-        if (!widgetProperties) {
-            widgetProperties = {
-                position: [0, 0, 0],
-                rotation: [0, 0, 0],
-                scale: [1, 1, 1],
-            };
-        }
-
-        if (!widgetOptions) {
-            if (newWidget.widgetDefinition.options?.length) {
-                const defaultOptions: WidgetOptionsValues = {};
-                for (const option of newWidget.widgetDefinition.options) {
-                    defaultOptions[option.name] = {
-                        fieldType: option.fieldType,
-                        value: option.defaultValue,
-                    };
-                }
-                widgetOptions = defaultOptions;
+            if (!widgetProperties) {
+                widgetProperties = {
+                    position: [0, 0, 0],
+                    rotation: [0, 0, 0],
+                    scale: [1, 1, 1],
+                };
             }
-        }
 
-        const widgetDictionaryItem = buildWidgetDictionaryItem(newWidget);
+            if (!widgetOptions) {
+                if (newWidget.widgetDefinition.options?.length) {
+                    const defaultOptions: WidgetOptionsValues = {};
+                    for (const option of newWidget.widgetDefinition.options) {
+                        defaultOptions[option.name] = {
+                            fieldType: option.fieldType,
+                            value: option.defaultValue,
+                        };
+                    }
+                    widgetOptions = defaultOptions;
+                }
+            }
 
-        add(newWidget, widgetDictionaryItem);
-    };
+            const widgetDictionaryItem = buildWidgetDictionaryItem(newWidget);
+
+            add(newWidget, widgetDictionaryItem);
+        },
+        [add]
+    );
 
     const addWidgetsBatch = useCallback(
         (newWidgetsDictionary: WidgetsDictionary, newWidgets: WidgetObjects) => {
@@ -191,26 +197,38 @@ export default () => {
         [updateCurrentWidget]
     );
 
-    const copyWidget = (widget: WidgetSceneObject) => {
-        const newWidget = { ...widget };
-        const newId = uidGenerator();
+    const copyWidget = useCallback(
+        (widget: WidgetSceneObject) => {
+            const newWidget = { ...widget };
+            const newId = uidGenerator();
 
-        newWidget.id = newId;
+            newWidget.id = newId;
 
-        if (widget.id) {
-            const properties = widgetsDictionary[widget.id].properties;
-            const options = widgetsDictionary[widget.id].options;
+            if (widget.id) {
+                const properties = widgetsDictionary[widget.id].properties;
+                const options = widgetsDictionary[widget.id].options;
 
-            const widgetDictionaryItem = buildWidgetDictionaryItem(newWidget, {
-                properties,
-                options,
-            });
+                const widgetDictionaryItem = buildWidgetDictionaryItem(newWidget, {
+                    properties,
+                    options,
+                });
 
-            add(newWidget, widgetDictionaryItem);
-        }
-    };
+                add(newWidget, widgetDictionaryItem);
+            }
+        },
+        [add, widgetsDictionary]
+    );
 
-    const removeselectedWidgets = () => {
+    const removeWidget = useCallback(
+        (widget: WidgetSceneObject) => {
+            if (widget.id) {
+                remove(widget);
+            }
+        },
+        [remove]
+    );
+
+    const removeselectedWidgets = useCallback(() => {
         const widget = selectedWidgets[0];
         if (widget) {
             removeWidget(widget);
@@ -218,17 +236,11 @@ export default () => {
             // eslint-disable-next-line no-console
             console.error("No mesh found"); // TODO -- Add UI confirmation
         }
-    };
+    }, [removeWidget, selectedWidgets]);
 
-    const removeWidget = (widget: WidgetSceneObject) => {
-        if (widget.id) {
-            remove(widget);
-        }
-    };
-
-    const removeWidgetSelection = () => {
+    const removeWidgetSelection = useCallback(() => {
         removeSelection();
-    };
+    }, [removeSelection]);
 
     const resetWidgets = useCallback(
         (widgetsToAdd: WidgetObjects, widgetDictionaryToAdd: WidgetsDictionary) => {

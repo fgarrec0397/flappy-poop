@@ -14,11 +14,11 @@ export const widgetsInitialState: WidgetsState = {
 
 export const widgetsReducerActions = <T extends WidgetsState>() => ({
     addWidgetDictionary: (state: T, action: PayloadAction<Required<WidgetsDictionaryItem>>) => {
-        const { id, properties, options } = action.payload;
+        const widgetsDictionaryItem = action.payload;
 
         state.widgetsDictionary = {
             ...state.widgetsDictionary,
-            [id]: { properties, options },
+            [widgetsDictionaryItem.id]: widgetsDictionaryItem,
         };
     },
     addBatchWidgetDictionary: (state: T, action: PayloadAction<Required<WidgetsDictionary>>) => {
