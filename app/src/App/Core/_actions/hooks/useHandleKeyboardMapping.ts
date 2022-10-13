@@ -33,6 +33,8 @@ export default () => {
     const previousKeyMapping = usePrevious(keyMapping);
     const { isEditor } = useEditor();
 
+    // TODO - try to revert this to the old version
+
     useEffect(() => {
         if (isEditor) {
             setKeyboardType("editor");

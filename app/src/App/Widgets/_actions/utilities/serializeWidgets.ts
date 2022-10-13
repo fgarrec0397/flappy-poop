@@ -8,7 +8,18 @@ import {
     WidgetSceneObject,
 } from "@app/Widgets/_actions/widgetsTypes";
 
-export const serializeWidgets = (widgets: WidgetObjects) => {
+export const serializeEditorOptions = ({ meshHolder, helper }: WidgetEditorOptions) => {
+    if (meshHolder) {
+        const serializedMeshHolder = serialize(meshHolder as JSX.Element);
+
+        return {
+            meshHolder: serializedMeshHolder,
+            helper,
+        };
+    }
+};
+
+export default (widgets: WidgetObjects) => {
     const serializedWidgets: SerializedWidgetObjects = {};
 
     for (const key in widgets) {
@@ -26,15 +37,4 @@ export const serializeWidgets = (widgets: WidgetObjects) => {
     }
 
     return serializedWidgets;
-};
-
-export const serializeEditorOptions = ({ meshHolder, helper }: WidgetEditorOptions) => {
-    if (meshHolder) {
-        const serializedMeshHolder = serialize(meshHolder as JSX.Element);
-
-        return {
-            meshHolder: serializedMeshHolder,
-            helper,
-        };
-    }
 };

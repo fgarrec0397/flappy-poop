@@ -1,7 +1,7 @@
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
 import useGame from "@app/Game/_actions/hooks/useGame";
-import { saveScene } from "@app/Scenes/_actions/_data/services";
+// import { saveScene } from "@app/Scenes/_actions/_data/services";
 import useCameras from "@app/Scenes/_actions/hooks/useCameras";
 import useScenes from "@app/Scenes/_actions/hooks/useScenes";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
@@ -12,21 +12,15 @@ import useEditorKeyboard from "../../../Core/_actions/hooks/useEditorKeyboard";
 
 export default () => {
     const { setNextCamera, setPrevCamera } = useCameras();
-    const {
-        selectedWidgets,
-        firstCurrentWidget,
-        widgets,
-        widgetsDictionary,
-        removeselectedWidgets,
-        copyWidget,
-    } = useWidgets();
+    const { selectedWidgets, firstCurrentWidget, widgets, removeselectedWidgets, copyWidget } =
+        useWidgets();
     const { setPrevHistoryItem, setNextHistoryItem, shouldAddHistoryState } = useHistory();
     const [, setCopiedWidgets] = useState<WidgetSceneObject[]>([]);
     const { startGame } = useGame();
-    const { currentSceneId } = useScenes();
+    const { saveScene } = useScenes();
 
     useEditorKeyboard(
-        async (keyMapping: ClientKeyMappings) => {
+        (keyMapping: ClientKeyMappings) => {
             if (keyMapping.toggleEditor) {
                 startGame();
             } else if (keyMapping.copyWidget) {
@@ -52,8 +46,9 @@ export default () => {
             } else if (keyMapping.prevCamera) {
                 setPrevCamera();
             } else if (keyMapping.saveScene) {
-                await saveScene({ id: currentSceneId, widgets, widgetsDictionary });
+                // saveScene();
             }
+            console.log(keyMapping, "keyMapping");
         },
         [
             firstCurrentWidget?.id,
@@ -62,6 +57,7 @@ export default () => {
             copyWidget,
             removeselectedWidgets,
             shouldAddHistoryState,
+            saveScene,
         ]
     );
 };

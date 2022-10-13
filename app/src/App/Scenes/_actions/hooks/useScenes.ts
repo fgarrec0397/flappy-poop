@@ -1,5 +1,6 @@
 import { uidGenerator } from "@app/Common/utilities";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import serializeWidgets from "@app/Widgets/_actions/utilities/serializeWidgets";
 import { useCallback } from "react";
 
 import useScenesService from "../_data/hooks/useScenesService";
@@ -16,7 +17,7 @@ export default () => {
                 id: uidGenerator(),
                 name,
                 data: {
-                    widgets: {},
+                    serializedWidgets: {},
                     widgetsDictionary: {},
                 },
             };
@@ -33,14 +34,18 @@ export default () => {
         [updateCurrentSceneId]
     );
 
+    // console.log(currentSceneId, "currentSceneId");
     const saveScene = useCallback(() => {
         // Update the current scene
         // When it's updated, save all scenes
+        // TODO editor save button works but not the keyboard shortcut
+        const serializedWidgets = serializeWidgets(widgets);
         updateSceneData(currentSceneId, {
-            widgets,
+            serializedWidgets,
             widgetsDictionary,
         });
-    }, [currentSceneId, updateSceneData, widgets, widgetsDictionary]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentSceneId, widgets, widgetsDictionary]);
 
     return {
         scenes,

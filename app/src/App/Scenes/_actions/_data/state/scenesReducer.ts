@@ -1,7 +1,7 @@
 import { uidGenerator } from "@app/Common/utilities";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
+import { SceneData, ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
 
 export interface ScenesState {
     scenes: ScenesDictionary;
@@ -16,7 +16,7 @@ const initialState: ScenesState = {
             id: defaultSceneId,
             name: "default scene",
             data: {
-                widgets: {},
+                serializedWidgets: {},
                 widgetsDictionary: {},
             },
         },
@@ -39,9 +39,17 @@ export const scenesSlice = createSlice({
         setCurrentSceneId: (state: ScenesState, actions: PayloadAction<string>) => {
             state.currentSceneId = actions.payload;
         },
+        updateScene: (
+            state: ScenesState,
+            actions: PayloadAction<{ sceneId: string; sceneData: SceneData }>
+        ) => {
+            const { sceneId, sceneData } = actions.payload;
+
+            state.scenes[sceneId].data = sceneData;
+        },
     },
 });
 
-export const { addScene, setCurrentSceneId } = scenesSlice.actions;
+export const { addScene, setCurrentSceneId, updateScene } = scenesSlice.actions;
 
 export default scenesSlice.reducer;

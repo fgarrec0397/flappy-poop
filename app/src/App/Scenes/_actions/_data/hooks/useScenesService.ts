@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 import { SceneData, ScenesDictionaryItem } from "../../scenesTypes";
 import useScenesDispatch from "./useScenesDispatch";
 import useScenesSelector from "./useScenesSelector";
@@ -15,10 +17,13 @@ export default () => {
         dispatchSetCurrentSceneId(sceneId);
     };
 
-    const updateSceneData = (sceneId: string, sceneData: SceneData) => {
-        // TODO -- continue here
-        dispatchUpdateScene(sceneId);
-    };
+    const updateSceneData = useCallback(
+        (sceneId: string, sceneData: SceneData) => {
+            // TODO -- continue here
+            dispatchUpdateScene(sceneId, sceneData);
+        },
+        [dispatchUpdateScene]
+    );
 
     return {
         ...scenesData,
