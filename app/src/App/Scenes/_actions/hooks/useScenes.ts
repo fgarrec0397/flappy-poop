@@ -39,6 +39,7 @@ export default () => {
     const saveScene = useCallback(() => {
         // Update the current scene
         // When it's updated, save all scenes
+        // TODO - Remove keyboard provider and service
         const serializedWidgets = serializeWidgets(widgets);
         console.log("save");
 

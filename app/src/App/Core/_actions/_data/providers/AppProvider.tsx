@@ -6,7 +6,6 @@ import { FC } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 
 import HistoryDictionaryContextProvider from "../../../../Editor/_actions/_data/providers/HistoryContextProvider";
-import KeyboardContextProvider from "./KeyboardProvider";
 
 type Props = {
     children: React.ReactNode;
@@ -15,17 +14,15 @@ type Props = {
 const AppProvider: FC<Props> = ({ children }) => {
     return (
         <ReduxProvider store={store}>
-            <KeyboardContextProvider>
-                <CamerasContextProvider>
-                    <WidgetsContextProvider>
-                        <WidgetsModulesContextProvider>
-                            <HistoryDictionaryContextProvider>
-                                {children}
-                            </HistoryDictionaryContextProvider>
-                        </WidgetsModulesContextProvider>
-                    </WidgetsContextProvider>
-                </CamerasContextProvider>
-            </KeyboardContextProvider>
+            <CamerasContextProvider>
+                <WidgetsContextProvider>
+                    <WidgetsModulesContextProvider>
+                        <HistoryDictionaryContextProvider>
+                            {children}
+                        </HistoryDictionaryContextProvider>
+                    </WidgetsModulesContextProvider>
+                </WidgetsContextProvider>
+            </CamerasContextProvider>
         </ReduxProvider>
     );
 };
