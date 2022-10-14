@@ -1,17 +1,18 @@
-import { usePrevious } from "@app/Common/hooks";
 import keyboardMappings from "@app/Core/configs/keyboardMappings";
 import { defaultKeyMappingObj } from "@app/Core/coreConstants";
-import { ClientKeyMappings, KeyboardMappings, KeyboardType } from "@app/Core/coreTypes";
+import {
+    ClientKeyMappings,
+    KeyboardMappingHandler,
+    KeyboardMappings,
+    KeyboardType,
+} from "@app/Core/coreTypes";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
-import isEqual from "lodash/isEqual";
-import { useEffect, useMemo, useState } from "react";
+import { DependencyList, useCallback, useEffect, useMemo, useState } from "react";
 
-import useKeyboardService from "../_data/hooks/useKeyboardService";
-
-const triggerAllMappedKey = (
+const triggerAllMappedKeys = (
     keyMapped: KeyboardMappings,
     keyboardType: KeyboardType,
-    event?: KeyboardEvent
+    event: KeyboardEvent
 ) => {
     const clientKeyMapped: ClientKeyMappings = {};
 
@@ -27,13 +28,10 @@ const triggerAllMappedKey = (
     return clientKeyMapped;
 };
 
-export default () => {
+export default (handler: KeyboardMappingHandler, dependencies: DependencyList) => {
+    const handlerCallback = useCallback(handler, [handler, ...dependencies]);
     const [keyboardType, setKeyboardType] = useState<KeyboardType>("editor");
-    const { update, keyMapping } = useKeyboardService();
-    const previousKeyMapping = usePrevious(keyMapping);
     const { isEditor } = useEditor();
-
-    // TODO - try to revert this to the old version
 
     useEffect(() => {
         if (isEditor) {
@@ -61,12 +59,9 @@ export default () => {
         return newMapping;
     }, [keyboardType]);
 
-    /**
-     * Listen on the Key Up event and update the keyMapping with the good value
-     */
     useEffect(() => {
         const onKeyUpHandler = (event: KeyboardEvent) => {
-            update(triggerAllMappedKey(keysMapping, keyboardType, event));
+            handlerCallback(triggerAllMappedKeys(keysMapping, keyboardType, event));
         };
 
         window.addEventListener("keyup", onKeyUpHandler);
@@ -74,14 +69,5 @@ export default () => {
         return () => {
             window.removeEventListener("keyup", onKeyUpHandler);
         };
-    }, [keyboardType, keysMapping, update]); // TODO -- Validate if this helps
-
-    /**
-     * When the keyMapping change, reset it all false by avoiding to send an event object to triggerAllMappedKey
-     */
-    useEffect(() => {
-        if (!isEqual(keyMapping, previousKeyMapping)) {
-            update(triggerAllMappedKey(keysMapping, keyboardType));
-        }
-    }, [keyMapping, keyboardType, keysMapping, previousKeyMapping, update]);
+    }, [handlerCallback, keyboardType, keysMapping]);
 };

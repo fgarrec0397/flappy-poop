@@ -34,18 +34,19 @@ export default () => {
         [updateCurrentSceneId]
     );
 
-    // console.log(currentSceneId, "currentSceneId");
+    console.log(scenes, "scenes");
+
     const saveScene = useCallback(() => {
         // Update the current scene
         // When it's updated, save all scenes
-        // TODO editor save button works but not the keyboard shortcut
         const serializedWidgets = serializeWidgets(widgets);
+        console.log("save");
+
         updateSceneData(currentSceneId, {
             serializedWidgets,
             widgetsDictionary,
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentSceneId, widgets, widgetsDictionary]);
+    }, [currentSceneId, updateSceneData, widgets, widgetsDictionary]);
 
     return {
         scenes,

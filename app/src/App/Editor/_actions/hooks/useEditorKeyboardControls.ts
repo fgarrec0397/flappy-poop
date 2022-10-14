@@ -1,14 +1,12 @@
+import useKeyboardMapping from "@app/Core/_actions/hooks/useKeyboardMapping";
 import { ClientKeyMappings } from "@app/Core/coreTypes";
 import useHistory from "@app/Editor/_actions/hooks/useHistory";
 import useGame from "@app/Game/_actions/hooks/useGame";
-// import { saveScene } from "@app/Scenes/_actions/_data/services";
 import useCameras from "@app/Scenes/_actions/hooks/useCameras";
 import useScenes from "@app/Scenes/_actions/hooks/useScenes";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
 import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
 import { useState } from "react";
-
-import useEditorKeyboard from "../../../Core/_actions/hooks/useEditorKeyboard";
 
 export default () => {
     const { setNextCamera, setPrevCamera } = useCameras();
@@ -19,7 +17,7 @@ export default () => {
     const { startGame } = useGame();
     const { saveScene } = useScenes();
 
-    useEditorKeyboard(
+    useKeyboardMapping(
         (keyMapping: ClientKeyMappings) => {
             if (keyMapping.toggleEditor) {
                 startGame();
@@ -46,9 +44,8 @@ export default () => {
             } else if (keyMapping.prevCamera) {
                 setPrevCamera();
             } else if (keyMapping.saveScene) {
-                // saveScene();
+                saveScene();
             }
-            console.log(keyMapping, "keyMapping");
         },
         [
             firstCurrentWidget?.id,
