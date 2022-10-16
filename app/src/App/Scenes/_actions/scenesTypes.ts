@@ -45,9 +45,6 @@ export type SceneData = {
 /**
  * Scene Services Parameters
  */
-export type SaveSceneServiceParameter = ScenesDictionaryItem;
+export type SaveSceneServiceParameter = ScenesDictionary;
 
-export type SceneApiResponseResult = Pick<ScenesDictionaryItem, "id"> & {
-    serializedWidgets: SerializedWidgetObjects;
-    widgetsDictionary: WidgetsDictionary;
-};
+export type SceneApiResponseResult = ScenesDictionary;

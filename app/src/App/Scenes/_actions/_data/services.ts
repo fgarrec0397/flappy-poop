@@ -1,30 +1,13 @@
-import {
-    SaveSceneServiceParameter,
-    SceneApiResponseResult,
-    ScenesDictionaryItem,
-} from "../scenesTypes";
+import { SaveSceneServiceParameter, SceneApiResponseResult } from "../scenesTypes";
 
-export const saveScene = async ({
-    id,
-    name,
-    data: { serializedWidgets, widgetsDictionary },
-}: SaveSceneServiceParameter) => {
-    const sceneDefinition: ScenesDictionaryItem = {
-        id,
-        name,
-        data: {
-            serializedWidgets,
-            widgetsDictionary,
-        },
-    };
-
+export const postScenes = async (scenes: SaveSceneServiceParameter) => {
     const rawResponse = await fetch("api/scene", {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(sceneDefinition),
+        body: JSON.stringify(scenes),
     });
 
     try {
@@ -36,7 +19,7 @@ export const saveScene = async ({
 
 type FetchSuccessCallBack = (data: SceneApiResponseResult) => void;
 
-export const fetchScene = async (successCallBack: FetchSuccessCallBack) => {
+export const getScene = async (successCallBack: FetchSuccessCallBack) => {
     const response = await fetch("api/scene");
 
     try {

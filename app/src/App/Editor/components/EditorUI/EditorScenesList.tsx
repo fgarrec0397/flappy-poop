@@ -12,13 +12,11 @@ const EditorScenesList: FC = () => {
     };
 
     const handleOk = () => {
-        console.log(sceneName, "ok");
         addScene(sceneName);
         setIsAddSceneModalOpen(false);
     };
 
     const handleCancel = () => {
-        console.log("cancel");
         setIsAddSceneModalOpen(false);
     };
 

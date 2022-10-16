@@ -1,17 +1,34 @@
 import { useCallback } from "react";
 
-import { SceneData, ScenesDictionaryItem } from "../../scenesTypes";
+import { SceneData, ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
+import { postScenes } from "../services";
 import useScenesDispatch from "./useScenesDispatch";
 import useScenesSelector from "./useScenesSelector";
 
 export default () => {
-    const { dispatchAddScene, dispatchSetCurrentSceneId, dispatchUpdateScene } =
-        useScenesDispatch();
+    const {
+        dispatchAddScene,
+        dispatchAddScenesBatch,
+        dispatchResetScenes,
+        dispatchSetCurrentSceneId,
+        dispatchUpdateScene,
+    } = useScenesDispatch();
     const scenesData = useScenesSelector();
 
     const add = (scene: ScenesDictionaryItem) => {
         dispatchAddScene(scene);
     };
+
+    const addBatch = (scenes: ScenesDictionary) => {
+        dispatchAddScenesBatch(scenes);
+    };
+
+    const reset = useCallback(
+        (scenes: ScenesDictionary, newCurrentSceneId: string) => {
+            dispatchResetScenes(scenes, newCurrentSceneId);
+        },
+        [dispatchResetScenes]
+    );
 
     const updateCurrentSceneId = (sceneId: string) => {
         dispatchSetCurrentSceneId(sceneId);
@@ -19,15 +36,21 @@ export default () => {
 
     const updateSceneData = useCallback(
         (sceneId: string, sceneData: SceneData) => {
-            // TODO -- continue here
             dispatchUpdateScene(sceneId, sceneData);
         },
         [dispatchUpdateScene]
     );
 
+    const save = useCallback(async (scenes: ScenesDictionary) => {
+        await postScenes(scenes);
+    }, []);
+
     return {
         ...scenesData,
         add,
+        addBatch,
+        reset,
+        save,
         updateSceneData,
         updateCurrentSceneId,
     };

@@ -1,15 +1,28 @@
 import { uidGenerator } from "@app/Common/utilities";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import useWidgetsUtilities from "@app/Widgets/_actions/hooks/useWidgetsUtilities";
+import { buildWidgetsDictionary } from "@app/Widgets/_actions/utilities/buildWidgetDictionaryItem";
 import serializeWidgets from "@app/Widgets/_actions/utilities/serializeWidgets";
+import cloneDeep from "lodash/cloneDeep";
 import { useCallback } from "react";
 
 import useScenesService from "../_data/hooks/useScenesService";
-import { ScenesDictionaryItem } from "../scenesTypes";
+import { SceneApiResponseResult, ScenesDictionary, ScenesDictionaryItem } from "../scenesTypes";
 
 export default () => {
-    const { scenes, currentSceneId, add, updateCurrentSceneId, updateSceneData } =
-        useScenesService();
-    const { widgets, widgetsDictionary } = useWidgets();
+    const {
+        scenes,
+        currentSceneId,
+        save,
+        add,
+        addBatch,
+        reset,
+        updateCurrentSceneId,
+        updateSceneData,
+    } = useScenesService();
+    const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
+    const { widgets, widgetsDictionary, addWidgetsBatch, resetWidgets } = useWidgets();
+    const currentScene = scenes[currentSceneId];
 
     const addScene = useCallback(
         (name: string) => {
@@ -30,32 +43,80 @@ export default () => {
     const selectScene = useCallback(
         (sceneId: string) => {
             updateCurrentSceneId(sceneId);
+            const selectedSceneData = scenes[sceneId].data;
+            const deserializedWidgets = unserializeWidgets(selectedSceneData.serializedWidgets);
+
+            resetWidgets(deserializedWidgets, selectedSceneData.widgetsDictionary);
         },
-        [updateCurrentSceneId]
+        [updateCurrentSceneId, scenes, unserializeWidgets, resetWidgets]
     );
 
-    console.log(scenes, "scenes");
+    const addScenesBatch = useCallback(
+        (scenesDictionary: ScenesDictionary) => {
+            addBatch(scenesDictionary);
+        },
+        [addBatch]
+    );
 
-    const saveScene = useCallback(() => {
+    const resetScenes = useCallback(
+        (scenesDictionary: ScenesDictionary, newCurrentSceneId: string) => {
+            reset(scenesDictionary, newCurrentSceneId);
+        },
+        [reset]
+    );
+
+    const initScenes = useCallback(
+        (result: SceneApiResponseResult) => {
+            const newCurrentSceneId = Object.keys(result)[0]; // TODO - This is temporary, we'll find a cleaner way to set a default current scene
+            const newCurrentScene = (result as ScenesDictionary)[newCurrentSceneId];
+
+            const deserializedWidgets = unserializeWidgets(newCurrentScene.data.serializedWidgets);
+
+            const newWidgetsDictionary = buildWidgetsDictionary(deserializedWidgets);
+            const mergedWidgetDictionary = mergeWidgetsDictionary(
+                newWidgetsDictionary,
+                newCurrentScene.data.widgetsDictionary
+            );
+
+            addWidgetsBatch(mergedWidgetDictionary, deserializedWidgets);
+            resetScenes(result, newCurrentSceneId);
+        },
+        [addWidgetsBatch, mergeWidgetsDictionary, resetScenes, unserializeWidgets]
+    );
+
+    const saveScene = useCallback(async () => {
         // Update the current scene
         // When it's updated, save all scenes
-        // TODO - Remove keyboard provider and service
         const serializedWidgets = serializeWidgets(widgets);
-        console.log("save");
 
         updateSceneData(currentSceneId, {
             serializedWidgets,
             widgetsDictionary,
         });
-    }, [currentSceneId, updateSceneData, widgets, widgetsDictionary]);
+
+        const scenesClone = cloneDeep(scenes);
+
+        scenesClone[currentSceneId] = {
+            ...scenesClone[currentSceneId],
+            data: {
+                serializedWidgets,
+                widgetsDictionary,
+            },
+        };
+
+        await save(scenesClone);
+    }, [currentSceneId, save, scenes, updateSceneData, widgets, widgetsDictionary]);
 
     return {
         scenes,
-        currentScene: scenes[currentSceneId],
+        currentScene,
         currentSceneId,
 
         // Actions
         addScene,
+        addScenesBatch,
+        resetScenes,
+        initScenes,
         saveScene,
         selectScene,
     };

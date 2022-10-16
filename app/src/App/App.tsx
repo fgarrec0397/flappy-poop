@@ -3,7 +3,6 @@ import { Canvas } from "@react-three/fiber";
 import { FC } from "react";
 import { ReactReduxContext } from "react-redux";
 
-import { KeyboardContext } from "./Core/_actions/_data/providers/KeyboardProvider";
 import { HistoryDictionaryContext } from "./Editor/_actions/_data/providers/HistoryContextProvider";
 import { CamerasContext } from "./Scenes/_actions/_data/providers/CamerasContextProvider";
 import Scenes from "./Scenes/Scenes";
@@ -17,7 +16,6 @@ const App: FC = () => {
     const { removeWidgetSelection } = useWidgets();
     const ContextBridge = useContextBridge(
         CamerasContext,
-        KeyboardContext,
         WidgetsContext,
         WidgetsModulesContext,
         ReactReduxContext,
