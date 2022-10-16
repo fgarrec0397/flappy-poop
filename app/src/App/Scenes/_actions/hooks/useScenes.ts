@@ -78,10 +78,10 @@ export default () => {
                 newCurrentScene.data.widgetsDictionary
             );
 
-            addWidgetsBatch(mergedWidgetDictionary, deserializedWidgets);
+            resetWidgets(deserializedWidgets, mergedWidgetDictionary);
             resetScenes(result, newCurrentSceneId);
         },
-        [addWidgetsBatch, mergeWidgetsDictionary, resetScenes, unserializeWidgets]
+        [resetWidgets, mergeWidgetsDictionary, resetScenes, unserializeWidgets]
     );
 
     const saveScene = useCallback(async () => {
