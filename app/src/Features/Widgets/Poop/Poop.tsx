@@ -105,8 +105,6 @@ const Poop: FC<PoopProps> = ({ position }) => {
     );
 };
 
-// useGLTF.preload("/assets/Poop.gltf");
-
 export const widget = createWidget({
     component: Poop,
     reducer: poopReducer,
