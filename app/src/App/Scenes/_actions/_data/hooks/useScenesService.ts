@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
-import { SceneData, ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
-import { postScenes } from "../services";
+import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
+import { postScenes } from "../scenesApiservices";
 import useScenesDispatch from "./useScenesDispatch";
 import useScenesSelector from "./useScenesSelector";
 
@@ -11,6 +11,7 @@ export default () => {
         dispatchAddScenesBatch,
         dispatchResetScenes,
         dispatchSetCurrentSceneId,
+        dispatchSetCurrentDefaultSceneId,
         dispatchUpdateScene,
     } = useScenesDispatch();
     const scenesData = useScenesSelector();
@@ -34,9 +35,13 @@ export default () => {
         dispatchSetCurrentSceneId(sceneId);
     };
 
-    const updateSceneData = useCallback(
-        (sceneId: string, sceneData: SceneData) => {
-            dispatchUpdateScene(sceneId, sceneData);
+    const updateCurrentDefaultSceneId = (sceneId: string) => {
+        dispatchSetCurrentDefaultSceneId(sceneId);
+    };
+
+    const updateScene = useCallback(
+        (scene: ScenesDictionaryItem) => {
+            dispatchUpdateScene(scene);
         },
         [dispatchUpdateScene]
     );
@@ -51,7 +56,8 @@ export default () => {
         addBatch,
         reset,
         save,
-        updateSceneData,
+        updateScene,
+        updateCurrentDefaultSceneId,
         updateCurrentSceneId,
     };
 };

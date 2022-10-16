@@ -8,36 +8,67 @@ import { useCallback } from "react";
 
 import useScenesService from "../_data/hooks/useScenesService";
 import { SceneApiResponseResult, ScenesDictionary, ScenesDictionaryItem } from "../scenesTypes";
+import getDefaultScene from "../utilities/getDefaultScene";
 
 export default () => {
     const {
         scenes,
         currentSceneId,
+        currentDefaultSceneId,
         save,
         add,
         addBatch,
         reset,
         updateCurrentSceneId,
-        updateSceneData,
+        updateCurrentDefaultSceneId,
+        updateScene,
     } = useScenesService();
     const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
-    const { widgets, widgetsDictionary, addWidgetsBatch, resetWidgets } = useWidgets();
+    const { widgets, widgetsDictionary, resetWidgets } = useWidgets();
     const currentScene = scenes[currentSceneId];
+    const currentDefaultScene = scenes[currentDefaultSceneId];
+
+    const setDefaultScene = useCallback(
+        (scene: ScenesDictionaryItem, isDefault: boolean) => {
+            updateScene({
+                ...scene,
+                isDefault,
+            });
+        },
+        [updateScene]
+    );
+
+    const removeCurrentDefaultScene = useCallback(() => {
+        setDefaultScene(currentDefaultScene, false);
+    }, [currentDefaultScene, setDefaultScene]);
+
+    const changeDefaultScene = useCallback(
+        (newDefaultSceneId: string) => {
+            removeCurrentDefaultScene();
+            updateCurrentDefaultSceneId(newDefaultSceneId);
+        },
+        [removeCurrentDefaultScene, updateCurrentDefaultSceneId]
+    );
 
     const addScene = useCallback(
-        (name: string) => {
+        (name: string, isDefault: boolean) => {
             const scene: ScenesDictionaryItem = {
                 id: uidGenerator(),
                 name,
+                isDefault,
                 data: {
                     serializedWidgets: {},
                     widgetsDictionary: {},
                 },
             };
 
+            if (isDefault) {
+                changeDefaultScene(scene.id);
+            }
+
             add(scene);
         },
-        [add]
+        [add, changeDefaultScene]
     );
 
     const selectScene = useCallback(
@@ -67,7 +98,7 @@ export default () => {
 
     const initScenes = useCallback(
         (result: SceneApiResponseResult) => {
-            const newCurrentSceneId = Object.keys(result)[0]; // TODO - This is temporary, we'll find a cleaner way to set a default current scene
+            const newCurrentSceneId = getDefaultScene(result);
             const newCurrentScene = (result as ScenesDictionary)[newCurrentSceneId];
 
             const deserializedWidgets = unserializeWidgets(newCurrentScene.data.serializedWidgets);
@@ -85,19 +116,22 @@ export default () => {
     );
 
     const saveScene = useCallback(async () => {
-        // Update the current scene
-        // When it's updated, save all scenes
         const serializedWidgets = serializeWidgets(widgets);
 
-        updateSceneData(currentSceneId, {
-            serializedWidgets,
-            widgetsDictionary,
-        });
+        const scene: ScenesDictionaryItem = {
+            ...currentScene,
+            data: {
+                serializedWidgets,
+                widgetsDictionary,
+            },
+        };
+
+        updateScene(scene);
 
         const scenesClone = cloneDeep(scenes);
 
-        scenesClone[currentSceneId] = {
-            ...scenesClone[currentSceneId],
+        scenesClone[currentScene.id] = {
+            ...scenesClone[currentScene.id],
             data: {
                 serializedWidgets,
                 widgetsDictionary,
@@ -105,7 +139,7 @@ export default () => {
         };
 
         await save(scenesClone);
-    }, [currentSceneId, save, scenes, updateSceneData, widgets, widgetsDictionary]);
+    }, [currentScene, save, scenes, updateScene, widgets, widgetsDictionary]);
 
     return {
         scenes,

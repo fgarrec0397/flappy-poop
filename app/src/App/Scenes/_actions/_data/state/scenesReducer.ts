@@ -1,11 +1,12 @@
 import { uidGenerator } from "@app/Common/utilities";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { SceneData, ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
+import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
 
 export interface ScenesState {
     scenes: ScenesDictionary;
     currentSceneId: string;
+    currentDefaultSceneId: string;
 }
 
 const defaultSceneId = uidGenerator();
@@ -15,6 +16,7 @@ const initialState: ScenesState = {
         [defaultSceneId]: {
             id: defaultSceneId,
             name: "default scene",
+            isDefault: true,
             data: {
                 serializedWidgets: {},
                 widgetsDictionary: {},
@@ -22,6 +24,7 @@ const initialState: ScenesState = {
         },
     },
     currentSceneId: defaultSceneId,
+    currentDefaultSceneId: defaultSceneId,
 };
 
 export const scenesSlice = createSlice({
@@ -59,16 +62,16 @@ export const scenesSlice = createSlice({
         setCurrentSceneId: (state: ScenesState, actions: PayloadAction<string>) => {
             state.currentSceneId = actions.payload;
         },
+        setCurrentDefaultSceneId: (state: ScenesState, actions: PayloadAction<string>) => {
+            state.currentDefaultSceneId = actions.payload;
+        },
         updateScenes: (state: ScenesState, actions: PayloadAction<ScenesDictionary>) => {
             state.scenes = actions.payload;
         },
-        updateScene: (
-            state: ScenesState,
-            actions: PayloadAction<{ sceneId: string; sceneData: SceneData }>
-        ) => {
-            const { sceneId, sceneData } = actions.payload;
+        updateScene: (state: ScenesState, actions: PayloadAction<ScenesDictionaryItem>) => {
+            const newScene = actions.payload;
 
-            state.scenes[sceneId].data = sceneData;
+            state.scenes[newScene.id] = newScene;
         },
     },
 });
@@ -78,6 +81,7 @@ export const {
     addScenesBatch,
     resetScenes,
     setCurrentSceneId,
+    setCurrentDefaultSceneId,
     updateScenes,
     updateScene,
 } = scenesSlice.actions;

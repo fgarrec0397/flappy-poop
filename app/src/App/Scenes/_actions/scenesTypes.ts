@@ -31,6 +31,7 @@ export type ScenesDictionary = Dictionary<ScenesDictionaryItem>;
 export type ScenesDictionaryItem = {
     id: string;
     name: string;
+    isDefault: boolean;
     data: SceneData;
 };
 

@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux";
 
-import { SceneData, ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
+import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
 import {
     addScene,
     addScenesBatch,
     resetScenes,
+    setCurrentDefaultSceneId,
     setCurrentSceneId,
     updateScene,
 } from "../state/scenesReducer";
@@ -28,8 +29,12 @@ export default () => {
         dispatch(setCurrentSceneId(sceneId));
     };
 
-    const dispatchUpdateScene = (sceneId: string, sceneData: SceneData) => {
-        dispatch(updateScene({ sceneId, sceneData }));
+    const dispatchSetCurrentDefaultSceneId = (sceneId: string) => {
+        dispatch(setCurrentDefaultSceneId(sceneId));
+    };
+
+    const dispatchUpdateScene = (scene: ScenesDictionaryItem) => {
+        dispatch(updateScene(scene));
     };
 
     return {
@@ -38,5 +43,6 @@ export default () => {
         dispatchResetScenes,
         dispatchUpdateScene,
         dispatchSetCurrentSceneId,
+        dispatchSetCurrentDefaultSceneId,
     };
 };

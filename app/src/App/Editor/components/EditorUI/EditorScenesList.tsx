@@ -1,18 +1,24 @@
 import useScenes from "@app/Scenes/_actions/hooks/useScenes";
-import { Button, Card, Input, List, Modal, Typography } from "antd";
+import { Button, Card, Checkbox, Input, List, Modal, Typography } from "antd";
+import { CheckboxChangeEvent } from "antd/lib/checkbox";
 import { FC, useState } from "react";
 
 const EditorScenesList: FC = () => {
     const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false);
     const [sceneName, setSceneName] = useState("");
+    const [isDefault, setIsDefault] = useState(false);
     const { scenes, currentSceneId, addScene, selectScene } = useScenes();
 
     const handleSelect = (sceneId: string) => {
         selectScene(sceneId);
     };
 
+    const handleIsDefault = (e: CheckboxChangeEvent) => {
+        setIsDefault(e.target.checked);
+    };
+
     const handleOk = () => {
-        addScene(sceneName);
+        addScene(sceneName, isDefault);
         setIsAddSceneModalOpen(false);
     };
 
@@ -50,6 +56,7 @@ const EditorScenesList: FC = () => {
                     placeholder="Enter your scene name here..."
                     onChange={(event) => setSceneName(event.target.value)}
                 />
+                <Checkbox onChange={handleIsDefault}>Make it default scene</Checkbox>
             </Modal>
         </Card>
     );

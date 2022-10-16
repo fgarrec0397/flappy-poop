@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { getScene } from "../_data/services";
+import { getScene } from "../_data/scenesApiservices";
 import { SceneApiResponseResult } from "../scenesTypes";
 import useScenes from "./useScenes";
 
