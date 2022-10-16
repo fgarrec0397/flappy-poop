@@ -5,7 +5,6 @@ import useWidgetsUtilities from "@app/Widgets/_actions/hooks/useWidgetsUtilities
 import { buildWidgetsDictionary } from "@app/Widgets/_actions/utilities/buildWidgetDictionaryItem";
 import serializeWidgets from "@app/Widgets/_actions/utilities/serializeWidgets";
 import cloneDeep from "lodash/cloneDeep";
-import isEmpty from "lodash/isEmpty";
 import { useCallback, useEffect, useState } from "react";
 
 import useScenesService from "../_data/hooks/useScenesService";
@@ -52,20 +51,7 @@ export default () => {
                 const deserializedWidgets = unserializeWidgets(selectedSceneData.serializedWidgets);
 
                 updateCurrentSceneId(sceneId);
-                // console.log(deserializedWidgets, "deserializedWidgets");
-                // console.log(
-                //     selectedSceneData.widgetsDictionary,
-                //     "selectedSceneData.widgetsDictionary"
-                // );
-
-                console.log(scene, "scene");
-
-                // if (
-                //     !isEmpty(deserializedWidgets) &&
-                //     !isEmpty(selectedSceneData.widgetsDictionary)
-                // ) {
-                // }
-                resetWidgets(deserializedWidgets, selectedSceneData.widgetsDictionary);
+                resetWidgets(deserializedWidgets, selectedSceneData.widgetsDictionary, true);
             }
         },
         [getSceneById, resetWidgets, unserializeWidgets, updateCurrentSceneId]
@@ -79,7 +65,6 @@ export default () => {
             currentSceneId !== lastSceneAdded.id &&
             Object.keys(scenes).length > Object.keys(previousScenes).length
         ) {
-            console.log(lastSceneAdded, "scene has been added");
             selectScene(lastSceneAdded.id);
         }
     }, [currentSceneId, lastSceneAdded, previousScenes, scenes, selectScene]);

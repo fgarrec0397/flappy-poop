@@ -106,12 +106,19 @@ export default () => {
     );
 
     const reset = useCallback(
-        (newWidgets: WidgetObjects, newWidgetsDictionary: WidgetsDictionary) => {
-            // continue here
-            dispatchOverrideWidgetDictionary(newWidgetsDictionary);
+        (
+            newWidgets: WidgetObjects,
+            newWidgetsDictionary: WidgetsDictionary,
+            shouldRemoveAll?: boolean
+        ) => {
+            if (shouldRemoveAll) {
+                removeAll();
+            }
+
             setWidgets(newWidgets);
+            dispatchOverrideWidgetDictionary(newWidgetsDictionary);
         },
-        [dispatchOverrideWidgetDictionary, setWidgets]
+        [dispatchOverrideWidgetDictionary, removeAll, setWidgets]
     );
 
     return {

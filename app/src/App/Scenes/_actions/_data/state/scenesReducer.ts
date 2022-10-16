@@ -57,7 +57,6 @@ export const scenesSlice = createSlice({
         },
         updateScene: (state: ScenesState, actions: PayloadAction<ScenesDictionaryItem>) => {
             const newScene = actions.payload;
-            console.log({ newScene });
 
             if (state.scenes) {
                 state.scenes[newScene.id] = newScene;

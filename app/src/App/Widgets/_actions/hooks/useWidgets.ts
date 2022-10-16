@@ -243,8 +243,12 @@ export default () => {
     }, [removeSelection]);
 
     const resetWidgets = useCallback(
-        (widgetsToAdd: WidgetObjects, widgetDictionaryToAdd: WidgetsDictionary) => {
-            reset(widgetsToAdd, widgetDictionaryToAdd);
+        (
+            widgetsToAdd: WidgetObjects,
+            widgetDictionaryToAdd: WidgetsDictionary,
+            shouldRemoveAll?: boolean
+        ) => {
+            reset(widgetsToAdd, widgetDictionaryToAdd, shouldRemoveAll);
         },
         [reset]
     );
