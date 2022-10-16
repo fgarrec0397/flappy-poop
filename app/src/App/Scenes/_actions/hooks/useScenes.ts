@@ -22,6 +22,7 @@ export default () => {
         updateCurrentSceneId,
         updateCurrentDefaultSceneId,
         updateScene,
+        remove,
     } = useScenesService();
     const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
     const { widgets, widgetsDictionary, resetWidgets } = useWidgets();
@@ -141,6 +142,13 @@ export default () => {
         await save(scenesClone);
     }, [currentScene, save, scenes, updateScene, widgets, widgetsDictionary]);
 
+    const removeScene = useCallback(
+        (sceneId: string) => {
+            remove(sceneId);
+        },
+        [remove]
+    );
+
     return {
         scenes,
         currentScene,
@@ -153,5 +161,6 @@ export default () => {
         initScenes,
         saveScene,
         selectScene,
+        removeScene,
     };
 };

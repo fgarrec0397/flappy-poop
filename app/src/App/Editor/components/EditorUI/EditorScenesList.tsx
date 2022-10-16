@@ -7,10 +7,14 @@ const EditorScenesList: FC = () => {
     const [isAddSceneModalOpen, setIsAddSceneModalOpen] = useState(false);
     const [sceneName, setSceneName] = useState("");
     const [isDefault, setIsDefault] = useState(false);
-    const { scenes, currentSceneId, addScene, selectScene } = useScenes();
+    const { scenes, currentSceneId, addScene, selectScene, removeScene } = useScenes();
 
     const handleSelect = (sceneId: string) => {
         selectScene(sceneId);
+    };
+
+    const handleRemove = (sceneId: string) => {
+        removeScene(sceneId);
     };
 
     const handleIsDefault = (e: CheckboxChangeEvent) => {
@@ -41,6 +45,7 @@ const EditorScenesList: FC = () => {
                         >
                             {scenes[sceneId].name}
                         </Button>
+                        <Button onClick={() => handleRemove(sceneId)}>X</Button>
                     </List.Item>
                 )}
             />

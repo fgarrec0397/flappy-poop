@@ -73,6 +73,11 @@ export const scenesSlice = createSlice({
 
             state.scenes[newScene.id] = newScene;
         },
+        removeScene: (state: ScenesState, actions: PayloadAction<string>) => {
+            const sceneId = actions.payload;
+
+            delete state.scenes[sceneId];
+        },
     },
 });
 
@@ -84,6 +89,7 @@ export const {
     setCurrentDefaultSceneId,
     updateScenes,
     updateScene,
+    removeScene,
 } = scenesSlice.actions;
 
 export default scenesSlice.reducer;

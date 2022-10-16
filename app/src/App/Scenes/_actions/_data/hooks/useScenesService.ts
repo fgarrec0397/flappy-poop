@@ -13,6 +13,7 @@ export default () => {
         dispatchSetCurrentSceneId,
         dispatchSetCurrentDefaultSceneId,
         dispatchUpdateScene,
+        dispatchRemoveScene,
     } = useScenesDispatch();
     const scenesData = useScenesSelector();
 
@@ -50,6 +51,9 @@ export default () => {
         await postScenes(scenes);
     }, []);
 
+    const remove = (sceneId: string) => {
+        dispatchRemoveScene(sceneId);
+    };
     return {
         ...scenesData,
         add,
@@ -59,5 +63,6 @@ export default () => {
         updateScene,
         updateCurrentDefaultSceneId,
         updateCurrentSceneId,
+        remove,
     };
 };

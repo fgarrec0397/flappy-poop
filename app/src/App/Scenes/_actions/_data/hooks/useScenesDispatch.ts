@@ -4,6 +4,7 @@ import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
 import {
     addScene,
     addScenesBatch,
+    removeScene,
     resetScenes,
     setCurrentDefaultSceneId,
     setCurrentSceneId,
@@ -37,6 +38,10 @@ export default () => {
         dispatch(updateScene(scene));
     };
 
+    const dispatchRemoveScene = (sceneId: string) => {
+        dispatch(removeScene(sceneId));
+    };
+
     return {
         dispatchAddScene,
         dispatchAddScenesBatch,
@@ -44,5 +49,6 @@ export default () => {
         dispatchUpdateScene,
         dispatchSetCurrentSceneId,
         dispatchSetCurrentDefaultSceneId,
+        dispatchRemoveScene,
     };
 };
