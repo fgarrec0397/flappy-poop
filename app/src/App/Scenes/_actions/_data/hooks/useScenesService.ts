@@ -54,6 +54,7 @@ export default () => {
     const remove = (sceneId: string) => {
         dispatchRemoveScene(sceneId);
     };
+
     return {
         ...scenesData,
         add,

@@ -1,30 +1,17 @@
-import { uidGenerator } from "@app/Common/utilities";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { ScenesDictionary, ScenesDictionaryItem } from "../../scenesTypes";
 
 export interface ScenesState {
-    scenes: ScenesDictionary;
-    currentSceneId: string;
-    currentDefaultSceneId: string;
+    scenes: ScenesDictionary | null;
+    currentSceneId: string | null;
+    currentDefaultSceneId: string | null;
 }
 
-const defaultSceneId = uidGenerator();
-
 const initialState: ScenesState = {
-    scenes: {
-        [defaultSceneId]: {
-            id: defaultSceneId,
-            name: "default scene",
-            isDefault: true,
-            data: {
-                serializedWidgets: {},
-                widgetsDictionary: {},
-            },
-        },
-    },
-    currentSceneId: defaultSceneId,
-    currentDefaultSceneId: defaultSceneId,
+    scenes: null,
+    currentSceneId: null,
+    currentDefaultSceneId: null,
 };
 
 export const scenesSlice = createSlice({
@@ -70,13 +57,18 @@ export const scenesSlice = createSlice({
         },
         updateScene: (state: ScenesState, actions: PayloadAction<ScenesDictionaryItem>) => {
             const newScene = actions.payload;
+            console.log({ newScene });
 
-            state.scenes[newScene.id] = newScene;
+            if (state.scenes) {
+                state.scenes[newScene.id] = newScene;
+            }
         },
         removeScene: (state: ScenesState, actions: PayloadAction<string>) => {
             const sceneId = actions.payload;
 
-            delete state.scenes[sceneId];
+            if (state.scenes) {
+                delete state.scenes[sceneId];
+            }
         },
     },
 });

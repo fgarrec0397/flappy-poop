@@ -35,7 +35,7 @@ const EditorScenesList: FC = () => {
             <List
                 size="small"
                 bordered
-                dataSource={Object.keys(scenes)}
+                dataSource={Object.keys(scenes || {})}
                 footer={<Button onClick={() => setIsAddSceneModalOpen(true)}>Add scene</Button>}
                 renderItem={(sceneId) => (
                     <List.Item>
@@ -43,7 +43,7 @@ const EditorScenesList: FC = () => {
                             onClick={() => handleSelect(sceneId)}
                             disabled={currentSceneId === sceneId}
                         >
-                            {scenes[sceneId].name}
+                            {scenes && scenes[sceneId].name}
                         </Button>
                         <Button onClick={() => handleRemove(sceneId)}>X</Button>
                     </List.Item>

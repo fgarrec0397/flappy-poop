@@ -107,6 +107,7 @@ export default () => {
 
     const reset = useCallback(
         (newWidgets: WidgetObjects, newWidgetsDictionary: WidgetsDictionary) => {
+            // continue here
             dispatchOverrideWidgetDictionary(newWidgetsDictionary);
             setWidgets(newWidgets);
         },

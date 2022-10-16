@@ -1,12 +1,16 @@
-import { Button, Modal } from "antd";
+import { Button, Card } from "antd";
 import { FC } from "react";
 
 const GameUI: FC = () => {
+    const handlePlay = () => {
+        console.log("handlePlay");
+    };
+
     return (
         <>
-            <Modal open>
-                <Button>Play</Button>
-            </Modal>
+            <Card title="Flappy Poop" style={{ width: 300 }}>
+                <Button onClick={handlePlay}>Play</Button>
+            </Card>
         </>
     );
 };
