@@ -1,7 +1,11 @@
 import { useCallback } from "react";
 
 import mapWidgetModuleToWidgetSceneObject from "../utilities/mapWidgetModuleToWidgetSceneObject";
-import { SerializedWidgetObjects, WidgetObjects, WidgetsDictionary } from "../widgetsTypes";
+import {
+    SerializedWidgetObjects,
+    WidgetObjectsDictionary,
+    WidgetsInfoDictionary,
+} from "../widgetsTypes";
 import useWidgetsModules from "./useWidgetsModules";
 
 export default () => {
@@ -9,7 +13,7 @@ export default () => {
 
     const unserializeWidgets = useCallback(
         (serializedWidgets: SerializedWidgetObjects) => {
-            const deserializedWidgets: WidgetObjects = {};
+            const deserializedWidgets: WidgetObjectsDictionary = {};
 
             // loop through all serialized widgets from the DB
             for (const key in serializedWidgets) {
@@ -34,27 +38,30 @@ export default () => {
     );
 
     const mergeWidgetsDictionary = useCallback(
-        (widgetsDictionary1: WidgetsDictionary, widgetsDictionary2: WidgetsDictionary) => {
-            Object.keys(widgetsDictionary1).forEach((dictionaryItemKey) => {
-                const dictionaryItem = widgetsDictionary1[dictionaryItemKey];
+        (
+            widgetsInfoDictionary1: WidgetsInfoDictionary,
+            widgetsInfoDictionary2: WidgetsInfoDictionary
+        ) => {
+            Object.keys(widgetsInfoDictionary1).forEach((dictionaryItemKey) => {
+                const dictionaryItem = widgetsInfoDictionary1[dictionaryItemKey];
 
-                for (const key in widgetsDictionary2[dictionaryItemKey].options) {
+                for (const key in widgetsInfoDictionary2[dictionaryItemKey].options) {
                     if (!Object.prototype.hasOwnProperty.call(dictionaryItem.options, key)) {
                         // Remove unexisting options on the local widget definitions options
-                        delete widgetsDictionary2[dictionaryItemKey].options[key];
+                        delete widgetsInfoDictionary2[dictionaryItemKey].options?.[key];
                     }
                 }
 
                 // Make sure to keep the options left from the saved widget dictionary
-                widgetsDictionary1[dictionaryItemKey].options =
-                    widgetsDictionary2[dictionaryItemKey].options;
+                widgetsInfoDictionary1[dictionaryItemKey].options =
+                    widgetsInfoDictionary2[dictionaryItemKey].options;
 
                 // Make sure to keep the properties left from the saved widget dictionary
-                widgetsDictionary1[dictionaryItemKey].properties =
-                    widgetsDictionary2[dictionaryItemKey].properties;
+                widgetsInfoDictionary1[dictionaryItemKey].properties =
+                    widgetsInfoDictionary2[dictionaryItemKey].properties;
             });
 
-            return widgetsDictionary1;
+            return widgetsInfoDictionary1;
         },
         []
     );

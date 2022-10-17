@@ -4,15 +4,17 @@ import {
     SerializedWidgetObjects,
     SerializedWidgetSceneObject,
     WidgetEditorOptions,
-    WidgetObjects,
-    WidgetSceneObject,
+    WidgetObjectsDictionary,
+    WidgetObjectsDictionaryItem,
 } from "@app/Widgets/_actions/widgetsTypes";
 
-export const serializeWidgets = (widgets: WidgetObjects) => {
+export const serializeWidgets = (widgets: WidgetObjectsDictionary) => {
     const serializedWidgets: SerializedWidgetObjects = {};
 
     for (const key in widgets) {
-        const widget: SetOptionalPropertyFrom<WidgetSceneObject, "component"> = { ...widgets[key] };
+        const widget: SetOptionalPropertyFrom<WidgetObjectsDictionaryItem, "component"> = {
+            ...widgets[key],
+        };
         let editorOptions: WidgetEditorOptions | undefined;
         if (widget.editorOptions) {
             editorOptions = serializeEditorOptions(widget.editorOptions);

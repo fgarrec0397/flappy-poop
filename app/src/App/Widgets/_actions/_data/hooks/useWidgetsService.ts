@@ -1,19 +1,19 @@
 import { useCallback } from "react";
 
 import {
-    WidgetObjects,
+    WidgetObjectsDictionary,
+    WidgetObjectsDictionaryItem,
     WidgetOptionsValues,
     WidgetProperties,
-    WidgetSceneObject,
-    WidgetsDictionary,
-    WidgetsDictionaryItem,
+    WidgetsInfoDictionary,
+    WidgetsInfoDictionaryItem,
 } from "../../widgetsTypes";
 import useWidgetDispatch from "./useWidgetDispatch";
 import useWidgetsContext from "./useWidgetsContext";
 import useWidgetsSelector from "./useWidgetsSelector";
 
 export default () => {
-    const { currentWidgetProperties, widgetsDictionary } = useWidgetsSelector();
+    const { currentWidgetProperties, widgetsInfoDictionary } = useWidgetsSelector();
     const { widgets, selectedWidgets, setWidgets, setSelectedWidgets } = useWidgetsContext();
     const {
         dispatchAddDictionary,
@@ -26,9 +26,12 @@ export default () => {
     } = useWidgetDispatch();
 
     const add = useCallback(
-        (newWidget: WidgetSceneObject, newWidgetsDictionaryItem: WidgetsDictionaryItem) => {
+        (
+            newWidget: WidgetObjectsDictionaryItem,
+            newWidgetsDictionaryItem: WidgetsInfoDictionaryItem
+        ) => {
             const requiredWidgetDictionaryItem =
-                newWidgetsDictionaryItem as Required<WidgetsDictionaryItem>;
+                newWidgetsDictionaryItem as Required<WidgetsInfoDictionaryItem>;
             dispatchAddDictionary(requiredWidgetDictionaryItem);
 
             setWidgets((prevWidgets) => ({
@@ -40,7 +43,7 @@ export default () => {
     );
 
     const addBatch = useCallback(
-        (newWidgets: WidgetObjects, newWidgetsDictionary: WidgetsDictionary) => {
+        (newWidgets: WidgetObjectsDictionary, newWidgetsDictionary: WidgetsInfoDictionary) => {
             dispatchAddBatchDictionary(newWidgetsDictionary);
             setWidgets((prevWidgets) => ({ ...prevWidgets, ...newWidgets }));
         },
@@ -49,7 +52,7 @@ export default () => {
 
     const update = useCallback(
         (
-            widget: WidgetSceneObject,
+            widget: WidgetObjectsDictionaryItem,
             widgetProperties?: WidgetProperties,
             widgetOptions?: WidgetOptionsValues
         ) => {
@@ -63,7 +66,7 @@ export default () => {
     );
 
     const select = useCallback(
-        (widgetsToSelect: WidgetSceneObject[]) => {
+        (widgetsToSelect: WidgetObjectsDictionaryItem[]) => {
             setSelectedWidgets(widgetsToSelect);
         },
         [setSelectedWidgets]
@@ -74,7 +77,7 @@ export default () => {
     }, [select]);
 
     const remove = useCallback(
-        (widget: WidgetSceneObject) => {
+        (widget: WidgetObjectsDictionaryItem) => {
             removeSelection();
             dispatchRemoveWidgetDictionary(widget.id);
 
@@ -84,7 +87,7 @@ export default () => {
     );
 
     const removeBatch = useCallback(
-        (widgetsToDelete: WidgetObjects) => {
+        (widgetsToDelete: WidgetObjectsDictionary) => {
             const widgetsIdsToDelete = Object.keys(widgetsToDelete);
 
             removeSelection();
@@ -107,8 +110,8 @@ export default () => {
 
     const reset = useCallback(
         (
-            newWidgets: WidgetObjects,
-            newWidgetsDictionary: WidgetsDictionary,
+            newWidgets: WidgetObjectsDictionary,
+            newWidgetsDictionary: WidgetsInfoDictionary,
             shouldRemoveAll?: boolean
         ) => {
             if (shouldRemoveAll) {
@@ -128,7 +131,7 @@ export default () => {
         select,
         widgets,
         currentWidgetProperties,
-        widgetsDictionary,
+        widgetsInfoDictionary,
         selectedWidgets,
         removeSelection,
         remove,

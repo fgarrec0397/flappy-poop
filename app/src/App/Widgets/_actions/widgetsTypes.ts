@@ -82,7 +82,7 @@ export interface WidgetModule<Props = FeaturesWidgetsProps, Ref = null, ReducerT
 /**
  * Informations of a widget object on the scene
  */
-export type WidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
+export type WidgetObjectsDictionaryItem<Props = FeaturesWidgetsProps> = Omit<
     WidgetModule<Props>,
     "reducer"
 > & {
@@ -90,41 +90,40 @@ export type WidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
 };
 
 /**
- * A dictionary containing informations about all WidgetObjects
+ * A dictionary containing informations about all WidgetObjectsDictionary
  */
-export type WidgetObjects<Props = FeaturesWidgetsProps> = Dictionary<WidgetSceneObject<Props>>;
+export type WidgetObjectsDictionary<Props = FeaturesWidgetsProps> = Dictionary<
+    WidgetObjectsDictionaryItem<Props>
+>;
 
 /**
- * A serialized dictionary containing informations about all WidgetObjects
+ * A serialized dictionary containing informations about all WidgetObjectsDictionary
  */
 export type SerializedWidgetObjects<Props = FeaturesWidgetsProps> = Dictionary<
     SerializedWidgetSceneObject<Props>
 >;
 
 /**
- * A serialized version of WidgetSceneObject type
+ * A serialized version of WidgetObjectsDictionaryItem type
  */
 export type SerializedWidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
-    WidgetSceneObject<Props>,
+    WidgetObjectsDictionaryItem<Props>,
     "component" | "meshHolder"
 > & {
     meshHolder: string;
 };
 
 /**
- * A dictionary containing editable informations about a WidgetSceneObject
+ * A dictionary containing editable informations about a WidgetObjectsDictionaryItem
  */
-export type WidgetsDictionary = Dictionary<{
-    properties: WidgetProperties;
-    options: WidgetOptionsValues;
-}>;
+export type WidgetsInfoDictionary = Dictionary<WidgetsInfoDictionaryItem>;
 
 export type WidgetOptionsValues = Dictionary<{
     fieldType: FieldType;
     value: WidgetOptionDefaultValue;
 }>;
 
-export type WidgetsDictionaryItem = {
+export type WidgetsInfoDictionaryItem = {
     id: string;
     properties?: WidgetProperties;
     options?: WidgetOptionsValues;

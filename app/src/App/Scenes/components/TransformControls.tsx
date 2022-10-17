@@ -1,8 +1,8 @@
+import usePrevious from "@app/Common/hooks/usePrevious";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGetWidgets from "@app/Widgets/_actions/hooks/useGetMeshByWidget";
-import usePrevious from "@app/Common/hooks/usePrevious";
-import { useThree } from "@react-three/fiber";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import { useThree } from "@react-three/fiber";
 import isEqual from "lodash/isEqual";
 import { FC, ReactNode, useEffect, useMemo, useState } from "react";
 import { Object3D } from "three";

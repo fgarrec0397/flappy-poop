@@ -27,7 +27,7 @@ export default () => {
         remove,
     } = useScenesService();
     const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
-    const { widgets, widgetsDictionary, resetWidgets } = useWidgets();
+    const { widgets, widgetsInfoDictionary, resetWidgets } = useWidgets();
     const [lastSceneAdded, setLastSceneAdded] = useState<ScenesDictionaryItem>();
     const previousScenes = usePrevious(scenes);
 
@@ -51,7 +51,7 @@ export default () => {
                 const deserializedWidgets = unserializeWidgets(selectedSceneData.serializedWidgets);
 
                 updateCurrentSceneId(sceneId);
-                resetWidgets(deserializedWidgets, selectedSceneData.widgetsDictionary, true);
+                resetWidgets(deserializedWidgets, selectedSceneData.widgetsInfoDictionary, true);
             }
         },
         [getSceneById, resetWidgets, unserializeWidgets, updateCurrentSceneId]
@@ -107,7 +107,7 @@ export default () => {
                 isDefault,
                 data: {
                     serializedWidgets: {},
-                    widgetsDictionary: {},
+                    widgetsInfoDictionary: {},
                 },
             };
 
@@ -145,7 +145,7 @@ export default () => {
             const newWidgetsDictionary = buildWidgetsDictionary(deserializedWidgets);
             const mergedWidgetDictionary = mergeWidgetsDictionary(
                 newWidgetsDictionary,
-                newCurrentScene.data.widgetsDictionary
+                newCurrentScene.data.widgetsInfoDictionary
             );
 
             resetWidgets(deserializedWidgets, mergedWidgetDictionary);
@@ -165,7 +165,7 @@ export default () => {
                 ...currentScene,
                 data: {
                     serializedWidgets,
-                    widgetsDictionary,
+                    widgetsInfoDictionary,
                 },
             };
 
@@ -175,13 +175,13 @@ export default () => {
                 ...scenesClone[currentScene.id],
                 data: {
                     serializedWidgets,
-                    widgetsDictionary,
+                    widgetsInfoDictionary,
                 },
             };
 
             await save(scenesClone);
         }
-    }, [getCurrentScene, save, scenes, updateScene, widgets, widgetsDictionary]);
+    }, [getCurrentScene, save, scenes, updateScene, widgets, widgetsInfoDictionary]);
 
     const removeScene = useCallback(
         (sceneId: string) => {

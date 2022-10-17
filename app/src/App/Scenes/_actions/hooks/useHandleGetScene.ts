@@ -9,9 +9,14 @@ export default () => {
 
     useEffect(() => {
         const handleFetchScene = async () => {
-            await getScene((result: SceneApiResponseResult) => {
-                initScenes(result);
-            });
+            await getScene(
+                (result: SceneApiResponseResult) => {
+                    initScenes(result);
+                },
+                (error: any) => {
+                    console.warn(error);
+                }
+            );
         };
 
         handleFetchScene();

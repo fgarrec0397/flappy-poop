@@ -1,6 +1,6 @@
 import { StyledWrapper } from "@app/Common/components/Html";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
-import { WidgetSceneObject } from "@app/Widgets/_actions/widgetsTypes";
+import { WidgetObjectsDictionaryItem } from "@app/Widgets/_actions/widgetsTypes";
 import { Button, Card, List } from "antd";
 import { FC } from "react";
 import { css } from "styled-components";
@@ -8,7 +8,7 @@ import { css } from "styled-components";
 const EditorItemsList: FC = () => {
     const { widgets, selectWidget, selectedWidgets } = useWidgets();
 
-    const handleSelect = (widget: WidgetSceneObject) => {
+    const handleSelect = (widget: WidgetObjectsDictionaryItem) => {
         selectWidget([widget]);
     };
 

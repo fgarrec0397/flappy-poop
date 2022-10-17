@@ -1,5 +1,5 @@
 import { Dictionary } from "@app/Common/commonTypes";
-import { WidgetObjects, WidgetsDictionary } from "@app/Widgets/_actions/widgetsTypes";
+import { WidgetObjectsDictionary, WidgetsInfoDictionary } from "@app/Widgets/_actions/widgetsTypes";
 
 /**
  * Additional props that applies for widgets in the editor
@@ -38,6 +38,6 @@ export type HistoryItem = {
  * A snapshot of a editor state
  */
 export type HistoryState = {
-    widgetsDictionary: WidgetsDictionary;
-    widgets: WidgetObjects;
+    widgetsInfoDictionary: WidgetsInfoDictionary;
+    widgets: WidgetObjectsDictionary;
 };

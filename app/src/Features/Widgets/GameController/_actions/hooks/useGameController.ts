@@ -1,7 +1,7 @@
-import usegameControllerService from "../_data/hooks/usegameControllerService";
+import useGameControllerService from "../_data/hooks/useGameControllerService";
 
 export default () => {
-    const { add } = usegameControllerService();
+    const { add } = useGameControllerService();
 
     const makeThisWidgetAlive = () => {
         add("Your widget behaviour here!");

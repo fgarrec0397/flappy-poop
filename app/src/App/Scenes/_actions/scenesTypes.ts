@@ -1,5 +1,5 @@
 import { Dictionary } from "@app/Common/commonTypes";
-import { SerializedWidgetObjects, WidgetsDictionary } from "@app/Widgets/_actions/widgetsTypes";
+import { SerializedWidgetObjects, WidgetsInfoDictionary } from "@app/Widgets/_actions/widgetsTypes";
 import { Camera } from "@react-three/fiber";
 import { MutableRefObject } from "react";
 
@@ -40,7 +40,7 @@ export type ScenesDictionaryItem = {
  */
 export type SceneData = {
     serializedWidgets: SerializedWidgetObjects;
-    widgetsDictionary: WidgetsDictionary;
+    widgetsInfoDictionary: WidgetsInfoDictionary;
 };
 
 /**
