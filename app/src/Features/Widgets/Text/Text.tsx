@@ -3,7 +3,7 @@ import { Html } from "@react-three/drei";
 import { FC } from "react";
 
 import { EditableWidget } from "../../../App/Editor/_actions/editorTypes";
-import { FieldType } from "../../../App/Widgets/_actions/widgetsTypes";
+import { FieldType, WidgetType } from "../../../App/Widgets/_actions/widgetsConstants";
 import textReducer from "./state/textReducer";
 
 export interface TextProps extends EditableWidget {
@@ -27,6 +27,7 @@ const Text: FC<OwnProps> = ({ text }) => {
 export const widget = createWidget({
     component: Text,
     reducer: textReducer,
+    type: WidgetType.GameObject,
     widgetDefinition: {
         name: "Text",
         options: [

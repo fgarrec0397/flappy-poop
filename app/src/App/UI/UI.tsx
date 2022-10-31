@@ -3,19 +3,19 @@ import Game from "@app/Game/Game";
 import { FC } from "react";
 
 import useUI from "./_actions/hooks/useUI";
+import UIClosePreviewButton from "./Components/UIClosePreviewButton";
 
 const UI: FC = () => {
-    const { showEditorUI, showGameUI } = useUI();
+    const { showEditorUI, showGameUI, isGameUIPreview } = useUI();
 
-    if (showEditorUI) {
-        return <Editor.EditorUI />;
-    }
-
-    if (showGameUI) {
-        return <Game.GameUI />;
-    }
-
-    return null;
+    // TODO - see if we put UIClosePreviewButton in the Editor module
+    return (
+        <>
+            {showEditorUI && <Editor.EditorUI />}
+            {showGameUI && <Game.GameUI />}
+            {isGameUIPreview && <UIClosePreviewButton />}
+        </>
+    );
 };
 
 export default UI;

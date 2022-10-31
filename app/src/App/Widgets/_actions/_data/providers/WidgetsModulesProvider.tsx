@@ -1,15 +1,19 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useState } from "react";
 
-import { WidgetModule } from "../../widgetsTypes";
+import { WidgetObjectModule, WidgetUIModule } from "../../widgetsTypes";
 
 export interface WidgetModuleContextModel {
-    widgetsModules: WidgetModule[] | [];
-    setWidgetsModules: (() => void) | Dispatch<SetStateAction<WidgetModule[]>>;
+    widgetsObjectModules: WidgetObjectModule[] | [];
+    widgetsUIModules: WidgetUIModule[] | [];
+    setWidgetsModules: (() => void) | Dispatch<SetStateAction<WidgetObjectModule[]>>;
+    setWidgetsUIModules: (() => void) | Dispatch<SetStateAction<WidgetUIModule[]>>;
 }
 
 export const defaultContext: WidgetModuleContextModel = {
-    widgetsModules: [],
+    widgetsObjectModules: [],
+    widgetsUIModules: [],
     setWidgetsModules: () => {},
+    setWidgetsUIModules: () => {},
 };
 
 export const WidgetsModulesContext = createContext<WidgetModuleContextModel>(defaultContext);
@@ -19,11 +23,14 @@ type Props = {
 };
 
 const WidgetsModulesContextProvider: FC<Props> = ({ children }) => {
-    const [widgetsModules, setWidgetsModules] = useState<WidgetModule[]>([]);
+    const [widgetsObjectModules, setWidgetsModules] = useState<WidgetObjectModule[]>([]);
+    const [widgetsUIModules, setWidgetsUIModules] = useState<WidgetUIModule[]>([]);
 
     const providerValue: WidgetModuleContextModel = {
-        widgetsModules,
+        widgetsObjectModules,
+        widgetsUIModules,
         setWidgetsModules,
+        setWidgetsUIModules,
     };
 
     return (

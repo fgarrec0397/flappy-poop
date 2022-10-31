@@ -1,15 +1,14 @@
 import { usePrevious } from "@app/Common/hooks";
 import { uidGenerator } from "@app/Common/utilities";
 import useWidgets from "@app/Widgets/_actions/hooks/useWidgets";
+import useWidgetsModules from "@app/Widgets/_actions/hooks/useWidgetsModules";
 import useWidgetsUtilities from "@app/Widgets/_actions/hooks/useWidgetsUtilities";
-import { buildWidgetsDictionary } from "@app/Widgets/_actions/utilities/buildWidgetDictionaryItem";
 import serializeWidgets from "@app/Widgets/_actions/utilities/serializeWidgets";
 import cloneDeep from "lodash/cloneDeep";
 import { useCallback, useEffect, useState } from "react";
 
 import useScenesService from "../_data/hooks/useScenesService";
-import { SceneApiResponseResult, ScenesDictionary, ScenesDictionaryItem } from "../scenesTypes";
-import getDefaultScene from "../utilities/getDefaultScene";
+import { ScenesDictionary, ScenesDictionaryItem } from "../scenesTypes";
 import getFirstNonDefaultScene from "../utilities/getFirstNonDefaultScene";
 
 export default () => {
@@ -26,8 +25,9 @@ export default () => {
         updateScene,
         remove,
     } = useScenesService();
-    const { unserializeWidgets, mergeWidgetsDictionary } = useWidgetsUtilities();
+    const { unserializeWidgets } = useWidgetsUtilities();
     const { widgets, widgetsInfoDictionary, resetWidgets } = useWidgets();
+    const { widgetsModules } = useWidgetsModules();
     const [lastSceneAdded, setLastSceneAdded] = useState<ScenesDictionaryItem>();
     const previousScenes = usePrevious(scenes);
 
@@ -42,19 +42,79 @@ export default () => {
         [scenes]
     );
 
-    const selectScene = useCallback(
-        (sceneId: string) => {
-            const scene = getSceneById(sceneId);
+    const getSceneByName = useCallback(
+        (sceneName: string | null) => {
+            if (scenes && sceneName) {
+                const sceneId = Object.keys(scenes).find((x) => scenes[x].name === sceneName);
+
+                if (sceneId) {
+                    return scenes[sceneId];
+                }
+            }
+
+            return null;
+        },
+        [scenes]
+    );
+
+    const getSceneByNameOrId = useCallback(
+        (sceneIdOrName: string | null) => {
+            const scene = getSceneById(sceneIdOrName);
+
+            if (!scene) {
+                return getSceneByName(sceneIdOrName);
+            }
+
+            return scene;
+        },
+        [getSceneById, getSceneByName]
+    );
+
+    const getCurrentScene = useCallback(() => {
+        return getSceneById(currentSceneId);
+    }, [currentSceneId, getSceneById]);
+
+    const updateCurrentScene = useCallback(() => {
+        const serializedWidgets = serializeWidgets(widgets);
+        const currentScene = getCurrentScene();
+
+        if (currentScene) {
+            const scene: ScenesDictionaryItem = {
+                ...currentScene,
+                data: {
+                    serializedWidgets,
+                    widgetsInfoDictionary,
+                },
+            };
+
+            updateScene(scene);
+        }
+    }, [getCurrentScene, updateScene, widgets, widgetsInfoDictionary]);
+
+    const loadScene = useCallback(
+        (sceneNameOrId: string) => {
+            const scene = getSceneByNameOrId(sceneNameOrId);
 
             if (scene) {
                 const selectedSceneData = scene.data;
-                const deserializedWidgets = unserializeWidgets(selectedSceneData.serializedWidgets);
+                const deserializedWidgets = unserializeWidgets(
+                    selectedSceneData.serializedWidgets,
+                    widgetsModules
+                );
 
-                updateCurrentSceneId(sceneId);
+                updateCurrentScene();
+                updateCurrentSceneId(sceneNameOrId);
                 resetWidgets(deserializedWidgets, selectedSceneData.widgetsInfoDictionary, true);
             }
         },
-        [getSceneById, resetWidgets, unserializeWidgets, updateCurrentSceneId]
+        [
+            getSceneByNameOrId,
+            resetWidgets,
+            unserializeWidgets,
+            updateCurrentScene,
+            updateCurrentSceneId,
+            widgetsModules,
+        ]
     );
 
     useEffect(() => {
@@ -65,13 +125,9 @@ export default () => {
             currentSceneId !== lastSceneAdded.id &&
             Object.keys(scenes).length > Object.keys(previousScenes).length
         ) {
-            selectScene(lastSceneAdded.id);
+            loadScene(lastSceneAdded.id);
         }
-    }, [currentSceneId, lastSceneAdded, previousScenes, scenes, selectScene]);
-
-    const getCurrentScene = useCallback(() => {
-        return getSceneById(currentSceneId);
-    }, [currentSceneId, getSceneById]);
+    }, [currentSceneId, lastSceneAdded, previousScenes, scenes, loadScene]);
 
     const getCurrentDefaultScene = useCallback(() => {
         return getSceneById(currentDefaultSceneId);
@@ -135,28 +191,9 @@ export default () => {
         [reset]
     );
 
-    const initScenes = useCallback(
-        (result: SceneApiResponseResult) => {
-            const newCurrentSceneId = getDefaultScene(result);
-            const newCurrentScene = (result as ScenesDictionary)[newCurrentSceneId];
-
-            const deserializedWidgets = unserializeWidgets(newCurrentScene.data.serializedWidgets);
-
-            const newWidgetsDictionary = buildWidgetsDictionary(deserializedWidgets);
-            const mergedWidgetDictionary = mergeWidgetsDictionary(
-                newWidgetsDictionary,
-                newCurrentScene.data.widgetsInfoDictionary
-            );
-
-            resetWidgets(deserializedWidgets, mergedWidgetDictionary);
-            resetScenes(result, newCurrentSceneId);
-            changeDefaultScene(newCurrentScene);
-        },
-        [unserializeWidgets, mergeWidgetsDictionary, resetWidgets, resetScenes, changeDefaultScene]
-    );
-
     const saveScene = useCallback(async () => {
         const serializedWidgets = serializeWidgets(widgets);
+
         const currentScene = getCurrentScene();
         const scenesClone = cloneDeep(scenes);
 
@@ -191,14 +228,14 @@ export default () => {
                 if (sceneToRemove && sceneToRemove.isDefault) {
                     const nonDefaultScene = getFirstNonDefaultScene(scenes);
 
-                    selectScene(nonDefaultScene.id);
+                    loadScene(nonDefaultScene.id);
                     changeDefaultScene(nonDefaultScene);
                 }
             }
 
             remove(sceneId);
         },
-        [getSceneById, scenes, remove, selectScene, changeDefaultScene]
+        [getSceneById, scenes, remove, loadScene, changeDefaultScene]
     );
 
     return {
@@ -209,13 +246,14 @@ export default () => {
         // Actions
         addScene,
         addScenesBatch,
+        changeDefaultScene,
         getSceneById,
         getCurrentScene,
         getCurrentDefaultScene,
         resetScenes,
-        initScenes,
+        // initScenes,
         saveScene,
-        selectScene,
+        loadScene,
         removeScene,
     };
 };

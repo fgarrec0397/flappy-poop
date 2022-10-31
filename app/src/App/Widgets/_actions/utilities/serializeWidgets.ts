@@ -1,14 +1,14 @@
 import { SetOptionalPropertyFrom } from "@app/Common/commonTypes";
 import { serialize } from "@app/Core/_actions/utilities/componentSerializer";
 import {
-    SerializedWidgetObjects,
-    SerializedWidgetSceneObject,
-    WidgetEditorOptions,
-    WidgetObjectsDictionary,
-    WidgetObjectsDictionaryItem,
+    SerializedWidgetDictionary,
+    SerializedWidgetDictionaryItem,
+    WidgetDictionary,
+    WidgetDictionaryItem,
+    WidgetObjectEditorOptions,
 } from "@app/Widgets/_actions/widgetsTypes";
 
-export const serializeEditorOptions = ({ meshHolder, helper }: WidgetEditorOptions) => {
+export const serializeEditorOptions = ({ meshHolder, helper }: WidgetObjectEditorOptions) => {
     if (meshHolder) {
         const serializedMeshHolder = serialize(meshHolder as JSX.Element);
 
@@ -19,23 +19,24 @@ export const serializeEditorOptions = ({ meshHolder, helper }: WidgetEditorOptio
     }
 };
 
-export default (widgets: WidgetObjectsDictionary) => {
-    const serializedWidgets: SerializedWidgetObjects = {};
+export default (widgets: WidgetDictionary) => {
+    const serializedWidgets: SerializedWidgetDictionary = {};
 
     for (const key in widgets) {
-        const widget: SetOptionalPropertyFrom<WidgetObjectsDictionaryItem, "component"> = {
+        const widget: SetOptionalPropertyFrom<WidgetDictionaryItem, "component"> = {
             ...widgets[key],
         };
-        let editorOptions: WidgetEditorOptions | undefined;
-        if (widget.editorOptions) {
-            editorOptions = serializeEditorOptions(widget.editorOptions);
-        }
 
-        widget.editorOptions = editorOptions;
+        let editorOptions: WidgetObjectEditorOptions | undefined;
+
+        if ("editorOptions" in widget && widget.editorOptions) {
+            editorOptions = serializeEditorOptions(widget.editorOptions);
+            widget.editorOptions = editorOptions;
+        }
 
         delete widget.component;
 
-        serializedWidgets[widget.id] = widget as SerializedWidgetSceneObject;
+        serializedWidgets[widget.id] = widget as SerializedWidgetDictionaryItem;
     }
 
     return serializedWidgets;

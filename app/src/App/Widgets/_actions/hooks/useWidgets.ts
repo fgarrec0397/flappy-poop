@@ -7,9 +7,11 @@ import {
     buildWidgetDictionaryItem,
     buildWidgetDictionaryProperties,
 } from "../utilities/buildWidgetDictionaryItem";
-import widgetsConstants from "../widgetsConstants";
+import widgetsConstants, { WidgetType } from "../widgetsConstants";
 import {
-    SerializedWidgetSceneObject,
+    SerializedWidgetObjectDictionaryItem,
+    WidgetDictionary,
+    WidgetDictionaryItem,
     WidgetObjectsDictionary,
     WidgetObjectsDictionaryItem,
     WidgetOptionsValues,
@@ -25,6 +27,8 @@ export default () => {
         addBatch,
         select,
         widgets,
+        widgetsObjects,
+        widgetsUI,
         currentWidgetProperties,
         widgetsInfoDictionary,
         selectedWidgets,
@@ -77,7 +81,7 @@ export default () => {
 
     const updateWidget = useCallback(
         (
-            widget: WidgetObjectsDictionaryItem,
+            widget: WidgetDictionaryItem,
             widgetProperties?: WidgetProperties,
             updateOnlyProperties?: boolean
         ) => {
@@ -101,22 +105,25 @@ export default () => {
 
     const addWidget = useCallback(
         (
-            widget: WidgetObjectsDictionaryItem,
+            widget: WidgetDictionaryItem,
             properties?: WidgetProperties,
             options?: WidgetOptionsValues
         ) => {
-            const newWidget: WidgetObjectsDictionaryItem = { ...widget };
-            let widgetProperties = properties;
+            const newWidget: WidgetDictionaryItem = { ...widget };
             let widgetOptions = options;
 
             newWidget.id = uidGenerator(); // assign id on initialisation
 
-            if (!widgetProperties) {
-                widgetProperties = {
-                    position: [0, 0, 0],
-                    rotation: [0, 0, 0],
-                    scale: [1, 1, 1],
-                };
+            if (widget.type === WidgetType.GameObject) {
+                let widgetProperties = properties;
+
+                if (!widgetProperties) {
+                    widgetProperties = {
+                        position: [0, 0, 0],
+                        rotation: [0, 0, 0],
+                        scale: [1, 1, 1],
+                    };
+                }
             }
 
             if (!widgetOptions) {
@@ -148,8 +155,12 @@ export default () => {
 
     const selectWidget = useCallback(
         (widgetsToSelect: WidgetObjectsDictionaryItem[]) => {
+            const { properties } = widgetsInfoDictionary[widgetsToSelect[0].id];
             select(widgetsToSelect);
-            updateCurrentWidget(widgetsInfoDictionary[widgetsToSelect[0].id].properties, true);
+
+            if (properties) {
+                updateCurrentWidget(properties, true);
+            }
         },
         [select, widgetsInfoDictionary, updateCurrentWidget]
     );
@@ -169,7 +180,7 @@ export default () => {
 
     const updateWidgetOptions = useCallback(
         (
-            widget: WidgetObjectsDictionaryItem | SerializedWidgetSceneObject,
+            widget: WidgetDictionaryItem | SerializedWidgetObjectDictionaryItem,
             widgetOptions: WidgetOptionsValues
         ) => {
             update(widget as WidgetObjectsDictionaryItem, undefined, widgetOptions);
@@ -220,10 +231,8 @@ export default () => {
     );
 
     const removeWidget = useCallback(
-        (widget: WidgetObjectsDictionaryItem) => {
-            if (widget.id) {
-                remove(widget);
-            }
+        (widgetId: string) => {
+            remove(widgetId);
         },
         [remove]
     );
@@ -231,7 +240,7 @@ export default () => {
     const removeselectedWidgets = useCallback(() => {
         const widget = selectedWidgets[0];
         if (widget) {
-            removeWidget(widget);
+            removeWidget(widget.id);
         } else {
             // eslint-disable-next-line no-console
             console.error("No mesh found"); // TODO -- Add UI confirmation
@@ -244,11 +253,11 @@ export default () => {
 
     const resetWidgets = useCallback(
         (
-            widgetsToAdd: WidgetObjectsDictionary,
-            widgetDictionaryToAdd: WidgetsInfoDictionary,
+            widgetsToAdd?: WidgetDictionary,
+            widgetDictionaryToAdd?: WidgetsInfoDictionary,
             shouldRemoveAll?: boolean
         ) => {
-            reset(widgetsToAdd, widgetDictionaryToAdd, shouldRemoveAll);
+            reset(widgetsToAdd || {}, widgetDictionaryToAdd || {}, shouldRemoveAll);
         },
         [reset]
     );
@@ -258,6 +267,8 @@ export default () => {
         firstCurrentWidget: selectedWidgets[0],
         currentWidgetProperties,
         widgets,
+        widgetsObjects,
+        widgetsUI,
         widgetsInfoDictionary,
         getWidgetDictionaryFromWidget,
 
