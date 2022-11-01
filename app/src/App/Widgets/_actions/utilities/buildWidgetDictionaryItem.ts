@@ -1,11 +1,10 @@
 import { serializeVector3 } from "@app/Common/utilities";
 import { Object3D } from "three";
 
-import widgetsConstants from "../widgetsConstants";
 import {
-    SerializedWidgetSceneObject,
-    WidgetObjectsDictionary,
-    WidgetObjectsDictionaryItem,
+    SerializedWidgetObjectDictionaryItem,
+    WidgetDictionary,
+    WidgetDictionaryItem,
     WidgetOptionsValues,
     WidgetProperties,
     WidgetsInfoDictionary,
@@ -18,13 +17,16 @@ type WidgetsDictionaryBuilderOptions = {
     options?: WidgetOptionsValues;
 };
 
-export const buildWidgetsDictionary = (widgets: WidgetObjectsDictionary) => {
+// TODO - scalable widgets types - Review this entire file
+
+export const buildWidgetsDictionary = (widgets: WidgetDictionary) => {
     const widgetsInfoDictionary: WidgetsInfoDictionary = {};
 
     for (const key in widgets) {
         const dictionaryItem = buildWidgetDictionaryItem(widgets[key]);
 
         widgetsInfoDictionary[dictionaryItem.id] = {
+            id: dictionaryItem.id,
             properties: dictionaryItem.properties!,
             options: dictionaryItem.options!,
         };
@@ -34,14 +36,14 @@ export const buildWidgetsDictionary = (widgets: WidgetObjectsDictionary) => {
 };
 
 export const buildWidgetDictionaryItem = (
-    widget: WidgetObjectsDictionaryItem,
+    widget: WidgetDictionaryItem,
     builderOptions?: WidgetsDictionaryBuilderOptions
 ): WidgetsInfoDictionaryItem => {
     const options = builderOptions?.options
         ? builderOptions?.options
         : buildWidgetDictionaryOptions(widget);
 
-    let widgetProperties: WidgetProperties = widgetsConstants.widgetDefaultProperties;
+    let widgetProperties: WidgetProperties | undefined = undefined;
 
     if (builderOptions?.mesh) {
         widgetProperties = buildWidgetDictionaryProperties(builderOptions.mesh);
@@ -51,11 +53,15 @@ export const buildWidgetDictionaryItem = (
         widgetProperties = builderOptions.properties;
     }
 
-    return { id: widget.id!, properties: widgetProperties, options };
+    return {
+        id: widget.id!,
+        options,
+        ...(widgetProperties ? { properties: widgetProperties } : undefined), // TODO - scalable widgets types
+    };
 };
 
 export const buildWidgetDictionaryOptions = (
-    widget: WidgetObjectsDictionaryItem | SerializedWidgetSceneObject
+    widget: WidgetDictionaryItem | SerializedWidgetObjectDictionaryItem
 ) => {
     const options: WidgetOptionsValues = {};
     const widgetOptions = widget.widgetDefinition.options;

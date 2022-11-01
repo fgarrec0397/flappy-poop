@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 
-import { getScene } from "../_data/scenesApiservices";
-import { SceneApiResponseResult } from "../scenesTypes";
-import useScenes from "./useScenes";
+import { getScenes } from "../_data/scenesApiservices";
+import useInitScenes from "./useInitScenes";
 
 export default () => {
-    const { initScenes } = useScenes();
+    const { initScenes } = useInitScenes();
 
     useEffect(() => {
         const handleFetchScene = async () => {
-            await getScene(
-                (result: SceneApiResponseResult) => {
+            await getScenes(
+                (result) => {
                     initScenes(result);
                 },
                 (error: any) => {
+                    // TODO - show UI element with this error
+                    // eslint-disable-next-line no-console
                     console.warn(error);
                 }
             );

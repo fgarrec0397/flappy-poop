@@ -1,15 +1,37 @@
-import { useCallback } from "react";
+import { loadWidgetsFromModules } from "@features/Widgets";
+import { useCallback, useMemo } from "react";
 
 import useWidgetsModuleContext from "../_data/hooks/useWidgetsModuleContext";
-import { SerializedWidgetSceneObject, WidgetObjectsDictionaryItem } from "../widgetsTypes";
+import filterWidgetsModules from "../utilities/filterWidgetsModules";
+import { WidgetModules, WidgetObjectModule } from "../widgetsTypes";
 
 export default () => {
-    const { widgetsModules, setWidgetsModules } = useWidgetsModuleContext();
+    const { widgetsObjectModules, setWidgetsModules, widgetsUIModules, setWidgetsUIModules } =
+        useWidgetsModuleContext();
+    const widgetsModules = useMemo(
+        () => [...widgetsObjectModules, ...widgetsUIModules],
+        [widgetsObjectModules, widgetsUIModules]
+    );
 
-    const loadWidgetModule = useCallback(
-        (widget: WidgetObjectsDictionaryItem | SerializedWidgetSceneObject) => {
-            return widgetsModules.find(
-                (x) => x.widgetDefinition.name === widget.widgetDefinition.name
+    const loadWidgetsModules = useCallback(async () => {
+        const loadedWidgetsModules = await loadWidgetsFromModules();
+        const filteredModules = filterWidgetsModules(loadedWidgetsModules);
+
+        if (filteredModules.widgetsObjectModules) {
+            setWidgetsModules(filteredModules.widgetsObjectModules);
+        }
+
+        if (filteredModules.widgetsUIModules) {
+            setWidgetsUIModules(filteredModules.widgetsUIModules);
+        }
+
+        return loadedWidgetsModules;
+    }, [setWidgetsModules, setWidgetsUIModules]);
+
+    const getWidgetModuleByName = useCallback(
+        (widgetName: string, otherWidgetsModules?: WidgetModules[]) => {
+            return (otherWidgetsModules || widgetsModules).find(
+                (x) => x.widgetDefinition.name === widgetName
             );
         },
         [widgetsModules]
@@ -18,17 +40,20 @@ export default () => {
     /**
      * Load the  React component from the widgets modules list of the given widget
      */
-    const getSceneWidgetComponentFromModules = useCallback(
-        (widget: WidgetObjectsDictionaryItem | SerializedWidgetSceneObject) => {
-            return loadWidgetModule(widget)!.component;
+    const getWidgetModuleComponentByName = useCallback(
+        (widgetName: string, otherWidgetsModules?: WidgetObjectModule[]) => {
+            return getWidgetModuleByName(widgetName, otherWidgetsModules)!.component;
         },
-        [loadWidgetModule]
+        [getWidgetModuleByName]
     );
 
     return {
         widgetsModules,
+        widgetsObjectModules,
+        widgetsUIModules,
         setWidgetsModules,
-        getSceneWidgetComponentFromModules,
-        loadWidgetModule,
+        loadWidgetsModules,
+        getWidgetModuleComponentByName,
+        getWidgetModuleByName,
     };
 };

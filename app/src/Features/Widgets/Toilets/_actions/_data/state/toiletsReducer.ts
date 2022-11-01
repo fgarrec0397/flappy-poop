@@ -52,4 +52,4 @@ export const toiletsSlice = createSlice({
 export const { addToiletsChunk, removeToiletsChunk, removeAllToilets, updateToilet } =
     toiletsSlice.actions;
 
-export default toiletsSlice.reducer;
+export default toiletsSlice;

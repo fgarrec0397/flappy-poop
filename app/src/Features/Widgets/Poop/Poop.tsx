@@ -1,12 +1,13 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
+import { ClientKeyMappings } from "@app/Core/_actions/coreTypes";
 import useKeyboardMapping from "@app/Core/_actions/hooks/useKeyboardMapping";
-import { ClientKeyMappings } from "@app/Core/coreTypes";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
+import { WidgetType } from "@app/Widgets/_actions/widgetsConstants";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
 import { useGLTF } from "@react-three/drei";
 import { CuboidCollider, RigidBodyApi } from "@react-three/rapier";
@@ -32,7 +33,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
 
     useKeyboardMapping((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
-            colliderRef.current.applyImpulse(new Vector3(poopSpeed, 0.3, 0));
+            colliderRef.current.applyImpulse(new Vector3(0, 0.3, 0));
         }
     }, []);
 
@@ -108,6 +109,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
 export const widget = createWidget({
     component: Poop,
     reducer: poopReducer,
+    type: WidgetType.GameObject,
     widgetDefinition: {
         name: "Poop",
     },

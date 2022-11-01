@@ -1,34 +1,20 @@
-import { Select } from "@react-three/drei";
 import { FC } from "react";
 
-import useWidgets from "./_actions/hooks/useWidgets";
-import { WidgetObjectsDictionaryItem } from "./_actions/widgetsTypes";
-import WidgetRenderer from "./components/WidgetRenderer";
+import { WidgetDictionary } from "./_actions/widgetsTypes";
+import WidgetItem from "./components/WidgetItem";
 
-interface WidgetProps {
-    widget: WidgetObjectsDictionaryItem;
-}
-
-const Widgets: FC = () => {
-    const { widgets, selectWidgetFromMeshArr } = useWidgets();
-
-    return (
-        <Select multiple onChange={selectWidgetFromMeshArr}>
-            {Object.keys(widgets).map((widgetId) => (
-                <Widget key={widgetId} widget={widgets[widgetId]} />
-            ))}
-        </Select>
-    );
+type WidgetsProps = {
+    widgets: WidgetDictionary;
 };
 
-const Widget: FC<WidgetProps> = ({ widget }) => {
-    const { id } = widget;
-
-    if (id) {
-        return <WidgetRenderer widget={widget} />;
-    }
-
-    return null;
+const Widgets: FC<WidgetsProps> = ({ widgets }) => {
+    return (
+        <>
+            {Object.keys(widgets).map((widgetId) => (
+                <WidgetItem key={widgetId} widget={widgets[widgetId]} />
+            ))}
+        </>
+    );
 };
 
 export default Widgets;

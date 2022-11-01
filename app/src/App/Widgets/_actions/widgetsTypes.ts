@@ -1,93 +1,123 @@
 import { Dictionary } from "@app/Common/commonTypes";
-import { FeaturesWidgetsProps } from "@features/Core/collector";
+import { FeaturesWidgetsProps } from "@features/Widgets";
+import { Slice } from "@reduxjs/toolkit";
 import { FC, ForwardRefExoticComponent, PropsWithoutRef, ReactNode, RefAttributes } from "react";
-import { AnyAction, Reducer } from "redux";
 import { Object3D } from "three";
 
-import { HelpersTypes } from "./widgetsConstants";
+import { FieldType, HelpersTypes, WidgetType } from "./widgetsConstants";
+
+/// ---------------------- Widget Module ---------------------- ///
 
 /**
- * Allowed Fieldtypes
+ * Base widget type
  */
-export enum FieldType {
-    Text = "Text",
-    Number = "Number",
-    Select = "Select",
-    Checkbox = "Checkbox",
-}
+export type Widget<Props = FeaturesWidgetsProps, Ref = null> = {
+    component: WidgetComponent<Props, Ref>;
+    reducer: Slice | null;
+    widgetDefinition: WidgetDefinition;
+};
+
+export type WidgetModules = WidgetObjectModule | WidgetUIModule;
+
+/**
+ * A component type of a widget
+ */
+export type WidgetComponent<Props = FeaturesWidgetsProps, Ref = null> =
+    | FC<Props>
+    | ForwardRefExoticComponent<PropsWithoutRef<Props> & RefAttributes<Ref>>;
+
+/**
+ * Definition of the widget that is displayed in the editor
+ */
+export type WidgetDefinition = {
+    name: string;
+    options?: WidgetOptions[];
+};
 
 /**
  * Option for Select FieldType
  */
-export interface SelectOptions {
+export type SelectOptions = {
     value: string;
     name: string;
-}
+};
 
 type WidgetAdditionnalOptions = WidgetSelectionOptions;
 
 export type WidgetOptionDefaultValue = string | number | boolean; // TODO - Readjust that in order to match the field type
 
-export interface WidgetSelectionOptions {
+export type WidgetSelectionOptions = {
     selectOptions?: SelectOptions[];
-}
+};
 
 /**
  * Base interface for option object.
  */
-export interface WidgetBaseOptions extends WidgetAdditionnalOptions {
+export type WidgetBaseOptions = WidgetAdditionnalOptions & {
     name: string;
     displayName: string;
     fieldType: FieldType;
     isVisible?: (options: WidgetBaseOptions[]) => boolean;
     defaultValue: WidgetOptionDefaultValue;
-}
+};
 
 /**
  * All options allowed for the widget in the editor
  */
 export type WidgetOptions = WidgetBaseOptions;
 
+/// ---------------------- Widgets Dictionary ---------------------- ///
+
 /**
- * Widget object definition. This information is displayed in the editor
+ * A dictionary containing informations about all widgets
  */
-export interface WidgetDefinition {
-    name: string;
-    options?: WidgetOptions[];
-}
+export type WidgetDictionary<Props = FeaturesWidgetsProps> = Dictionary<
+    WidgetDictionaryItem<Props>
+>;
+
+/**
+ * Informations of a widget
+ */
+export type WidgetDictionaryItem<Props = FeaturesWidgetsProps> =
+    | WidgetObjectsDictionaryItem<Props>
+    | WidgetUIDictionaryItem;
+
+/// ---------------------- Widgets Dictionary ---------------------- ///
+
+/**
+ * A dictionary containing informations about all widgets
+ */
+export type SerializedWidgetDictionary<Props = FeaturesWidgetsProps> = Dictionary<
+    SerializedWidgetDictionaryItem<Props>
+>;
+
+/**
+ * Informations of a widget
+ */
+export type SerializedWidgetDictionaryItem<Props = FeaturesWidgetsProps> =
+    | SerializedWidgetObjectDictionaryItem<Props>
+    | SerializedWidgetUIDictionaryItem;
+
+/// ---------------------- Widget Object Module ---------------------- ///
+
+/**
+ * A widget object that can be on the 3D scene.
+ */
+export type WidgetObjectModule<Props = FeaturesWidgetsProps, Ref = null> = Widget<Props, Ref> & {
+    hasRef?: true;
+    editorOptions?: WidgetObjectEditorOptions;
+    type: WidgetType.GameObject;
+};
 
 /**
  * Widget options to set in the editor
  */
-export type WidgetEditorOptions = {
+export type WidgetObjectEditorOptions = {
     helper?: HelpersTypes;
     meshHolder?: ReactNode | Object3D;
 };
 
-export type WidgetComponent<Props, Ref> =
-    | FC<Props>
-    | ForwardRefExoticComponent<PropsWithoutRef<Props> & RefAttributes<Ref>>;
-
-/**
- * Widget object that is exported from all widgets objects
- */
-export interface WidgetModule<Props = FeaturesWidgetsProps, Ref = null, ReducerType = null> {
-    component: WidgetComponent<Props, Ref>;
-    hasRef?: true;
-    reducer: Reducer<ReducerType, AnyAction> | null;
-    editorOptions?: WidgetEditorOptions;
-    widgetDefinition: WidgetDefinition;
-}
-
-/**
- * Informations of a widget object on the scene
- */
-export type WidgetObjectsDictionaryItem<Props = FeaturesWidgetsProps> = Omit<
-    WidgetModule<Props>,
-    "reducer"
-> & {
-    id: string;
-};
+/// ---------------------- Widgets Objects Dictionary ---------------------- ///
 
 /**
  * A dictionary containing informations about all WidgetObjectsDictionary
@@ -97,31 +127,40 @@ export type WidgetObjectsDictionary<Props = FeaturesWidgetsProps> = Dictionary<
 >;
 
 /**
+ * Informations of a widget object on the scene
+ */
+export type WidgetObjectsDictionaryItem<Props = FeaturesWidgetsProps> = Omit<
+    WidgetObjectModule<Props>,
+    "reducer"
+> & {
+    id: string;
+};
+
+/// ---------------------- Serialized Widgets Objects Dictionary ---------------------- ///
+
+/**
  * A serialized dictionary containing informations about all WidgetObjectsDictionary
  */
-export type SerializedWidgetObjects<Props = FeaturesWidgetsProps> = Dictionary<
-    SerializedWidgetSceneObject<Props>
+export type SerializedWidgetObjectsDictionary<Props = FeaturesWidgetsProps> = Dictionary<
+    SerializedWidgetObjectDictionaryItem<Props>
 >;
 
 /**
  * A serialized version of WidgetObjectsDictionaryItem type
  */
-export type SerializedWidgetSceneObject<Props = FeaturesWidgetsProps> = Omit<
+export type SerializedWidgetObjectDictionaryItem<Props = FeaturesWidgetsProps> = Omit<
     WidgetObjectsDictionaryItem<Props>,
     "component" | "meshHolder"
 > & {
     meshHolder: string;
 };
 
+/// ---------------------- Widgets Info Dictionary ---------------------- ///
+
 /**
  * A dictionary containing editable informations about a WidgetObjectsDictionaryItem
  */
 export type WidgetsInfoDictionary = Dictionary<WidgetsInfoDictionaryItem>;
-
-export type WidgetOptionsValues = Dictionary<{
-    fieldType: FieldType;
-    value: WidgetOptionDefaultValue;
-}>;
 
 export type WidgetsInfoDictionaryItem = {
     id: string;
@@ -129,8 +168,53 @@ export type WidgetsInfoDictionaryItem = {
     options?: WidgetOptionsValues;
 };
 
+export type WidgetOptionsValues = Dictionary<{
+    fieldType: FieldType;
+    value: WidgetOptionDefaultValue;
+}>;
+
 export type WidgetProperties = {
     position: [number, number, number];
     rotation: [number, number, number];
     scale: [number, number, number];
 };
+
+/// ---------------------- Widget UI Module ---------------------- ///
+
+/**
+ * Widget module to generate UI elements
+ */
+export type WidgetUIModule = Omit<Widget, "hasRef" | "editorOptions" | "type"> & {
+    type: WidgetType.UI;
+};
+
+// /// ---------------------- Widget UI Dictionary ---------------------- ///
+
+// /**
+//  * A dictionary containing informations about all WidgetUIDictionaryItem
+//  */
+export type WidgetUIDictionary = Dictionary<WidgetUIDictionaryItem>;
+
+// /**
+//  * Informations of a UI widget
+//  */
+export type WidgetUIDictionaryItem = Omit<WidgetUIModule, "reducer"> & {
+    id: string;
+};
+
+/// ---------------------- Serialized Widgets Objects Dictionary ---------------------- ///
+
+/**
+ * A serialized dictionary containing informations about all WidgetObjectsDictionary
+ */
+export type SerializedWidgetUIDictionary<Props = FeaturesWidgetsProps> = Dictionary<
+    SerializedWidgetObjectDictionaryItem<Props>
+>;
+
+/**
+ * A serialized version of WidgetObjectsDictionaryItem type
+ */
+export type SerializedWidgetUIDictionaryItem = Omit<
+    WidgetUIDictionaryItem,
+    "component" | "meshHolder"
+>;

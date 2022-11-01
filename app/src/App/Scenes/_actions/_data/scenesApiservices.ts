@@ -1,3 +1,5 @@
+import get from "@app/Core/_actions/_data/services/get";
+
 import { SaveSceneServiceParameter, SceneApiResponseResult } from "../scenesTypes";
 
 export const postScenes = async (scenes: SaveSceneServiceParameter) => {
@@ -17,19 +19,19 @@ export const postScenes = async (scenes: SaveSceneServiceParameter) => {
     }
 };
 
-type FetchSuccessCallBack = (data: SceneApiResponseResult) => void;
+type FetchSuccessCallBack = (data?: SceneApiResponseResult) => void;
 type FetchErrorCallBack = (error: unknown) => void;
 
-export const getScene = async (
+export const getScenes = async (
     successCallBack: FetchSuccessCallBack,
     errorCallback: FetchErrorCallBack
 ) => {
-    const response = await fetch("api/scene");
+    const response = await get("api/scene");
 
     try {
         const { sceneJsonString } = await response.json();
         if (!sceneJsonString) {
-            return;
+            return successCallBack(undefined);
         }
         const data = JSON.parse(sceneJsonString) as SceneApiResponseResult;
 
