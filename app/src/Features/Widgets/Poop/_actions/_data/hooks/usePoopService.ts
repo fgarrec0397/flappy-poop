@@ -3,7 +3,7 @@ import usePoopSelector from "./usePoopSelector";
 
 export default () => {
     const { dispatchAddPoint, dispatchKillPoop } = usePoopDispatch();
-    const { isAlive, score } = usePoopSelector();
+    const poop = usePoopSelector();
 
     const addPoint = () => {
         dispatchAddPoint();
@@ -13,5 +13,5 @@ export default () => {
         dispatchKillPoop();
     };
 
-    return { isAlive, score, addPoint, killPoop };
+    return { isAlive: poop?.isAlive, score: poop?.score, addPoint, killPoop };
 };
