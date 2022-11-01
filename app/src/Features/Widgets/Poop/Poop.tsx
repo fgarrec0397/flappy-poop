@@ -1,8 +1,8 @@
 import { Vector3Array } from "@app/Common/commonTypes";
 import useObjectSize from "@app/Common/hooks/useObjectSize";
 import { serializeVector3 } from "@app/Common/utilities";
-import useKeyboardMapping from "@app/Core/_actions/hooks/useKeyboardMapping";
 import { ClientKeyMappings } from "@app/Core/_actions/coreTypes";
+import useKeyboardMapping from "@app/Core/_actions/hooks/useKeyboardMapping";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
@@ -33,7 +33,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
 
     useKeyboardMapping((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
-            colliderRef.current.applyImpulse(new Vector3(poopSpeed, 0.3, 0));
+            colliderRef.current.applyImpulse(new Vector3(0, 0.3, 0));
         }
     }, []);
 

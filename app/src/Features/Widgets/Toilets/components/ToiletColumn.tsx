@@ -88,7 +88,7 @@ const ToiletColumn: FC<ToiletColumnProps> = ({ toilet }) => {
                 ref={rbRef2}
                 type="kinematicVelocity"
                 colliders={false}
-                position={[toilet.position[0], toilet.position[1] + 15, toilet.position[2]]}
+                position={[toilet.position[0], toilet.position[1] + 20, toilet.position[2]]}
                 {...rigibodyProps}
             >
                 {!isEditor && <CuboidCollider args={[3, 4, 2]} />}
