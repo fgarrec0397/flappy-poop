@@ -25,8 +25,6 @@ const Toilets: FC<OwnProps> = () => {
     useToiletsInit();
     useToiletsUpdate();
 
-    console.log(toiletsChunks, "toiletsChunks");
-
     return (
         <mesh ref={toiletsRef}>
             {toiletsChunks.map((x, index) => (

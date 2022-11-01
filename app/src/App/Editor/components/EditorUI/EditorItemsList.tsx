@@ -8,8 +8,6 @@ import { css } from "styled-components";
 const EditorItemsList: FC = () => {
     const { widgetsObjects, selectWidget, selectedWidgets, removeWidget } = useWidgets();
 
-    console.log(widgetsObjects, "widgetsObjects");
-
     const handleSelect = (widget: WidgetObjectsDictionaryItem) => {
         selectWidget([widget]);
     };

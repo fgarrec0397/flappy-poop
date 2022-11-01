@@ -25,19 +25,14 @@ export type FeaturesWidgetsProps = GeometryFormsProps &
     WidgetStarterProps;
 
 /**
- * Add your UI Props here as union types
- */
-// export type FeaturesUIProps = PlayMenuProps;
-
-/**
  * Add your Widgets reducers state here
  */
 export interface FeaturesState {
-    textState: TextState;
-    toiletsState: ToiletsState;
-    poopState: PoopState;
-    gameControllerState: GameControllerState;
-    widgetStarterState: WidgetStarterState;
+    text: TextState;
+    toilets: ToiletsState;
+    poop: PoopState;
+    gameController: GameControllerState;
+    widgetStarter: WidgetStarterState;
 }
 
 /**
