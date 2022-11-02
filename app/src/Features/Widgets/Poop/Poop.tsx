@@ -21,7 +21,7 @@ import { PoopModelGLTFResult } from "./_actions/poopTypes";
 export type PoopProps = EditableWidget;
 
 const Poop: FC<PoopProps> = ({ position }) => {
-    const { nodes, materials } = useGLTF("/assets/Poop.gltf") as PoopModelGLTFResult;
+    const { nodes, materials } = useGLTF("/assets/Poop.gltf") as unknown as PoopModelGLTFResult;
     const ref = useRef<Group>(null);
     const meshRef = useRef<Mesh>(null);
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
@@ -74,8 +74,11 @@ const Poop: FC<PoopProps> = ({ position }) => {
             userData={{
                 name: "poop",
             }}
-            onIntersectionEnter={() => {
-                passToilet();
+            onIntersectionEnter={(payload) => {
+                if (payload.rigidBodyObject?.userData.name === "flag") {
+                    // don't know it's calling twice at the time
+                    passToilet();
+                }
             }}
         >
             {!isEditor && (
