@@ -31,7 +31,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const { getSize } = useObjectSize();
     const { isEditor } = useEditor();
     const poopSpeed = 0.01;
-    const { passToilet, killPoop } = usePoop();
+    const { passToilet, killPoop, isAlive } = usePoop();
 
     useKeyboardMapping((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
@@ -65,7 +65,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
         }
     });
 
-    return (
+    return isAlive ? (
         <GameRigidbody
             ref={colliderRef}
             colliders={false}
@@ -78,7 +78,6 @@ const Poop: FC<PoopProps> = ({ position }) => {
             }}
             onIntersectionEnter={(payload) => {
                 if (payload.rigidBodyObject?.userData.name === "flag") {
-                    // don't know it's calling twice at the time
                     passToilet();
                 }
             }}
@@ -109,7 +108,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
                 </group>
             </group>
         </GameRigidbody>
-    );
+    ) : null;
 };
 
 export const widget = createWidget({

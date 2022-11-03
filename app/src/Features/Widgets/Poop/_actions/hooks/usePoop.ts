@@ -16,7 +16,7 @@ export default () => {
 
     const passToilet = useCallback(() => {
         if (canAddPoint) {
-            updateScore(score || 0 + 1);
+            updateScore((score || 0) + 1);
             setCanAddPoint(false);
         }
     }, [updateScore, canAddPoint, score]);
