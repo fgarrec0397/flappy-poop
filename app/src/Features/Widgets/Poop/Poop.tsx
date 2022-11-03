@@ -6,6 +6,7 @@ import useKeyboardMapping from "@app/Core/_actions/hooks/useKeyboardMapping";
 import { EditableWidget } from "@app/Editor/_actions/editorTypes";
 import useEditor from "@app/Editor/_actions/hooks/useEditor";
 import useGameUpdate from "@app/Game/_actions/hooks/useGameUpdate";
+import useScenes from "@app/Scenes/_actions/hooks/useScenes";
 import createWidget from "@app/Widgets/_actions/utilities/createWidget";
 import { WidgetType } from "@app/Widgets/_actions/widgetsConstants";
 import GameRigidbody from "@features/Physics/components/GameRigidbody";
@@ -22,6 +23,7 @@ export type PoopProps = EditableWidget;
 
 const Poop: FC<PoopProps> = ({ position }) => {
     const { nodes, materials } = useGLTF("/assets/Poop.gltf") as unknown as PoopModelGLTFResult;
+    const { loadScene } = useScenes();
     const ref = useRef<Group>(null);
     const meshRef = useRef<Mesh>(null);
     const [groupPosition, setGroupPosition] = useState<Vector3Array>([0, 0, 0]);
@@ -29,7 +31,7 @@ const Poop: FC<PoopProps> = ({ position }) => {
     const { getSize } = useObjectSize();
     const { isEditor } = useEditor();
     const poopSpeed = 0.01;
-    const { passToilet, die } = usePoop();
+    const { passToilet, killPoop } = usePoop();
 
     useKeyboardMapping((keyMapping: ClientKeyMappings) => {
         if (keyMapping.jump && colliderRef.current) {
@@ -85,7 +87,8 @@ const Poop: FC<PoopProps> = ({ position }) => {
                 <CuboidCollider
                     args={[0.15, 0.15, 0.15]}
                     onCollisionEnter={() => {
-                        die();
+                        killPoop();
+                        loadScene("End");
                     }}
                 />
             )}

@@ -2,16 +2,16 @@ import usePoopDispatch from "./usePoopDispatch";
 import usePoopSelector from "./usePoopSelector";
 
 export default () => {
-    const { dispatchAddPoint, dispatchKillPoop } = usePoopDispatch();
+    const { dispatchSetPoint, dispatchSetIsAlive } = usePoopDispatch();
     const poop = usePoopSelector();
 
-    const addPoint = () => {
-        dispatchAddPoint();
+    const updateScore = (score: number) => {
+        dispatchSetPoint(score);
     };
 
-    const killPoop = () => {
-        dispatchKillPoop();
+    const updateIsAlive = (value: boolean) => {
+        dispatchSetIsAlive(value);
     };
 
-    return { isAlive: poop?.isAlive, score: poop?.score, addPoint, killPoop };
+    return { isAlive: poop?.isAlive, score: poop?.score, updateScore, updateIsAlive };
 };
